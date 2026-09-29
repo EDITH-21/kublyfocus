@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO & Open Graph Metadata -->
+  <title>BingeBlocker — Turn YouTube Into Your Learning Space</title>
+  <meta name="description" content="BingeBlocker transforms YouTube into a focused learning environment by reducing distracting recommendations, Shorts, comments, and home feeds while keeping intentional video watching usable.">
+  <meta name="keywords" content="YouTube focus mode, study extension, distraction blocker, stop YouTube rabbit hole, productivity tool, student study tools">
+  <meta name="author" content="BingeBlocker">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BingeBlocker — Turn YouTube Into Your Learning Space">
+  <meta property="og:description" content="Watch what you came for. Skip everything else. BingeBlocker removes YouTube distractions with Focus Mode, channel whitelisting, and session timing.">
+  <meta property="og:image" content="assets/logo.svg">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="BingeBlocker — Turn YouTube Into Your Learning Space">
+  <meta name="twitter:description" content="Watch what you came for. Skip everything else. Eliminate YouTube distractions and focus on intentional learning.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. NAVBAR
+       ======================================================================== -->
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="BingeBlocker Home">
+        <img src="assets/logo.svg" alt="BingeBlocker Logo" class="brand-logo-img" width="32" height="32">
+        <span>BingeBlocker</span>
+      </a>
+
+      <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#privacy" class="nav-link">Privacy</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="install.html" class="btn btn-primary btn-sm js-install-cta">
+          <span class="js-cta-label">Add to Chrome</span>
+        </a>
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main role="main">
+    <!-- ========================================================================
+         2. HERO SECTION
+         ======================================================================== -->
+    <section class="section hero-section">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-pill">
+            <span class="hero-pill-dot" aria-hidden="true"></span>
+            <span id="user-browser-badge">Available for Chromium Browsers</span>
+          </div>
+
+          <h1 class="hero-title">
+            Turn YouTube Into Your <span class="text-gradient">Learning Space.</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Watch what you came for. Skip everything else. BingeBlocker removes the distractions around YouTube while keeping the videos you actually want to watch.
+          </p>
+
+          <div class="hero-actions">
+            <a href="install.html" class="btn btn-primary btn-lg js-install-cta">
+              <span class="js-cta-label">Add to Chrome — It's Free</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="#how-it-works" class="btn btn-secondary btn-lg">
+              See How It Works
+            </a>
+          </div>
+
+          <div class="hero-meta">
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-accent" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              Manifest V3 Standard
+            </span>
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-accent" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              100% Local Storage
+            </span>
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-accent" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              No Account Required
+            </span>
+          </div>
+        </div>
+
+        <!-- Visual Representation Split Preview -->
+        <div class="hero-visual-container">
+          <div class="hero-visual-card">
+            <div class="hero-split-grid">
+              <!-- Left: Normal YouTube -->
+              <div class="split-side cluttered">
+                <span class="split-badge badge-danger">Default YouTube</span>
+                <h2 class="split-side-title">Algorithmic Noise</h2>
+                <p class="split-side-desc">Designed to maximize watch time through continuous discovery loops.</p>
+                <ul class="split-list danger-list">
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    Endless recommendations sidebar
+                  </li>
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    High-stimulus Shorts shelves
+                  </li>
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    Distracting comment debates
+                  </li>
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    Infinite scroll home feed
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Right: BingeBlocker Focus Mode -->
+              <div class="split-side focused">
+                <span class="split-badge badge-success">BingeBlocker</span>
+                <h2 class="split-side-title">Intentional Learning</h2>
+                <p class="split-side-desc">Transforms the interface into a quiet, purposeful study workspace.</p>
+                <ul class="split-list success-list">
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Clean viewing environment
+                  </li>
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Channel whitelist for trusted educators
+                  </li>
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Session timer with focus feedback
+                  </li>
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Direct search without feed rabbit holes
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         3. PROBLEM SECTION
+         ======================================================================== -->
+    <section class="section section-alt" id="problem">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">The Problem</span>
+          <h2 class="section-title">The Recommendation Loop</h2>
+          <p class="section-desc">You opened YouTube for one lecture or tutorial. Then the recommendation algorithm took over.</p>
+        </div>
+
+        <div class="problem-loop">
+          <div class="loop-steps">
+            <div class="loop-step">
+              <div class="loop-step-icon">🔍</div>
+              <div class="loop-step-title">1. Search Topic</div>
+            </div>
+            <div class="loop-arrow">→</div>
+
+            <div class="loop-step">
+              <div class="loop-step-icon">📖</div>
+              <div class="loop-step-title">2. Useful Video</div>
+            </div>
+            <div class="loop-arrow">→</div>
+
+            <div class="loop-step highlight">
+              <div class="loop-step-icon">🎯</div>
+              <div class="loop-step-title">3. Recommendation</div>
+            </div>
+            <div class="loop-arrow">→</div>
+
+            <div class="loop-step highlight">
+              <div class="loop-step-icon">⚡</div>
+              <div class="loop-step-title">4. Short Video</div>
+            </div>
+            <div class="loop-arrow">→</div>
+
+            <div class="loop-step highlight">
+              <div class="loop-step-icon">⏳</div>
+              <div class="loop-step-title">5. 30 Mins Gone</div>
+            </div>
+          </div>
+
+          <div class="problem-resolution-card">
+            <h3 class="problem-resolution-title">BingeBlocker breaks that loop.</h3>
+            <p class="problem-resolution-text">
+              By removing autoplay prompts, recommended videos, and Shorts feeds, BingeBlocker gives you back control over your attention so you finish your lesson and get back to your work.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         4. FOCUS MODE DEMO (Interactive Simulator)
+         ======================================================================== -->
+    <section class="section demo-section" id="demo">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Interactive Preview</span>
+          <h2 class="section-title">Experience Focus Mode Live</h2>
+          <p class="section-desc">Toggle the switch below to preview how BingeBlocker instantly cleanses the YouTube interface.</p>
+        </div>
+
+        <div class="demo-wrapper">
+          <div class="demo-header-bar">
+            <div class="demo-status-indicator">
+              <span>Status:</span>
+              <span id="sim-status-pill" class="text-accent">Default Distracting YouTube</span>
+            </div>
+            <span class="demo-badge-sim">Frontend Simulation</span>
+          </div>
+
+          <!-- The Live Simulated YouTube App -->
+          <div id="interactive-sim" class="sim-container">
+            <!-- Simulated YouTube Topbar -->
+            <div class="sim-topbar">
+              <div class="sim-yt-brand">
+                <div class="sim-yt-icon"><div class="sim-yt-play"></div></div>
+                <span>YouTube</span>
+              </div>
+              <div class="sim-search-bar">
+                <span>Search Machine Learning Lecture 01...</span>
+              </div>
+              <div class="sim-topbar-actions">
+                <div class="sim-user-avatar">U</div>
+              </div>
+            </div>
+
+            <!-- Simulated YouTube Page Body -->
+            <div class="sim-body">
+              <!-- Left Column: Video & Feed Elements -->
+              <div class="sim-video-col">
+                <div class="sim-player-frame">
+                  <div class="sim-player-content">
+                    <div class="sim-player-title">Linear Algebra: Essence of Linear Transformations</div>
+                    <div class="sim-player-sub">3Blue1Brown — Educational Series</div>
+                    <div class="sim-player-play-btn">
+                      <svg width="20" height="20" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sim-video-header">
+                  <h3 class="sim-video-title">Linear Algebra: Essence of Linear Transformations | Chapter 3</h3>
+                  <div class="sim-channel-row">
+                    <div class="sim-channel-left">
+                      <div class="sim-channel-avatar">3B</div>
+                      <div>
+                        <div class="sim-channel-name">3Blue1Brown</div>
+                        <div class="sim-channel-sub-count">6.2M subscribers</div>
+                      </div>
+                    </div>
+                    <button type="button" class="sim-subscribe-btn">Subscribe</button>
+                  </div>
+                </div>
+
+                <!-- Focus Mode Injected Learning Card (Visible in Focus Mode) -->
+                <div class="sim-focus-learning-card">
+                  <div class="sim-focus-badge">🎯 Focus Mode Active</div>
+                  <div class="sim-focus-quote">"Focus is a superpower in a distracted world." — Cal Newport</div>
+                  <div class="sim-focus-timer-pill">
+                    Session Duration: <strong>25:00</strong> (Whitelisted Channel)
+                  </div>
+                </div>
+
+                <!-- Shorts Shelf (Disappears in Focus Mode) -->
+                <div class="sim-shorts-shelf">
+                  <div class="sim-shelf-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.77 10.32l-1.2-.5-1.1-.46 1.05-.62a4.42 4.42 0 0 0 1.95-3.69 4.45 4.45 0 0 0-4.45-4.45c-1.12 0-2.18.42-3 1.18L4.9 8.24a4.45 4.45 0 0 0-.4 6.24l1.2.5 1.1.46-1.05.62a4.42 4.42 0 0 0-1.95 3.69 4.45 4.45 0 0 0 4.45 4.45c1.12 0 2.18-.42 3-1.18l6.12-6.46a4.45 4.45 0 0 0 .4-6.24z"/></svg>
+                    <span>Distracting Shorts (Algorithmic Hook)</span>
+                  </div>
+                  <div class="sim-shorts-grid">
+                    <div class="sim-short-card">
+                      <span class="sim-short-card-title">Crazy optical illusion #shorts</span>
+                    </div>
+                    <div class="sim-short-card">
+                      <span class="sim-short-card-title">You won't believe this reaction #viral</span>
+                    </div>
+                    <div class="sim-short-card">
+                      <span class="sim-short-card-title">Gaming clip #trend</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Comments (Disappears in Focus Mode) -->
+                <div class="sim-comments-box">
+                  <div class="sim-comments-title">Comments (2,841) — Off-topic debates</div>
+                  <div class="sim-comment-item">
+                    <div class="sim-comment-text"><strong>User123:</strong> Anyone watching this in 2026? 😂</div>
+                  </div>
+                  <div class="sim-comment-item">
+                    <div class="sim-comment-text"><strong>DevGuru:</strong> The music in the background is distracting...</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Recommendations Sidebar (Disappears in Focus Mode) -->
+              <div class="sim-recs-col">
+                <div class="sim-recs-title">Related Recommendations</div>
+                <div class="sim-rec-item">
+                  <div class="sim-rec-thumb">Thumbnail</div>
+                  <div class="sim-rec-info">
+                    <div class="sim-rec-item-title">Top 10 Unsolved Mysteries</div>
+                    <div class="sim-rec-meta">Clickbait Channel • 1.4M views</div>
+                  </div>
+                </div>
+                <div class="sim-rec-item">
+                  <div class="sim-rec-thumb">Thumbnail</div>
+                  <div class="sim-rec-info">
+                    <div class="sim-rec-item-title">Celebrity Drama Explained</div>
+                    <div class="sim-rec-meta">Trending News • 890K views</div>
+                  </div>
+                </div>
+                <div class="sim-rec-item">
+                  <div class="sim-rec-thumb">Thumbnail</div>
+                  <div class="sim-rec-info">
+                    <div class="sim-rec-item-title">Why You Should Stop Doing This</div>
+                    <div class="sim-rec-meta">Viral Hub • 2.1M views</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Simulator Controls -->
+          <div class="demo-control-panel">
+            <div class="demo-control-info">
+              <span id="sim-toggle-badge" class="demo-state-badge state-off">Normal YouTube</span>
+              <span>Click to test the clean Focus Mode transformation:</span>
+            </div>
+            <button type="button" id="btn-toggle-sim" class="btn btn-primary">
+              Turn Focus Mode On
+            </button>
+          </div>
+
+          <p class="demo-disclaimer">
+            * Interactive demonstration only. In the real extension, BingeBlocker modifies YouTube directly inside your browser without sending any data externally.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         5. FEATURES
+         ======================================================================== -->
+    <section class="section section-alt" id="features">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Core Capabilities</span>
+          <h2 class="section-title">Built for Serious Learners</h2>
+          <p class="section-desc">Practical, real features implemented in the extension to create a calm YouTube workspace.</p>
+        </div>
+
+        <div class="features-grid">
+          <!-- 1. Focus Mode -->
+          <div class="feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <h3 class="feature-title">Focus Mode</h3>
+            <p class="feature-desc">Instantly hides algorithmic feeds, recommended videos sidebar, and distracting Shorts reels across YouTube.</p>
+          </div>
+
+          <!-- 2. Channel Whitelist -->
+          <div class="feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <h3 class="feature-title">Channel Whitelist</h3>
+            <p class="feature-desc">Exempt trusted educational creators (e.g., MIT OCW, 3Blue1Brown, freeCodeCamp) from strict blocking rules.</p>
+          </div>
+
+          <!-- 3. Session Timer -->
+          <div class="feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3 class="feature-title">Session Timer</h3>
+            <p class="feature-desc">Pomodoro-style study session tracking (15m, 25m, 45m, 60m) with Chrome alarms and badge countdown updates.</p>
+          </div>
+
+          <!-- 4. Local Storage -->
+          <div class="feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <h3 class="feature-title">Local Storage</h3>
+            <p class="feature-desc">All whitelist preferences and settings stay stored purely in your browser’s `chrome.storage.local` sandbox.</p>
+          </div>
+
+          <!-- 5. Granular Settings -->
+          <div class="feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+            <h3 class="feature-title">Distraction Controls</h3>
+            <p class="feature-desc">Toggle specific elements like comments, end screens, and home feed placeholders to match your workflow.</p>
+          </div>
+
+          <!-- 6. Privacy First -->
+          <div class="feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="feature-title">Privacy First</h3>
+            <p class="feature-desc">No login, no external telemetry server, and zero tracking scripts. Your viewing activity never leaves your device.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         6. HOW IT WORKS
+         ======================================================================== -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Simple Setup</span>
+          <h2 class="section-title">How It Works</h2>
+          <p class="section-desc">Up and running in three straightforward steps.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">01</div>
+            <h3 class="step-title">Install BingeBlocker</h3>
+            <p class="step-desc">Add the extension to Chrome, Edge, Brave, or any Chromium browser with a single click.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">02</div>
+            <h3 class="step-title">Open YouTube</h3>
+            <p class="step-desc">Navigate to any video, lecture, or channel you plan to watch for study or research.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">03</div>
+            <h3 class="step-title">Turn On Focus Mode</h3>
+            <p class="step-desc">Click the BingeBlocker icon in your toolbar. Distractions disappear and your learning begins.</p>
+          </div>
+        </div>
+
+        <div class="steps-cta-row">
+          <a href="install.html" class="btn btn-primary btn-lg js-install-cta">
+            <span class="js-cta-label">Add to Chrome</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         7. BEFORE / AFTER
+         ======================================================================== -->
+    <section class="section section-alt" id="comparison">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Direct Comparison</span>
+          <h2 class="section-title">Before & After BingeBlocker</h2>
+          <p class="section-desc">A side-by-side look at how BingeBlocker declutters your environment.</p>
+        </div>
+
+        <div class="comparison-grid">
+          <!-- Left: Without BingeBlocker -->
+          <div class="comparison-card card-before">
+            <div class="comparison-header">
+              <h3 class="comparison-title">Without BingeBlocker</h3>
+              <span class="split-badge badge-danger">Unfocused</span>
+            </div>
+            <ul class="comparison-items">
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✕</span>
+                <span>Endless recommendations tailored to pull you away from your task</span>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✕</span>
+                <span>Shorts shelves enticing you with fast dopamine clips</span>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✕</span>
+                <span>Comment threads leading to unrelated arguments</span>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✕</span>
+                <span>Suggested videos that trigger continuous rabbit holes</span>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✕</span>
+                <span>Uncontrolled session times without awareness</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Right: With BingeBlocker -->
+          <div class="comparison-card card-after">
+            <div class="comparison-header">
+              <h3 class="comparison-title">With BingeBlocker</h3>
+              <span class="split-badge badge-success">Focused</span>
+            </div>
+            <ul class="comparison-items">
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✓</span>
+                <span>Intentional viewing centered exclusively on your active video</span>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✓</span>
+                <span>Clean, distraction-free interface with zero recommendations sidebar</span>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✓</span>
+                <span>Whitelisted channels for trusted educational content</span>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✓</span>
+                <span>Session timer to keep your study sessions structured</span>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-item-icon">✓</span>
+                <span>Fast, lightweight performance with zero background tracking</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         8. SUPPORTED BROWSERS
+         ======================================================================== -->
+    <section class="section" id="browsers">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Compatibility</span>
+          <h2 class="section-title">Supported Browsers</h2>
+          <p class="section-desc">BingeBlocker is built on the Manifest V3 standard and works across all modern Chromium browsers.</p>
+        </div>
+
+        <div class="browsers-grid">
+          <div class="browser-card">
+            <img src="assets/icons/chrome.svg" alt="Google Chrome" class="browser-icon-img" width="36" height="36">
+            <span class="browser-name">Google Chrome</span>
+            <span class="browser-status">Supported (MV3)</span>
+          </div>
+
+          <div class="browser-card">
+            <img src="assets/icons/edge.svg" alt="Microsoft Edge" class="browser-icon-img" width="36" height="36">
+            <span class="browser-name">Microsoft Edge</span>
+            <span class="browser-status">Supported</span>
+          </div>
+
+          <div class="browser-card">
+            <img src="assets/icons/brave.svg" alt="Brave" class="browser-icon-img" width="36" height="36">
+            <span class="browser-name">Brave</span>
+            <span class="browser-status">Supported</span>
+          </div>
+
+          <div class="browser-card">
+            <img src="assets/icons/opera.svg" alt="Opera" class="browser-icon-img" width="36" height="36">
+            <span class="browser-name">Opera / Other</span>
+            <span class="browser-status">Chromium Engines</span>
+          </div>
+        </div>
+
+        <div class="browser-cta-row">
+          <a href="install.html" class="btn btn-primary btn-lg js-install-cta">
+            <span class="js-cta-label">Add to Chrome</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         9. PRIVACY
+         ======================================================================== -->
+    <section class="section section-alt" id="privacy">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Zero Telemetry</span>
+          <h2 class="section-title">Your Data Stays In Your Browser</h2>
+          <p class="section-desc">We believe productivity tools should protect your privacy by default.</p>
+        </div>
+
+        <div class="privacy-card">
+          <div class="privacy-grid">
+            <div class="privacy-point">
+              <div class="privacy-point-icon">🔒</div>
+              <div>
+                <h3 class="privacy-point-title">No Account Required</h3>
+                <p class="privacy-point-desc">Install and start using immediately. No email registration, passwords, or personal profiles needed.</p>
+              </div>
+            </div>
+
+            <div class="privacy-point">
+              <div class="privacy-point-icon">💾</div>
+              <div>
+                <h3 class="privacy-point-title">Local Browser Storage</h3>
+                <p class="privacy-point-desc">All whitelist items and toggle settings are stored directly in your local Chrome storage area.</p>
+              </div>
+            </div>
+
+            <div class="privacy-point">
+              <div class="privacy-point-icon">🚫</div>
+              <div>
+                <h3 class="privacy-point-title">No Data Collection</h3>
+                <p class="privacy-point-desc">We do not log, track, or collect your browsing history, searches, or watched video content.</p>
+              </div>
+            </div>
+
+            <div class="privacy-point">
+              <div class="privacy-point-icon">⚡</div>
+              <div>
+                <h3 class="privacy-point-title">No Server Dependency</h3>
+                <p class="privacy-point-desc">BingeBlocker operates completely offline inside your browser without contacting external API servers.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         10. FAQ
+         ======================================================================== -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Got Questions?</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-desc">Everything you need to know about BingeBlocker and how it operates.</p>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item active">
+            <button type="button" class="faq-question-btn" aria-expanded="true">
+              <span>What is BingeBlocker?</span>
+              <span class="faq-chevron">▼</span>
+            </button>
+            <div class="faq-answer">
+              BingeBlocker is a lightweight Chromium browser extension designed to help students, researchers, and learners use YouTube intentionally by suppressing distracting recommendations, Shorts, and comment sections.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" aria-expanded="false">
+              <span>How does Focus Mode work?</span>
+              <span class="faq-chevron">▼</span>
+            </button>
+            <div class="faq-answer">
+              When enabled, Focus Mode applies optimized styling rules directly to the YouTube page to hide the home feed, related videos sidebar, and Shorts elements without interfering with normal video playback.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" aria-expanded="false">
+              <span>Does it block YouTube videos?</span>
+              <span class="faq-chevron">▼</span>
+            </button>
+            <div class="faq-answer">
+              No. BingeBlocker never blocks actual video playback or prevents you from searching for specific lectures. It only eliminates the surrounding algorithmic distractions and discovery loops.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" aria-expanded="false">
+              <span>Can I whitelist channels?</span>
+              <span class="faq-chevron">▼</span>
+            </button>
+            <div class="faq-answer">
+              Yes. You can add your favorite educational channels to your custom Whitelist via the popup. When watching whitelisted creators, the extension keeps comments and related course videos accessible.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" aria-expanded="false">
+              <span>Does it work with Edge and Brave?</span>
+              <span class="faq-chevron">▼</span>
+            </button>
+            <div class="faq-answer">
+              Yes! BingeBlocker is fully compatible with Google Chrome, Microsoft Edge, Brave, Opera, and other modern Chromium-based web browsers.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" aria-expanded="false">
+              <span>Does it require an account?</span>
+              <span class="faq-chevron">▼</span>
+            </button>
+            <div class="faq-answer">
+              No account, email, or sign-up is required. You can install the extension and immediately activate Focus Mode.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" aria-expanded="false">
+              <span>Where is my data stored?</span>
+              <span class="faq-chevron">▼</span>
+            </button>
+            <div class="faq-answer">
+              All your preferences, custom whitelist entries, and timer configurations are stored locally on your device in your browser's private local storage.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" aria-expanded="false">
+              <span>Is BingeBlocker free?</span>
+              <span class="faq-chevron">▼</span>
+            </button>
+            <div class="faq-answer">
+              Yes, BingeBlocker is completely free to install and use.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         11. FINAL INSTALL CTA
+         ======================================================================== -->
+    <section class="section final-cta-section">
+      <div class="container">
+        <div class="final-cta-card">
+          <h2 class="final-cta-title">Ready to make YouTube work for you?</h2>
+          <p class="final-cta-subtitle">
+            Install BingeBlocker and create a quieter, more productive YouTube learning experience.
+          </p>
+          <a href="install.html" class="btn btn-primary btn-lg js-install-cta">
+            <span class="js-cta-label">Add to Chrome — Free</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       12. FOOTER
+       ======================================================================== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">
+            <img src="assets/logo.svg" alt="BingeBlocker Logo" width="28" height="28">
+            <span>BingeBlocker</span>
+          </a>
+          <p class="footer-tagline">
+            Transforming YouTube into a Productive Learning Environment
+          </p>
+        </div>
+
+        <div class="footer-nav">
+          <div>
+            <h4 class="footer-col-title">Product</h4>
+            <ul class="footer-links">
+              <li><a href="#features" class="footer-link">Features</a></li>
+              <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+              <li><a href="#demo" class="footer-link">Live Demo</a></li>
+              <li><a href="install.html" class="footer-link">Installation</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">Trust & Support</h4>
+            <ul class="footer-links">
+              <li><a href="#privacy" class="footer-link">Privacy</a></li>
+              <li><a href="#faq" class="footer-link">FAQ</a></li>
+              <li><a href="install.html" class="footer-link js-install-cta">Chrome Web Store</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 BingeBlocker. Built for focused learning.</div>
+        <div>Manifest V3 Standard • Local Storage • Zero Tracking</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Sticky Install CTA Bar -->
+  <div class="mobile-sticky-bar" aria-label="Quick install bar">
+    <div class="mobile-sticky-inner">
+      <div class="mobile-sticky-info">
+        <span class="mobile-sticky-title">BingeBlocker</span>
+        <span class="mobile-sticky-sub">Distraction-free YouTube</span>
+      </div>
+      <a href="install.html" class="btn btn-primary btn-sm js-install-cta">
+        <span>Get Free</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

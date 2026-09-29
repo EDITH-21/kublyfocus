@@ -1,0 +1,472 @@
+/* ==========================================================================
+   BingeBlocker - Interactive Focus Mode Simulator Stylesheet
+   Realistic, sleek, interactive YouTube viewing environment simulation.
+   ========================================================================== */
+
+.sim-container {
+  background: #0f0f0f;
+  border: 1px solid #272727;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  color: #f1f1f1;
+  position: relative;
+}
+
+/* Simulator Top Bar */
+.sim-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #0f0f0f;
+  border-bottom: 1px solid #222222;
+  gap: 16px;
+}
+
+.sim-yt-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.sim-yt-icon {
+  width: 24px;
+  height: 18px;
+  background: #ff0000;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sim-yt-play {
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 7px solid #ffffff;
+  margin-left: 2px;
+}
+
+.sim-search-bar {
+  flex: 1;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  background: #121212;
+  border: 1px solid #303030;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.8125rem;
+  color: #888888;
+}
+
+.sim-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sim-user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+/* Simulator Main Workspace */
+.sim-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  padding: 20px;
+  min-height: 520px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sim-container.focus-active .sim-body {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Main Video Column */
+.sim-video-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sim-player-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #222222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sim-player-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.sim-player-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.sim-player-sub {
+  font-size: 0.8125rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+.sim-player-play-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px auto 0 auto;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+.sim-player-play-btn svg {
+  margin-left: 3px;
+  fill: #ffffff;
+}
+
+/* Video Details */
+.sim-video-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sim-video-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.sim-channel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #222222;
+}
+
+.sim-channel-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sim-channel-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sim-channel-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f1f1f1;
+}
+
+.sim-channel-sub-count {
+  font-size: 0.75rem;
+  color: #aaaaaa;
+}
+
+.sim-subscribe-btn {
+  background: #ffffff;
+  color: #0f0f0f;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 18px;
+}
+
+/* Simulated Distraction Elements */
+.sim-shorts-shelf {
+  background: #181818;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 12px;
+  transition: all 0.3s ease;
+}
+
+.sim-container.focus-active .sim-shorts-shelf {
+  display: none !important;
+}
+
+.sim-shelf-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ff4e45;
+  margin-bottom: 10px;
+}
+
+.sim-shorts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.sim-short-card {
+  aspect-ratio: 9 / 14;
+  background: #272727;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
+}
+
+.sim-short-card-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #ffffff;
+  z-index: 1;
+}
+
+/* Simulated Comments */
+.sim-comments-box {
+  background: #121212;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 12px;
+  transition: all 0.3s ease;
+}
+
+.sim-container.focus-active .sim-comments-box {
+  display: none !important;
+}
+
+.sim-comments-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.sim-comment-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 0.75rem;
+}
+
+.sim-comment-text {
+  color: #cccccc;
+  line-height: 1.4;
+}
+
+/* Simulated Recommendations Sidebar */
+.sim-recs-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.sim-container.focus-active .sim-recs-col {
+  display: none !important;
+}
+
+.sim-recs-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #aaaaaa;
+  margin-bottom: 4px;
+}
+
+.sim-rec-item {
+  display: flex;
+  gap: 10px;
+  background: #181818;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.sim-rec-thumb {
+  width: 100px;
+  height: 56px;
+  background: #282828;
+  border-radius: 6px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  color: #777777;
+}
+
+.sim-rec-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.sim-rec-item-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #f1f1f1;
+}
+
+.sim-rec-meta {
+  font-size: 0.6875rem;
+  color: #888888;
+}
+
+/* Focus Mode State Injected Learning Card */
+.sim-focus-learning-card {
+  display: none;
+  background: #0f172a;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  margin-top: 16px;
+  animation: simFadeIn 0.3s ease-out;
+}
+
+.sim-container.focus-active .sim-focus-learning-card {
+  display: block;
+}
+
+@keyframes simFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sim-focus-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.sim-focus-quote {
+  font-size: 0.9375rem;
+  font-style: italic;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.sim-focus-timer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+}
+
+.sim-focus-timer-pill strong {
+  color: #10b981;
+}
+
+/* Interactive Simulator Control Bar */
+.demo-control-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.demo-control-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.demo-state-badge {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.demo-state-badge.state-off {
+  background: var(--danger-surface);
+  color: var(--danger-subtle);
+}
+
+.demo-state-badge.state-on {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-light);
+}
+
+.demo-disclaimer {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .sim-body {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+  .sim-recs-col {
+    display: none;
+  }
+}

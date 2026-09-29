@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <defs>
+    <linearGradient id="bb-grad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="bb-inner" x1="12" y1="12" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded Base Shield / Focus Ring -->
+  <rect x="4" y="4" width="40" height="40" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="2"/>
+  
+  <!-- Outer Focus Aperture Target -->
+  <circle cx="24" cy="24" r="14" stroke="url(#bb-grad)" stroke-width="2.5" stroke-dasharray="4 2"/>
+  
+  <!-- Center Focus Core Play/Shield Point -->
+  <circle cx="24" cy="24" r="7" fill="url(#bb-inner)"/>
+  <polygon points="22,20.5 28,24 22,27.5" fill="#0f172a"/>
+</svg>

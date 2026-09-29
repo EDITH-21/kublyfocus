@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BingeBlocker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-group">
+        <div class="logo-icon">
+          <img src="../assets/icons/icon-48.png" alt="BingeBlocker Logo" width="28" height="28">
+        </div>
+        <div class="logo-text">
+          <h1 class="brand-title">BingeBlocker</h1>
+          <p class="brand-tagline">Focused YouTube Learning</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <span id="header-status-pill" class="status-pill status-off">INACTIVE</span>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button type="button" class="tab-btn active" data-tab="tab-focus">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        Focus
+      </button>
+      <button type="button" class="tab-btn" data-tab="tab-whitelist">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Whitelist
+      </button>
+      <button type="button" class="tab-btn" data-tab="tab-settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+    </nav>
+
+    <!-- Tab 1: Focus View -->
+    <main id="tab-focus" class="tab-content active">
+      <!-- Main Focus Toggle Card -->
+      <section class="card focus-card">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="card-label">Focus Mode</span>
+            <p class="card-hint">Blocks feeds, shorts, and recommendations</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="focus-toggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Active Tab Context Card -->
+      <section id="active-tab-context" class="card tab-context-card hidden">
+        <div class="channel-context-inner">
+          <div class="channel-info">
+            <span class="context-eyebrow">Current Channel</span>
+            <span id="current-channel-name" class="channel-title">Loading...</span>
+          </div>
+          <button type="button" id="btn-quick-whitelist" class="btn-secondary btn-sm">
+            + Whitelist
+          </button>
+        </div>
+      </section>
+
+      <!-- Non-YouTube Banner -->
+      <div id="non-yt-banner" class="non-yt-notice hidden">
+        <span>💡</span> Open YouTube to experience distraction-free learning.
+      </div>
+
+      <!-- Session Timer Card -->
+      <section class="card timer-card">
+        <div class="timer-header">
+          <span class="card-label">Session Timer</span>
+          <div class="timer-presets">
+            <button type="button" class="preset-btn" data-min="15">15m</button>
+            <button type="button" class="preset-btn active" data-min="25">25m</button>
+            <button type="button" class="preset-btn" data-min="45">45m</button>
+            <button type="button" class="preset-btn" data-min="60">60m</button>
+          </div>
+        </div>
+
+        <div class="timer-display-wrapper">
+          <div id="timer-display" class="timer-digits">25:00</div>
+          <div id="timer-status-text" class="timer-subtext">Ready to focus</div>
+        </div>
+
+        <div class="timer-controls">
+          <button type="button" id="timer-btn-start" class="btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Start
+          </button>
+          <button type="button" id="timer-btn-pause" class="btn-secondary hidden">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            Pause
+          </button>
+          <button type="button" id="timer-btn-reset" class="btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Tab 2: Whitelist View -->
+    <main id="tab-whitelist" class="tab-content">
+      <section class="card">
+        <div class="section-title-row">
+          <h2 class="section-title">Whitelisted Channels</h2>
+          <span id="whitelist-count-badge" class="count-badge">0</span>
+        </div>
+        <p class="section-desc">Whitelisted channels are exempt from Focus Mode blocking so you can learn freely.</p>
+
+        <!-- Add Channel Form -->
+        <form id="whitelist-form" class="whitelist-input-row">
+          <input type="text" id="whitelist-input" placeholder="Channel name, handle (@MIT) or URL" required autocomplete="off">
+          <button type="submit" class="btn-primary btn-sm">Add</button>
+        </form>
+
+        <div id="whitelist-feedback" class="feedback-msg hidden"></div>
+
+        <!-- Whitelist Channel List -->
+        <div class="whitelist-container">
+          <ul id="whitelist-items" class="whitelist-list">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- Tab 3: Settings View -->
+    <main id="tab-settings" class="tab-content">
+      <section class="card">
+        <h2 class="section-title">Distraction Controls</h2>
+        <p class="section-desc">Customize which YouTube elements to hide when Focus Mode is ON.</p>
+
+        <div class="settings-list">
+          <div class="setting-item">
+            <div class="setting-text">
+              <span class="setting-title">Hide Shorts</span>
+              <span class="setting-desc">Remove Shorts nav buttons, tabs, and reel shelves</span>
+            </div>
+            <label class="switch switch-sm">
+              <input type="checkbox" id="setting-hide-shorts" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-text">
+              <span class="setting-title">Hide Comments</span>
+              <span class="setting-desc">Hide comment sections under videos</span>
+            </div>
+            <label class="switch switch-sm">
+              <input type="checkbox" id="setting-hide-comments" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-text">
+              <span class="setting-title">Hide Recommendations</span>
+              <span class="setting-desc">Hide related videos sidebar on watch pages</span>
+            </div>
+            <label class="switch switch-sm">
+              <input type="checkbox" id="setting-hide-recommendations" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-text">
+              <span class="setting-title">Clean Home Learning Hub</span>
+              <span class="setting-desc">Replace algorithmic home feed with learning quote</span>
+            </div>
+            <label class="switch switch-sm">
+              <input type="checkbox" id="setting-hide-home-feed" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-text">
+              <span class="setting-title">Hide End Screens</span>
+              <span class="setting-desc">Prevent video end overlays from diverting focus</span>
+            </div>
+            <label class="switch switch-sm">
+              <input type="checkbox" id="setting-hide-endscreen" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="setting-divider"></div>
+
+        <div class="setting-item">
+          <div class="setting-text">
+            <span class="setting-title">Default Timer Duration</span>
+            <span class="setting-desc">Initial duration for focus sessions</span>
+          </div>
+          <select id="setting-default-timer" class="select-dropdown">
+            <option value="900">15 minutes</option>
+            <option value="1500" selected>25 minutes (Pomodoro)</option>
+            <option value="2700">45 minutes</option>
+            <option value="3600">60 minutes</option>
+          </select>
+        </div>
+      </section>
+    </header>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>BingeBlocker v1.0.0</span>
+      <span class="footer-dot">•</span>
+      <span>Empowering focused learners</span>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../utils/constants.js"></script>
+  <script src="../utils/helpers.js"></script>
+  <script src="../storage/storage.js"></script>
+  <script src="../utils/messaging.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
