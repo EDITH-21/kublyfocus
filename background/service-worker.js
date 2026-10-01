@@ -1,9 +1,9 @@
 /**
- * BingeBlocker - Background Service Worker (Manifest V3)
+ * Knolect - Background Service Worker (Manifest V3)
  * Manages timer alarms, action badge state, storage synchronization, and message routing.
  */
 
-// Import shared scripts in service worker environment
+// Import shared scripts
 try {
   importScripts(
     '../utils/constants.js',
@@ -12,18 +12,18 @@ try {
     '../utils/messaging.js'
   );
 } catch (e) {
-  console.error('[BingeBlocker Service Worker] Failed to import helper scripts:', e);
+  console.error('[Knolect Service Worker] Failed to import helper scripts:', e);
 }
 
-const TIMER_ALARM_NAME = 'BINGEBLOCKER_TIMER_ALARM';
-const TIMER_TICK_ALARM_NAME = 'BINGEBLOCKER_TIMER_TICK';
+const TIMER_ALARM_NAME = 'KNOLECT_TIMER_ALARM';
 
 /**
- * Update the Chrome Extension Action badge to reflect Focus Mode & Timer state
+ * Update the Extension Action badge to reflect Focus Mode & Timer state
  */
 async function updateExtensionBadge() {
   try {
     const focusMode = await getFocusMode();
+    const strictFocus = await getStrictFocus();
     const timer = await getTimerState();
 
     if (!focusMode) {
@@ -35,13 +35,16 @@ async function updateExtensionBadge() {
       const minutes = Math.ceil(timer.remaining / 60);
       const text = `${minutes}m`;
       await chrome.action.setBadgeText({ text });
-      await chrome.action.setBadgeBackgroundColor({ color: '#3b82f6' }); // Blue for active session
+      await chrome.action.setBadgeBackgroundColor({ color: '#3b82f6' }); // Blue for active timer
+    } else if (strictFocus) {
+      await chrome.action.setBadgeText({ text: 'STRICT' });
+      await chrome.action.setBadgeBackgroundColor({ color: '#10b981' }); // Green for Strict Focus
     } else {
       await chrome.action.setBadgeText({ text: 'ON' });
-      await chrome.action.setBadgeBackgroundColor({ color: '#10b981' }); // Green for focus active
+      await chrome.action.setBadgeBackgroundColor({ color: '#10b981' }); // Green for Focus active
     }
   } catch (err) {
-    console.debug('[BingeBlocker Service Worker] Badge update error:', err);
+    console.debug('[Knolect Service Worker] Badge update notice:', err);
   }
 }
 
@@ -53,10 +56,8 @@ async function syncTimerState() {
   if (timer.running && timer.endTime) {
     const now = Date.now();
     if (timer.endTime <= now) {
-      // Timer finished
       await handleTimerCompletion();
     } else {
-      // Re-schedule alarm to ensure precision
       await chrome.alarms.create(TIMER_ALARM_NAME, { when: timer.endTime });
     }
   } else {
@@ -88,15 +89,15 @@ async function handleTimerCompletion() {
   await sendRuntimeMessage({ type: MESSAGE_TYPES.TIMER_FINISHED, timer });
 }
 
-// Extension Lifecycle Listeners
+// Lifecycle Listeners
 chrome.runtime.onInstalled.addListener(async (details) => {
-  console.log('[BingeBlocker] Extension installed/updated:', details.reason);
+  console.log('[Knolect] Extension installed/updated:', details.reason);
   await initStorageDefaults();
   await updateExtensionBadge();
 });
 
 chrome.runtime.onStartup.addListener(async () => {
-  console.log('[BingeBlocker] Browser startup');
+  console.log('[Knolect] Browser startup');
   await syncTimerState();
   await updateExtensionBadge();
 });
@@ -111,7 +112,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 // Watch storage changes to keep badge updated
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local') {
-    if (changes.focusMode || changes.timer) {
+    if (changes.focusMode || changes.strictFocus || changes.timer) {
       updateExtensionBadge();
     }
   }
@@ -121,7 +122,6 @@ chrome.storage.onChanged.addListener((changes, area) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message || !message.type) return false;
 
-  // Handle messages asynchronously
   (async () => {
     try {
       switch (message.type) {
@@ -138,6 +138,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           await updateExtensionBadge();
           await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.FOCUS_MODE_CHANGED, focusMode: enabled });
           sendResponse({ success: true, focusMode: enabled });
+          break;
+        }
+
+        // --- Strict Focus Mode ---
+        case MESSAGE_TYPES.GET_STRICT_FOCUS: {
+          const strictFocus = await getStrictFocus();
+          sendResponse({ success: true, strictFocus });
+          break;
+        }
+
+        case MESSAGE_TYPES.TOGGLE_STRICT_FOCUS: {
+          const enabled = typeof message.enabled === 'boolean' ? message.enabled : !(await getStrictFocus());
+          await setStrictFocus(enabled);
+          await updateExtensionBadge();
+          await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.STRICT_FOCUS_CHANGED, strictFocus: enabled });
+          sendResponse({ success: true, strictFocus: enabled });
           break;
         }
 
@@ -161,8 +177,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           await chrome.alarms.create(TIMER_ALARM_NAME, { when: endTime });
           await updateExtensionBadge();
 
-          const broadcastMsg = { type: MESSAGE_TYPES.TIMER_UPDATED, timer };
-          await broadcastToYouTubeTabs(broadcastMsg);
+          await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.TIMER_UPDATED, timer });
           sendResponse({ success: true, timer });
           break;
         }
@@ -180,8 +195,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           await chrome.alarms.clear(TIMER_ALARM_NAME);
           await updateExtensionBadge();
 
-          const broadcastMsg = { type: MESSAGE_TYPES.TIMER_UPDATED, timer };
-          await broadcastToYouTubeTabs(broadcastMsg);
+          await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.TIMER_UPDATED, timer });
           sendResponse({ success: true, timer });
           break;
         }
@@ -201,8 +215,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           await chrome.alarms.clear(TIMER_ALARM_NAME);
           await updateExtensionBadge();
 
-          const broadcastMsg = { type: MESSAGE_TYPES.TIMER_UPDATED, timer };
-          await broadcastToYouTubeTabs(broadcastMsg);
+          await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.TIMER_UPDATED, timer });
           sendResponse({ success: true, timer });
           break;
         }
@@ -273,10 +286,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           break;
       }
     } catch (err) {
-      console.error('[BingeBlocker Service Worker] Error processing message:', err);
+      console.error('[Knolect Service Worker] Error processing message:', err);
       sendResponse({ success: false, error: err.message });
     }
   })();
 
-  return true; // Keep message channel open for async response
+  return true;
 });

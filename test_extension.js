@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('=== Starting BingeBlocker Extension Verification Suite ===\n');
+console.log('=== Starting Knolect Extension Verification Suite ===\n');
 
 let passed = 0;
 let failed = 0;
@@ -24,7 +24,7 @@ let manifest;
 try {
   manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   assert(manifest.manifest_version === 3, 'manifest_version is 3');
-  assert(manifest.name && manifest.version, 'manifest has name and version');
+  assert(manifest.name.includes('Knolect'), 'manifest has Knolect branding');
   assert(manifest.background && manifest.background.service_worker, 'manifest has background service worker');
   assert(manifest.action && manifest.action.default_popup, 'manifest has action default_popup');
 } catch (e) {
@@ -56,7 +56,7 @@ assert(fs.existsSync(swPath), 'service-worker.js exists');
 
 // 5. Content Script files verification
 if (manifest && manifest.content_scripts) {
-  manifest.content_scripts.forEach((cs, i) => {
+  manifest.content_scripts.forEach((cs) => {
     (cs.js || []).forEach(jsFile => {
       assert(fs.existsSync(path.join(__dirname, jsFile)), `Content script JS exists: ${jsFile}`);
     });
@@ -84,8 +84,9 @@ assert(norm3.name === 'Apna College', 'normalizeChannelInfo handles channel name
 // 7. Constants verification
 const constants = require('./utils/constants.js');
 assert(constants.MESSAGE_TYPES.TOGGLE_FOCUS_MODE, 'TOGGLE_FOCUS_MODE message constant exists');
-assert(constants.MESSAGE_TYPES.START_TIMER, 'START_TIMER message constant exists');
-assert(constants.DEFAULT_STORAGE.settings.hideShorts === true, 'DEFAULT_STORAGE has hideShorts true');
+assert(constants.MESSAGE_TYPES.TOGGLE_STRICT_FOCUS, 'TOGGLE_STRICT_FOCUS message constant exists');
+assert(constants.DEFAULT_STORAGE.focusMode === true, 'DEFAULT_STORAGE has focusMode true');
+assert(constants.DEFAULT_STORAGE.strictFocus === true, 'DEFAULT_STORAGE has strictFocus true');
 assert(constants.DEFAULT_STORAGE.whitelist.length > 0, 'DEFAULT_STORAGE has initial learning whitelist');
 
 console.log(`\n=== Verification Complete: ${passed} passed, ${failed} failed ===`);

@@ -1,71 +1,235 @@
 /**
- * BingeBlocker - Content Script Styles
- * Zero-layout-shift styles controlled by data attributes on the HTML/BODY root element.
+ * Knolect - Content Script Styles
+ * Zero-layout-shift distraction blocking, block screens, and learning hub styles.
  */
 
 /* ==========================================================================
-   Focus Mode Core Controls
+   1. Normal & Strict Focus Element Hiding
    ========================================================================== */
 
-/* 1. Home Feed Distractions */
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] #contents,
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] #primary,
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] #feed,
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] #chips-wrapper,
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-two-column-browse-results-renderer[page-subtype="home"] #primary,
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-two-column-browse-results-renderer[page-subtype="home"] ytd-rich-grid-renderer,
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] ytd-rich-item-renderer,
-[data-bingeblocker-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] ytd-rich-section-renderer {
+/* Home Feed Distractions */
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] #contents,
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] #primary,
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] #feed,
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] #chips-wrapper,
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-two-column-browse-results-renderer[page-subtype="home"] #primary,
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-two-column-browse-results-renderer[page-subtype="home"] ytd-rich-grid-renderer,
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] ytd-rich-item-renderer,
+[data-knolect-focus="true"][data-hide-home-feed="true"] ytd-browse[page-subtype="home"] ytd-rich-section-renderer {
   display: none !important;
 }
 
-/* 2. Shorts Elimination (Sidebar, Feed Shelves, Top bar) */
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-guide-entry-renderer a[title="Shorts"],
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-guide-entry-renderer a[href*="/shorts"],
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-mini-guide-entry-renderer[aria-label="Shorts"],
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-mini-guide-entry-renderer a[href*="/shorts"],
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-reel-shelf-renderer,
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-rich-section-renderer:has(ytd-reel-shelf-renderer),
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-rich-shelf-renderer[is-shorts],
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-shorts,
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] a[href^="/shorts"],
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] a[href*="/shorts/"],
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] ytd-reel-video-renderer,
-[data-bingeblocker-focus="true"][data-hide-shorts="true"] #endpoint[title="Shorts"] {
+/* Shorts Elimination */
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-guide-entry-renderer a[title="Shorts"],
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-guide-entry-renderer a[href*="/shorts"],
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-mini-guide-entry-renderer a[href*="/shorts"],
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-reel-shelf-renderer,
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-rich-section-renderer:has(ytd-reel-shelf-renderer),
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-rich-shelf-renderer[is-shorts],
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-shorts,
+[data-knolect-focus="true"][data-hide-shorts="true"] a[href^="/shorts"],
+[data-knolect-focus="true"][data-hide-shorts="true"] a[href*="/shorts/"],
+[data-knolect-focus="true"][data-hide-shorts="true"] ytd-reel-video-renderer,
+[data-knolect-focus="true"][data-hide-shorts="true"] #endpoint[title="Shorts"] {
   display: none !important;
 }
 
-/* 3. Watch Page Recommendations / Related Videos (when not whitelisted) */
-[data-bingeblocker-focus="true"][data-hide-recommendations="true"]:not([data-bingeblocker-whitelisted="true"]) #secondary #related,
-[data-bingeblocker-focus="true"][data-hide-recommendations="true"]:not([data-bingeblocker-whitelisted="true"]) #secondary-inner #related,
-[data-bingeblocker-focus="true"][data-hide-recommendations="true"]:not([data-bingeblocker-whitelisted="true"]) ytd-watch-next-secondary-results-renderer,
-[data-bingeblocker-focus="true"][data-hide-recommendations="true"]:not([data-bingeblocker-whitelisted="true"]) ytd-item-section-renderer[section-identifier="related-items"],
-[data-bingeblocker-focus="true"][data-hide-recommendations="true"]:not([data-bingeblocker-whitelisted="true"]) ytd-compact-video-renderer,
-[data-bingeblocker-focus="true"][data-hide-recommendations="true"]:not([data-bingeblocker-whitelisted="true"]) ytd-compact-radio-renderer {
+/* Search Page Hiding in Strict Focus */
+[data-knolect-focus="true"][data-knolect-strict="true"] ytd-search #contents,
+[data-knolect-focus="true"][data-knolect-strict="true"] ytd-two-column-search-results-renderer #primary {
   display: none !important;
 }
 
-/* 4. Comments Section (when not whitelisted) */
-[data-bingeblocker-focus="true"][data-hide-comments="true"]:not([data-bingeblocker-whitelisted="true"]) #comments,
-[data-bingeblocker-focus="true"][data-hide-comments="true"]:not([data-bingeblocker-whitelisted="true"]) ytd-comments#comments,
-[data-bingeblocker-focus="true"][data-hide-comments="true"]:not([data-bingeblocker-whitelisted="true"]) ytd-comments,
-[data-bingeblocker-focus="true"][data-hide-comments="true"]:not([data-bingeblocker-whitelisted="true"]) ytd-item-section-renderer[section-identifier="comment-item-section"] {
+/* Watch Page Recommendations (when not whitelisted) */
+[data-knolect-focus="true"][data-hide-recommendations="true"]:not([data-knolect-whitelisted="true"]) #secondary #related,
+[data-knolect-focus="true"][data-hide-recommendations="true"]:not([data-knolect-whitelisted="true"]) #secondary-inner #related,
+[data-knolect-focus="true"][data-hide-recommendations="true"]:not([data-knolect-whitelisted="true"]) ytd-watch-next-secondary-results-renderer,
+[data-knolect-focus="true"][data-hide-recommendations="true"]:not([data-knolect-whitelisted="true"]) ytd-item-section-renderer[section-identifier="related-items"],
+[data-knolect-focus="true"][data-hide-recommendations="true"]:not([data-knolect-whitelisted="true"]) ytd-compact-video-renderer,
+[data-knolect-focus="true"][data-hide-recommendations="true"]:not([data-knolect-whitelisted="true"]) ytd-compact-radio-renderer {
   display: none !important;
 }
 
-/* 5. Endscreen Clutter & Autoplay prompts */
-[data-bingeblocker-focus="true"][data-hide-endscreen="true"]:not([data-bingeblocker-whitelisted="true"]) .ytp-ce-element,
-[data-bingeblocker-focus="true"][data-hide-endscreen="true"]:not([data-bingeblocker-whitelisted="true"]) .ytp-endscreen-content,
-[data-bingeblocker-focus="true"][data-hide-endscreen="true"]:not([data-bingeblocker-whitelisted="true"]) .ytp-ce-covering-overlay {
+/* Comments Section (when not whitelisted) */
+[data-knolect-focus="true"][data-hide-comments="true"]:not([data-knolect-whitelisted="true"]) #comments,
+[data-knolect-focus="true"][data-hide-comments="true"]:not([data-knolect-whitelisted="true"]) ytd-comments#comments,
+[data-knolect-focus="true"][data-hide-comments="true"]:not([data-knolect-whitelisted="true"]) ytd-comments,
+[data-knolect-focus="true"][data-hide-comments="true"]:not([data-knolect-whitelisted="true"]) ytd-item-section-renderer[section-identifier="comment-item-section"] {
+  display: none !important;
+}
+
+/* Endscreens */
+[data-knolect-focus="true"][data-hide-endscreen="true"]:not([data-knolect-whitelisted="true"]) .ytp-ce-element,
+[data-knolect-focus="true"][data-hide-endscreen="true"]:not([data-knolect-whitelisted="true"]) .ytp-endscreen-content,
+[data-knolect-focus="true"][data-hide-endscreen="true"]:not([data-knolect-whitelisted="true"]) .ytp-ce-covering-overlay {
   display: none !important;
 }
 
 /* ==========================================================================
-   BingeBlocker Learning Environment Overlay / Placeholder
+   2. Knolect Block Screen Overlay
    ========================================================================== */
 
-.bingeblocker-home-container {
+.knolect-block-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(8, 12, 20, 0.95) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  animation: knolect-fade-in 0.2s ease-out !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  color: #f8fafc !important;
+}
+
+.knolect-block-modal {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  border-radius: 20px !important;
+  padding: 40px 36px !important;
+  max-width: 580px !important;
+  width: 100% !important;
+  text-align: center !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+  box-sizing: border-box !important;
+}
+
+.knolect-block-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #34d399 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 5px 14px !important;
+  border-radius: 9999px !important;
+  margin-bottom: 20px !important;
+}
+
+.knolect-block-title {
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  color: #f8fafc !important;
+  margin: 0 0 12px 0 !important;
+  line-height: 1.2 !important;
+}
+
+.knolect-block-desc {
+  font-size: 14px !important;
+  color: #94a3b8 !important;
+  line-height: 1.6 !important;
+  margin: 0 0 28px 0 !important;
+}
+
+.knolect-block-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  margin-bottom: 24px !important;
+}
+
+.knolect-btn-primary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background: #10b981 !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  border-radius: 10px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+.knolect-btn-primary:hover {
+  background: #059669 !important;
+  transform: translateY(-1px) !important;
+}
+
+.knolect-btn-secondary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 10px 20px !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.knolect-btn-secondary:hover {
+  background: #334155 !important;
+  border-color: #475569 !important;
+}
+
+.knolect-block-whitelist-box {
+  margin-top: 24px !important;
+  border-top: 1px solid #334155 !important;
+  padding-top: 18px !important;
+  text-align: left !important;
+}
+
+.knolect-block-whitelist-title {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #94a3b8 !important;
+  margin-bottom: 12px !important;
+}
+
+.knolect-chips-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+.knolect-chip-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  text-decoration: none !important;
+  border: 1px solid #334155 !important;
+  transition: all 0.15s ease !important;
+}
+
+.knolect-chip-link:hover {
+  background: #334155 !important;
+  border-color: #475569 !important;
+}
+
+/* ==========================================================================
+   3. Knolect Home Learning Space
+   ========================================================================== */
+
+.knolect-home-container {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -75,39 +239,39 @@
   text-align: center !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
   color: var(--yt-spec-text-primary, #0f172a) !important;
-  animation: bingeblocker-fade-in 0.3s ease-out !important;
+  animation: knolect-fade-in 0.3s ease-out !important;
   width: 100% !important;
   max-width: 800px !important;
   margin: 0 auto !important;
   box-sizing: border-box !important;
 }
 
-@keyframes bingeblocker-fade-in {
+@keyframes knolect-fade-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.bingeblocker-card {
+.knolect-card {
   background: var(--yt-spec-brand-background-primary, #ffffff) !important;
   border: 1px solid var(--yt-spec-10-percent-layer, #e2e8f0) !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
-  border-radius: 16px !important;
-  padding: 36px 32px !important;
-  max-width: 580px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 18px !important;
+  padding: 40px 36px !important;
+  max-width: 620px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
 
-html[dark="true"] .bingeblocker-card,
-[dark] .bingeblocker-card,
-html[dark] .bingeblocker-card {
+html[dark="true"] .knolect-card,
+[dark] .knolect-card,
+html[dark] .knolect-card {
   background: #0f172a !important;
   border-color: #334155 !important;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
   color: #f8fafc !important;
 }
 
-.bingeblocker-badge-pill {
+.knolect-badge-pill {
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
@@ -122,28 +286,28 @@ html[dark] .bingeblocker-card {
   margin-bottom: 16px !important;
 }
 
-html[dark="true"] .bingeblocker-badge-pill,
-[dark] .bingeblocker-badge-pill,
-html[dark] .bingeblocker-badge-pill {
+html[dark="true"] .knolect-badge-pill,
+[dark] .knolect-badge-pill,
+html[dark] .knolect-badge-pill {
   background: rgba(16, 185, 129, 0.2) !important;
   color: #34d399 !important;
 }
 
-.bingeblocker-title {
-  font-size: 24px !important;
+.knolect-title {
+  font-size: 26px !important;
   font-weight: 800 !important;
   margin: 0 0 10px 0 !important;
   line-height: 1.3 !important;
 }
 
-.bingeblocker-subtitle {
+.knolect-subtitle {
   font-size: 14px !important;
   color: var(--yt-spec-text-secondary, #64748b) !important;
   margin: 0 0 24px 0 !important;
   line-height: 1.5 !important;
 }
 
-.bingeblocker-quote-box {
+.knolect-quote-box {
   background: var(--yt-spec-badge-chip-background, #f1f5f9) !important;
   border-left: 4px solid #10b981 !important;
   padding: 14px 18px !important;
@@ -155,56 +319,28 @@ html[dark] .bingeblocker-badge-pill {
   text-align: left !important;
 }
 
-html[dark="true"] .bingeblocker-quote-box,
-[dark] .bingeblocker-quote-box,
-html[dark] .bingeblocker-quote-box {
+html[dark="true"] .knolect-quote-box,
+[dark] .knolect-quote-box,
+html[dark] .knolect-quote-box {
   background: #1e293b !important;
   color: #cbd5e1 !important;
 }
 
-.bingeblocker-actions {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important;
-}
-
-.bingeblocker-btn-search {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  background: #10b981 !important;
-  color: #ffffff !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  padding: 12px 20px !important;
-  border-radius: 10px !important;
-  border: none !important;
-  cursor: pointer !important;
-  transition: background 0.15s ease, transform 0.1s ease !important;
-  text-decoration: none !important;
-}
-
-.bingeblocker-btn-search:hover {
-  background: #059669 !important;
-  transform: translateY(-1px) !important;
-}
-
-.bingeblocker-channels-quick {
+.knolect-channels-quick {
   margin-top: 24px !important;
   border-top: 1px solid var(--yt-spec-10-percent-layer, #e2e8f0) !important;
-  padding-top: 16px !important;
+  padding-top: 18px !important;
   text-align: left !important;
 }
 
-html[dark="true"] .bingeblocker-channels-quick,
-[dark] .bingeblocker-channels-quick,
-html[dark] .bingeblocker-channels-quick {
+html[dark="true"] .knolect-channels-quick,
+[dark] .knolect-channels-quick,
+html[dark] .knolect-channels-quick {
   border-color: #334155 !important;
 }
 
-.bingeblocker-channels-title {
-  font-size: 12px !important;
+.knolect-channels-title {
+  font-size: 11px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   color: var(--yt-spec-text-secondary, #94a3b8) !important;
@@ -212,50 +348,11 @@ html[dark] .bingeblocker-channels-quick {
   margin-bottom: 12px !important;
 }
 
-.bingeblocker-chips-grid {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
-}
-
-.bingeblocker-chip-link {
-  display: inline-flex !important;
-  align-items: center !important;
-  background: var(--yt-spec-badge-chip-background, #f1f5f9) !important;
-  color: var(--yt-spec-text-primary, #334155) !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  padding: 6px 12px !important;
-  border-radius: 8px !important;
-  text-decoration: none !important;
-  transition: all 0.15s ease !important;
-  border: 1px solid transparent !important;
-}
-
-.bingeblocker-chip-link:hover {
-  background: #e2e8f0 !important;
-  border-color: #cbd5e1 !important;
-}
-
-html[dark="true"] .bingeblocker-chip-link,
-[dark] .bingeblocker-chip-link,
-html[dark] .bingeblocker-chip-link {
-  background: #1e293b !important;
-  color: #e2e8f0 !important;
-}
-
-html[dark="true"] .bingeblocker-chip-link:hover,
-[dark] .bingeblocker-chip-link:hover,
-html[dark] .bingeblocker-chip-link:hover {
-  background: #334155 !important;
-  border-color: #475569 !important;
-}
-
 /* ==========================================================================
-   Whitelisted Channel Badge on Video Pages
+   4. Whitelist Indicator on Video Watch Page
    ========================================================================== */
 
-.bingeblocker-whitelist-indicator {
+.knolect-whitelist-indicator {
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
@@ -270,23 +367,23 @@ html[dark] .bingeblocker-chip-link:hover {
   font-family: inherit !important;
 }
 
-html[dark="true"] .bingeblocker-whitelist-indicator,
-[dark] .bingeblocker-whitelist-indicator,
-html[dark] .bingeblocker-whitelist-indicator {
+html[dark="true"] .knolect-whitelist-indicator,
+[dark] .knolect-whitelist-indicator,
+html[dark] .knolect-whitelist-indicator {
   background: rgba(16, 185, 129, 0.2) !important;
   color: #34d399 !important;
   border-color: rgba(52, 211, 153, 0.5) !important;
 }
 
 /* ==========================================================================
-   On-Page Floating Focus Floating Widget
+   5. On-Page Floating Focus Control
    ========================================================================== */
 
-.bingeblocker-floating-bar {
+.knolect-floating-bar {
   position: fixed !important;
   bottom: 20px !important;
   right: 20px !important;
-  z-index: 9999999 !important;
+  z-index: 2147483640 !important;
   display: flex !important;
   align-items: center !important;
   gap: 10px !important;
@@ -302,12 +399,12 @@ html[dark] .bingeblocker-whitelist-indicator {
   user-select: none !important;
 }
 
-.bingeblocker-floating-bar:hover {
+.knolect-floating-bar:hover {
   transform: translateY(-2px) !important;
   box-shadow: 0 14px 28px -4px rgba(0, 0, 0, 0.5) !important;
 }
 
-.bingeblocker-float-pill {
+.knolect-float-pill {
   display: flex !important;
   align-items: center !important;
   gap: 6px !important;
@@ -315,11 +412,11 @@ html[dark] .bingeblocker-whitelist-indicator {
   color: #34d399 !important;
 }
 
-.bingeblocker-float-pill.off {
+.knolect-float-pill.off {
   color: #94a3b8 !important;
 }
 
-.bingeblocker-float-toggle {
+.knolect-float-toggle {
   background: #10b981 !important;
   color: #ffffff !important;
   border: none !important;
@@ -331,10 +428,10 @@ html[dark] .bingeblocker-whitelist-indicator {
   transition: background 0.15s ease !important;
 }
 
-.bingeblocker-float-toggle.off {
+.knolect-float-toggle.off {
   background: #475569 !important;
 }
 
-.bingeblocker-float-toggle:hover {
+.knolect-float-toggle:hover {
   filter: brightness(1.1) !important;
 }

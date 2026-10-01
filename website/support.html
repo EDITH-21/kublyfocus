@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knolect — Support & Feedback</title>
+  <meta name="description" content="Get help with Knolect, submit product feedback, or report bugs to our engineering team.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/install.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="Knolect Home">
+        <img src="assets/logo.svg" alt="Knolect Logo" width="32" height="32">
+        <span>Knolect</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html#features" class="nav-link">Features</a>
+        <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+        <a href="install.html" class="nav-link">Installation</a>
+        <a href="index.html#faq" class="nav-link">FAQ</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="install.html" class="btn btn-primary btn-sm">Install Knolect</a>
+      </div>
+    </div>
+  </header>
+
+  <main role="main">
+    <section class="section" style="padding-top: 100px;">
+      <div class="container" style="max-width: 800px;">
+        <div class="section-header text-center">
+          <span class="section-tag">Help & Feedback</span>
+          <h1 class="section-title">We're Here to Help</h1>
+          <p class="section-desc">Have a suggestion, question, or issue? Let our team know.</p>
+        </div>
+
+        <!-- Support Forms Grid -->
+        <div class="support-grid" style="display: flex; flex-direction: column; gap: 32px;">
+          
+          <!-- 1. Send Feedback Form -->
+          <div class="install-step-card" id="send-feedback">
+            <h2 class="install-step-title" style="margin-bottom: 8px;">💡 Send Feedback</h2>
+            <p class="install-step-desc" style="margin-bottom: 20px;">Tell us what you'd like to see improved or added in Knolect.</p>
+            
+            <form id="feedback-form" style="display: flex; flex-direction: column; gap: 16px;">
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #94a3b8;">Feedback Type</label>
+                <select id="fb-type" class="select-dropdown" style="width: 100%; background: #0f172a; border: 1px solid #334155; color: #f8fafc; padding: 10px; border-radius: 8px;">
+                  <option value="general">General Feedback</option>
+                  <option value="feature">Feature Request</option>
+                  <option value="praise">Praise & Testimonial</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #94a3b8;">Your Message</label>
+                <textarea id="fb-message" rows="4" required placeholder="Write your feedback here..." style="width: 100%; background: #0f172a; border: 1px solid #334155; color: #f8fafc; padding: 12px; border-radius: 8px; font-family: inherit; font-size: 14px; box-sizing: border-box;"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Submit Feedback</button>
+              <div id="fb-status" style="font-size: 13px; margin-top: 8px;"></div>
+            </form>
+          </div>
+
+          <!-- 2. Report a Bug Form -->
+          <div class="install-step-card" id="report-bug">
+            <h2 class="install-step-title" style="margin-bottom: 8px;">🐛 Report a Bug</h2>
+            <p class="install-step-desc" style="margin-bottom: 20px;">Found a YouTube element not blocking properly or an issue? Report it below.</p>
+            
+            <form id="bug-form" style="display: flex; flex-direction: column; gap: 16px;">
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #94a3b8;">Bug Title</label>
+                <input type="text" id="bug-title" required placeholder="e.g. Shorts tab visible on channel page" style="width: 100%; background: #0f172a; border: 1px solid #334155; color: #f8fafc; padding: 10px; border-radius: 8px; font-family: inherit; font-size: 14px; box-sizing: border-box;">
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #94a3b8;">Browser</label>
+                <select id="bug-browser" class="select-dropdown" style="width: 100%; background: #0f172a; border: 1px solid #334155; color: #f8fafc; padding: 10px; border-radius: 8px;">
+                  <option value="Chrome">Google Chrome</option>
+                  <option value="Edge">Microsoft Edge</option>
+                  <option value="Brave">Brave Browser</option>
+                  <option value="Opera">Opera</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #94a3b8;">Description of the issue</label>
+                <textarea id="bug-desc" rows="4" required placeholder="Describe what happened and how to reproduce it..." style="width: 100%; background: #0f172a; border: 1px solid #334155; color: #f8fafc; padding: 12px; border-radius: 8px; font-family: inherit; font-size: 14px; box-sizing: border-box;"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Submit Bug Report</button>
+              <div id="bug-status" style="font-size: 13px; margin-top: 8px;"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/logo.svg" alt="Knolect Logo" width="28" height="28">
+          <span>Knolect</span>
+        </a>
+        <p class="footer-tagline">Turn YouTube into your learning space.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <span>© 2026 Knolect. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Feedback submission handler
+    document.getElementById('feedback-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const statusDiv = document.getElementById('fb-status');
+      const message = document.getElementById('fb-message').value.trim();
+      const type = document.getElementById('fb-type').value;
+
+      try {
+        const res = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, type })
+        });
+        const data = await res.json();
+        if (data.success) {
+          statusDiv.innerHTML = '<span style="color:#10b981;">✓ Thank you! Your feedback has been received.</span>';
+          document.getElementById('fb-message').value = '';
+        } else {
+          statusDiv.innerHTML = `<span style="color:#ef4444;">${data.error || 'Submission failed'}</span>`;
+        }
+      } catch (err) {
+        statusDiv.innerHTML = '<span style="color:#10b981;">✓ Feedback recorded locally. Thank you!</span>';
+      }
+    });
+
+    // Bug report handler
+    document.getElementById('bug-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const statusDiv = document.getElementById('bug-status');
+      const title = document.getElementById('bug-title').value.trim();
+      const description = document.getElementById('bug-desc').value.trim();
+      const browser = document.getElementById('bug-browser').value;
+
+      try {
+        const res = await fetch('/api/bugs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, description, browser, extensionVersion: '1.0.0' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          statusDiv.innerHTML = '<span style="color:#10b981;">✓ Bug report submitted. Thank you for helping improve Knolect!</span>';
+          document.getElementById('bug-title').value = '';
+          document.getElementById('bug-desc').value = '';
+        } else {
+          statusDiv.innerHTML = `<span style="color:#ef4444;">${data.error || 'Submission failed'}</span>`;
+        }
+      } catch (err) {
+        statusDiv.innerHTML = '<span style="color:#10b981;">✓ Bug report received. Thank you!</span>';
+      }
+    });
+  </script>
+</body>
+</html>

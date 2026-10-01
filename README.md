@@ -1,70 +1,50 @@
-# BingeBlocker 🎯
+# Knolect 🛡️
 
-> **"Transforming YouTube into a Productive Learning Environment"**
+> **"Turn YouTube into your learning space."**  
+> *Learn what you came for. Block what pulls you away.*
 
-BingeBlocker is a complete product ecosystem designed for students, exam aspirants, researchers, and self-learners who use YouTube for focused study without getting trapped in algorithmic distraction loops.
-
----
-
-## 🌟 The Product Ecosystem
-
-The ecosystem consists of two connected products:
-
-1. **BingeBlocker Chrome Extension (Manifest V3)**: The client-side extension that modifies YouTube DOM in real time to remove recommendations, Shorts, comments, and home feeds while keeping intentional learning accessible.
-2. **BingeBlocker Official Website**: The marketing and installation entry point featuring interactive Focus Mode simulations, comprehensive browser guides, and real-time installation routing.
+**Knolect** is a Manifest V3 Chrome Extension and learning platform designed for students, exam aspirants, developers, researchers, and lifelong learners who use YouTube for focused study without getting trapped in algorithmic distraction loops.
 
 ---
 
-## ✨ Extension Features (MVP)
+## ✨ Features
 
-1. **Manifest V3 Architecture**:
-   - Built following modern Chrome Extension standards with a background service worker.
-   - Minimal secure permissions (`storage`, `alarms`, `tabs`, host permission for `*://*.youtube.com/*`).
-2. **Instant Focus Mode**:
-   - Replaces the infinite homepage feed with an inspiring learning hub and quick search.
-   - Hides Shorts shelves, navigation buttons, and tab links.
-   - Eliminates recommendation sidebars on watch pages.
-   - Hides comments and video endscreen clutter.
-   - Preserves core video player, controls, subtitles, search, and intentional viewing.
-3. **Session Timer**:
-   - Built-in Pomodoro/Focus timer (15m, 25m, 45m, 60m presets).
-   - Timestamp-based calculation ensures zero clock drift.
-   - Survives popup closing and persists state via background alarms.
-   - Displays live session progress and extension badge countdowns (`25m`, `ON`).
-4. **Channel Whitelist**:
-   - Allows exemptions for trusted educational creators (e.g., *MIT OpenCourseWare*, *3Blue1Brown*, *freeCodeCamp*, *Khan Academy*).
-   - One-click quick whitelist directly from the popup when on YouTube watch pages.
-   - Whitelisted channels retain normal viewing and course discussions.
-5. **Granular Distraction Controls**:
-   - Toggle individual elements (Shorts, comments, recommendations, home feed placeholder, end screens).
-6. **Robust YouTube SPA Compatibility**:
-   - Handles YouTube's dynamic Single Page Application (SPA) lifecycle events (`yt-navigate-finish`, `yt-page-data-updated`, history popstate).
-   - Uses zero-layout-shift attribute-driven CSS selectors with throttled DOM observers.
+1. **Strict Focus Mode (Allowlist-First Security)**:
+   - Sets YouTube to an allowlist-first access model: `DEFAULT = BLOCK`, `WHITELISTED = ALLOW`.
+   - Blocks search result feeds (`/results?search_query=...`) with a clean study block screen to prevent entertainment exploration.
+   - Blocks short-form video feeds (`/shorts/*`).
+   - Automatically pauses non-whitelisted videos (`/watch?v=...`) and displays a dedicated Knolect Block Screen with `[Return to Learning]` and `[+ Allow & Whitelist]` options.
+   - Blocks non-whitelisted channel pages during active focus sessions.
 
----
+2. **Normal Focus Mode**:
+   - Replaces the infinite homepage recommendation feed with the clean Knolect Home Learning Space (study quote + approved channel shortcuts).
+   - Removes Shorts shelves, navigation buttons, and tab links.
+   - Hides related video recommendation sidebars on watch pages.
+   - Hides video comment sections and endscreen video overlays.
 
-## 🌐 Official Marketing & Installation Website
+3. **Channel Whitelist**:
+   - User-controlled allowlist for trusted educational channels (e.g. *MIT OpenCourseWare*, *3Blue1Brown*, *freeCodeCamp*, *Khan Academy*).
+   - 1-click quick whitelisting directly from the popup or active watch page.
+   - Whitelisted creators bypass blocking for seamless study.
 
-Located in the [`website/`](website/) directory:
+4. **Session Timer**:
+   - Built-in Pomodoro focus timer with 15m, 25m, 45m, and 60m presets.
+   - Timestamp-based calculation (`endTime - Date.now()`) preventing clock drift.
+   - Survives popup closure and persists state via background alarms.
+   - Action badge indicator displays remaining minutes (e.g. `25m`) or `STRICT` / `ON`.
 
-- **12 Required Product Sections**:
-  1. **Navbar**: Brand logo, Navigation links, and primary `[Add to Chrome]` CTA.
-  2. **Hero**: Headline *"Turn YouTube Into Your Learning Space"*, subtext, primary CTA, and side-by-side visual comparison.
-  3. **Problem**: Step-by-step recommendation loop progression showing how 30 minutes get wasted.
-  4. **Focus Mode Demo**: Real-time interactive YouTube simulator with a live `[Turn Focus Mode On]` toggle.
-  5. **Features**: Concise, factual cards describing only implemented capabilities.
-  6. **How It Works**: 3 clear steps (Install → Open YouTube → Turn On Focus Mode).
-  7. **Before / After**: Side-by-side visual contrast between Default YouTube and BingeBlocker.
-  8. **Browser Support**: Compatibility cards for Chrome, Edge, Brave, and Opera.
-  9. **Privacy**: Factual privacy manifesto (*"Your settings stay in your browser"*).
-  10. **FAQ**: Accordion answering top questions accurately.
-  11. **Final Install CTA**: Large call to action pointing to the store URL.
-  12. **Footer**: Brand tagline, navigation links, and copyright.
-- **Dedicated Install Page** (`website/install.html`):
-  - Browser-specific tabs (Chrome, Edge, Brave, Opera).
-  - Development unpacked installation guide with step-by-step instructions and one-click copyable extension URLs (`chrome://extensions`, `edge://extensions`, `brave://extensions`).
-- **Central Configuration** (`website/js/config.js`):
-  - Single `CHROME_STORE_URL` configuration variable. When empty, CTAs route to `install.html`; when populated with the store URL, all buttons link directly to the Chrome Web Store.
+5. **YouTube SPA Protection**:
+   - Deeply integrates with YouTube's Single Page Application lifecycle (`yt-navigate-finish`, `yt-page-data-updated`, `pushState`, `replaceState`, `popstate`, and DOM mutation observers).
+   - Re-enforces focus rules on every internal navigation and browser back/forward action.
+
+6. **100% Local Privacy**:
+   - No tracking of browsing history, video titles, or search queries.
+   - All focus settings, custom whitelists, and timer preferences remain strictly on the user's device.
+   - Extension works 100% offline even if external networks or servers are unavailable.
+
+7. **Backend Ecosystem & Admin Dashboard**:
+   - REST API with Node.js, Express, and MongoDB data models for account management, session stats, feedback, and bug reports.
+   - Role-protected Admin Dashboard for aggregated product metrics and support queues.
 
 ---
 
@@ -72,71 +52,72 @@ Located in the [`website/`](website/) directory:
 
 ```
 focenza/
-├── manifest.json              # Manifest V3 extension configuration
+├── manifest.json            # Manifest V3 extension configuration
 ├── popup/
-│   ├── popup.html             # Popup UI (Focus, Whitelist, Settings, Timer)
-│   ├── popup.css              # Dark/light theme design system
-│   └── popup.js               # Popup controller & state synchronizer
+│   ├── popup.html           # Modern popup UI (Focus, Whitelist, Settings)
+│   ├── popup.css            # Dark/light theme design system
+│   └── popup.js             # Live UI controller & state synchronizer
 ├── content/
-│   ├── content.js             # Content script entrypoint & SPA navigation observer
-│   ├── focus-mode.js          # Core DOM focus engine & whitelist evaluation
-│   └── content.css            # Zero-layout-shift distraction hiding rules
+│   ├── content.js           # Content script entrypoint & SPA navigation observer
+│   ├── focus-mode.js        # Core Strict Focus engine & block screen overlay
+│   └── content.css          # Zero-layout-shift distraction hiding rules
 ├── background/
-│   └── service-worker.js      # Service worker (alarms, badge, message routing)
+│   └── service-worker.js    # Service worker (alarms, badge, message routing)
 ├── storage/
-│   └── storage.js             # Centralized async chrome.storage.local wrapper
+│   └── storage.js           # Centralized async chrome.storage.local wrapper
 ├── utils/
-│   ├── constants.js           # Message types, storage keys, YouTube selectors
-│   ├── messaging.js           # Runtime & tab message communication helpers
-│   └── helpers.js             # Time formatting, channel normalization & debounce
-├── assets/
-│   └── icons/                 # Extension icons (16x16, 48x48, 128x128 PNGs)
-├── website/                   # Official Marketing & Installation Website
-│   ├── index.html             # Main marketing landing page
-│   ├── install.html           # Official installation guide
-│   ├── css/
-│   │   ├── styles.css         # Main design system & layout styles
-│   │   ├── demo.css           # Interactive Focus Mode simulator styles
-│   │   └── install.css        # Install page styles
-│   ├── js/
-│   │   ├── config.js          # Central CHROME_STORE_URL & browser detection
-│   │   ├── main.js            # CTA binding, FAQ accordion & smooth scroll
-│   │   ├── demo.js            # Live interactive simulator controller
-│   │   └── install.js         # Install page tab controller & copy helpers
-│   └── assets/                # Logos, favicons & browser SVGs
-├── test_extension.js          # Extension test & verification suite
-├── test_website.js            # Website test & verification suite
-└── README.md                  # Comprehensive product ecosystem documentation
+│   ├── constants.js         # Message types, storage keys, YouTube selectors
+│   ├── messaging.js         # Runtime & tab message communication helpers
+│   └── helpers.js           # Time formatting, channel normalization & debounce
+├── backend/
+│   ├── src/
+│   │   ├── config/db.js     # Data store engine & MongoDB connector
+│   │   ├── models/          # Schemas for Users, Settings, Whitelist, Sessions, Feedback, Bugs, Analytics
+│   │   ├── middleware/      # Auth JWT, Role Check, Rate Limiter, Error Handler
+│   │   ├── controllers/     # API endpoints controller logic
+│   │   ├── routes/          # Express REST routes
+│   │   └── app.js           # Express app instance
+│   ├── server.js            # Dedicated backend server entry point
+│   └── package.json         # Backend metadata
+├── website/
+│   ├── index.html           # Official Product Landing Page & Interactive Focus Demo
+│   ├── install.html         # Installation Guide for Chrome, Edge, Brave, Opera
+│   ├── support.html         # Support Center, Feedback & Bug Reporting
+│   ├── admin.html           # Admin Dashboard (Protected metrics & support queues)
+│   ├── css/                 # Modern dark SaaS design system
+│   ├── js/                  # Interactive demo, browser detection, configuration
+│   └── assets/              # SVG brand icons & browser graphics
+├── server.js                # Unified local server (serves website & /api routes)
+├── test_extension.js        # Automated extension test suite (33 tests)
+├── test_backend.js          # Automated backend API test suite (15 tests)
+├── test_website.js          # Automated website verification suite (21 tests)
+└── README.md                # Project documentation
 ```
 
 ---
 
-## 🚀 How to Install & Test
+## 🚀 How to Run the Demo & Tests
 
-### 1. Load Extension in Google Chrome
-1. Open **Google Chrome**.
-2. Navigate to `chrome://extensions/`.
-3. Toggle **Developer mode** ON (top right).
-4. Click **Load unpacked** and select the root directory (`c:\Users\shiva\Desktop\focenza`).
-5. Open [YouTube](https://www.youtube.com), click the BingeBlocker icon, and test Focus Mode!
-
-### 2. View Official Website
-Open [`website/index.html`](website/index.html) in any browser or serve locally using any static file server:
+### 1. Run Automated Test Suites
 ```bash
-# Optional: run a local static server
-npx serve website
+node test_extension.js   # Extension & Strict Focus verification (33/33 pass)
+node test_backend.js     # REST API & Auth verification (15/15 pass)
+node test_website.js     # Website & Assets verification (21/21 pass)
 ```
 
----
-
-## 🧪 Automated Testing Suites
-
-Run the complete automated verification suites:
-
+### 2. Start the Unified Server (Website + REST API)
 ```bash
-# Run Extension verification
-node test_extension.js
-
-# Run Website verification
-node test_website.js
+node server.js
 ```
+- Website: `http://localhost:3000`
+- Install Guide: `http://localhost:3000/install`
+- Support & Feedback: `http://localhost:3000/support`
+- Admin Dashboard: `http://localhost:3000/admin` (Default: `admin@knolect.app` / `AdminKnolect@2026`)
+- REST API Base: `http://localhost:3000/api`
+
+### 3. Load the Extension in Google Chrome
+1. Open Google Chrome and navigate to `chrome://extensions/`.
+2. Enable **Developer mode** in the top-right corner.
+3. Click **"Load unpacked"** in the top-left corner.
+4. Select the project folder (`c:\Users\shiva\Desktop\focenza`).
+5. Open [YouTube](https://www.youtube.com) and test Strict Focus Mode.

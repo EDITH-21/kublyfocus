@@ -1,55 +1,50 @@
 /**
- * BingeBlocker - Interactive Focus Mode Simulator Logic
- * Provides real-time interactive demonstration of YouTube transformation.
+ * Knolect Interactive Simulator Controller
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const simContainer = document.getElementById('interactive-sim');
-  const btnToggleSim = document.getElementById('btn-toggle-sim');
-  const simToggleBadge = document.getElementById('sim-toggle-badge');
-  const simStatusPill = document.getElementById('sim-status-pill');
+  const toggle = document.getElementById('sim-toggle-focus');
+  const distractions = document.getElementById('sim-distractions');
+  const overlay = document.getElementById('sim-focus-overlay');
+  const statusPill = document.getElementById('sim-status-pill');
+  const toggleDesc = document.getElementById('sim-toggle-desc');
+  const shortsItem = document.querySelector('.sim-shorts-item');
 
-  if (!simContainer || !btnToggleSim) return;
+  if (!toggle || !distractions || !overlay) return;
 
-  let isFocusOn = false;
+  function updateSimulator(isFocused) {
+    if (isFocused) {
+      distractions.classList.add('hidden');
+      overlay.classList.remove('hidden');
+      if (shortsItem) shortsItem.style.display = 'none';
 
-  function updateSimulatorState(enabled) {
-    isFocusOn = enabled;
-
-    if (isFocusOn) {
-      simContainer.classList.add('focus-active');
-      btnToggleSim.textContent = 'Turn Focus Mode Off';
-      btnToggleSim.classList.remove('btn-primary');
-      btnToggleSim.classList.add('btn-secondary');
-
-      if (simToggleBadge) {
-        simToggleBadge.textContent = 'Focus ON';
-        simToggleBadge.className = 'demo-state-badge state-on';
+      if (statusPill) {
+        statusPill.textContent = 'Knolect Strict Focus ON (Clean Workspace)';
+        statusPill.style.color = '#10b981';
       }
-
-      if (simStatusPill) {
-        simStatusPill.textContent = '🎯 Focus Mode Active';
-        simStatusPill.style.color = '#34d399';
+      if (toggleDesc) {
+        toggleDesc.textContent = 'Distractions, Shorts, and algorithmic feeds are blocked';
       }
     } else {
-      simContainer.classList.remove('focus-active');
-      btnToggleSim.textContent = 'Turn Focus Mode On';
-      btnToggleSim.classList.remove('btn-secondary');
-      btnToggleSim.classList.add('btn-primary');
+      distractions.classList.remove('hidden');
+      overlay.classList.add('hidden');
+      if (shortsItem) shortsItem.style.display = 'block';
 
-      if (simToggleBadge) {
-        simToggleBadge.textContent = 'Normal YouTube';
-        simToggleBadge.className = 'demo-state-badge state-off';
+      if (statusPill) {
+        statusPill.textContent = 'Default Distracting YouTube';
+        statusPill.style.color = '#ef4444';
       }
-
-      if (simStatusPill) {
-        simStatusPill.textContent = 'Default Distracting YouTube';
-        simStatusPill.style.color = '#94a3b8';
+      if (toggleDesc) {
+        toggleDesc.textContent = 'Toggle to eliminate algorithmic noise';
       }
     }
   }
 
-  btnToggleSim.addEventListener('click', () => {
-    updateSimulatorState(!isFocusOn);
+  toggle.addEventListener('change', () => {
+    updateSimulator(toggle.checked);
   });
+
+  // Initial state: Start with Focus Mode ON so visitors immediately see the value!
+  toggle.checked = true;
+  updateSimulator(true);
 });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BingeBlocker</title>
+  <title>Knolect</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -12,30 +12,30 @@
     <header class="header">
       <div class="logo-group">
         <div class="logo-icon">
-          <img src="../assets/icons/icon-48.png" alt="BingeBlocker Logo" width="28" height="28">
+          <img src="../assets/icons/icon-48.png" alt="Knolect Logo" width="28" height="28">
         </div>
         <div class="logo-text">
-          <h1 class="brand-title">BingeBlocker</h1>
-          <p class="brand-tagline">Focused YouTube Learning</p>
+          <h1 class="brand-title">Knolect</h1>
+          <p class="brand-tagline">YouTube Focused Learning</p>
         </div>
       </div>
       <div class="header-status">
-        <span id="header-status-pill" class="status-pill status-off">INACTIVE</span>
+        <span id="header-status-pill" class="status-pill status-on">STRICT</span>
       </div>
     </header>
 
     <!-- Navigation Tabs -->
     <nav class="nav-tabs">
       <button type="button" class="tab-btn active" data-tab="tab-focus">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
         Focus
       </button>
       <button type="button" class="tab-btn" data-tab="tab-whitelist">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Whitelist
       </button>
       <button type="button" class="tab-btn" data-tab="tab-settings">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         Settings
       </button>
     </nav>
@@ -47,10 +47,26 @@
         <div class="toggle-row">
           <div class="toggle-info">
             <span class="card-label">Focus Mode</span>
-            <p class="card-hint">Blocks feeds, shorts, and recommendations</p>
+            <p class="card-hint">Blocks feeds, Shorts, and recommendations</p>
           </div>
           <label class="switch">
-            <input type="checkbox" id="focus-toggle">
+            <input type="checkbox" id="focus-toggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="card-sub-divider"></div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="card-label" style="display:flex;align-items:center;gap:6px;">
+              Strict Focus
+              <span class="badge-mini">ALLOWLIST ONLY</span>
+            </span>
+            <p class="card-hint">Blocks search & non-whitelisted videos</p>
+          </div>
+          <label class="switch switch-sm">
+            <input type="checkbox" id="strict-toggle" checked>
             <span class="slider"></span>
           </label>
         </div>
@@ -71,7 +87,7 @@
 
       <!-- Non-YouTube Banner -->
       <div id="non-yt-banner" class="non-yt-notice hidden">
-        <span>💡</span> Open YouTube to experience distraction-free learning.
+        <span>💡</span> Open YouTube to experience focused learning.
       </div>
 
       <!-- Session Timer Card -->
@@ -115,7 +131,7 @@
           <h2 class="section-title">Whitelisted Channels</h2>
           <span id="whitelist-count-badge" class="count-badge">0</span>
         </div>
-        <p class="section-desc">Whitelisted channels are exempt from Focus Mode blocking so you can learn freely.</p>
+        <p class="section-desc">Approved channels are exempt from Strict Focus blocking.</p>
 
         <!-- Add Channel Form -->
         <form id="whitelist-form" class="whitelist-input-row">
@@ -144,7 +160,7 @@
           <div class="setting-item">
             <div class="setting-text">
               <span class="setting-title">Hide Shorts</span>
-              <span class="setting-desc">Remove Shorts nav buttons, tabs, and reel shelves</span>
+              <span class="setting-desc">Remove Shorts navigation and reel shelves</span>
             </div>
             <label class="switch switch-sm">
               <input type="checkbox" id="setting-hide-shorts" checked>
@@ -177,7 +193,7 @@
           <div class="setting-item">
             <div class="setting-text">
               <span class="setting-title">Clean Home Learning Hub</span>
-              <span class="setting-desc">Replace algorithmic home feed with learning quote</span>
+              <span class="setting-desc">Replace algorithmic home feed with study hub</span>
             </div>
             <label class="switch switch-sm">
               <input type="checkbox" id="setting-hide-home-feed" checked>
@@ -212,13 +228,13 @@
           </select>
         </div>
       </section>
-    </header>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
-      <span>BingeBlocker v1.0.0</span>
+      <span>Knolect v1.0.0</span>
       <span class="footer-dot">•</span>
-      <span>Empowering focused learners</span>
+      <span>Focused YouTube Learning</span>
     </footer>
   </div>
 

@@ -1,6 +1,6 @@
 /**
- * BingeBlocker - Popup Controller
- * Manages popup UI state, tabs, focus toggling, live timer display, whitelist manager, and settings.
+ * Knolect - Popup Controller
+ * Manages popup UI state, tabs, focus toggling, strict focus, live timer, whitelist, and settings.
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // DOM Elements - Focus Tab
   const focusToggle = document.getElementById('focus-toggle');
+  const strictToggle = document.getElementById('strict-toggle');
   const activeTabCard = document.getElementById('active-tab-context');
   const currentChannelName = document.getElementById('current-channel-name');
   const btnQuickWhitelist = document.getElementById('btn-quick-whitelist');
@@ -73,27 +74,44 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   /* ==========================================================================
-     2. Focus Mode Toggle
+     2. Focus Mode & Strict Focus Toggles
      ========================================================================== */
-  function updateFocusUi(enabled) {
-    focusToggle.checked = enabled;
-    if (enabled) {
-      headerStatusPill.textContent = 'ACTIVE';
-      headerStatusPill.className = 'status-pill status-on';
-    } else {
+  function updateFocusUi(focusEnabled, strictEnabled) {
+    focusToggle.checked = focusEnabled;
+    strictToggle.checked = strictEnabled;
+    strictToggle.disabled = !focusEnabled;
+
+    if (!focusEnabled) {
       headerStatusPill.textContent = 'INACTIVE';
       headerStatusPill.className = 'status-pill status-off';
+    } else if (strictEnabled) {
+      headerStatusPill.textContent = 'STRICT';
+      headerStatusPill.className = 'status-pill status-on';
+    } else {
+      headerStatusPill.textContent = 'FOCUS ON';
+      headerStatusPill.className = 'status-pill status-on';
     }
   }
 
   focusToggle.addEventListener('change', async () => {
     const isEnabled = focusToggle.checked;
-    updateFocusUi(isEnabled);
+    const isStrict = strictToggle.checked;
+    updateFocusUi(isEnabled, isStrict);
 
-    // Communicate with background service worker
     await sendRuntimeMessage({
       type: MESSAGE_TYPES.TOGGLE_FOCUS_MODE,
       enabled: isEnabled
+    });
+  });
+
+  strictToggle.addEventListener('change', async () => {
+    const isStrict = strictToggle.checked;
+    const isFocus = focusToggle.checked;
+    updateFocusUi(isFocus, isStrict);
+
+    await sendRuntimeMessage({
+      type: MESSAGE_TYPES.TOGGLE_STRICT_FOCUS,
+      enabled: isStrict
     });
   });
 
@@ -108,7 +126,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (tab && tab.url && (tab.url.includes('youtube.com') || tab.url.includes('youtu.be'))) {
         nonYtBanner.classList.add('hidden');
 
-        // Query content script for channel info
         if (tab.id) {
           const response = await sendTabMessage(tab.id, { type: MESSAGE_TYPES.QUERY_PAGE_STATUS });
           if (response && response.channel && (response.channel.name || response.channel.handle)) {
@@ -134,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         activeTabCard.classList.add('hidden');
       }
     } catch (e) {
-      console.debug('[BingeBlocker Popup] Tab check error:', e);
+      console.debug('[Knolect Popup] Tab check notice:', e);
     }
   }
 
@@ -146,6 +163,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       btnQuickWhitelist.disabled = true;
       btnQuickWhitelist.className = 'btn-ghost btn-sm';
       renderWhitelist();
+
+      // Refresh tab enforcement
+      if (chrome.tabs && chrome.tabs.query) {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (tab && tab.id) {
+          await sendTabMessage(tab.id, { type: MESSAGE_TYPES.FORCE_REAPPLY });
+        }
+      }
     }
   });
 
@@ -161,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     timerDisplay.textContent = formatSeconds(currentTimerState.remaining);
 
     if (currentTimerState.running) {
-      timerStatusText.textContent = 'Focus session in progress 🔥';
+      timerStatusText.textContent = 'Learning session in progress 🔥';
       timerBtnStart.classList.add('hidden');
       timerBtnPause.classList.remove('hidden');
     } else {
@@ -170,7 +195,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       timerBtnPause.classList.add('hidden');
     }
 
-    // Update preset button active states
     const curMin = Math.round(currentTimerState.duration / 60);
     presetButtons.forEach(btn => {
       const btnMin = parseInt(btn.getAttribute('data-min'), 10);
@@ -231,7 +255,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   presetButtons.forEach(btn => {
     btn.addEventListener('click', async () => {
-      if (currentTimerState.running) return; // Ignore preset changes while running
+      if (currentTimerState.running) return;
       const min = parseInt(btn.getAttribute('data-min'), 10);
       const seconds = min * 60;
 
@@ -379,7 +403,8 @@ document.addEventListener('DOMContentLoaded', async () => {
      7. Initialize Popup State
      ========================================================================== */
   const currentFocus = await getFocusMode();
-  updateFocusUi(currentFocus);
+  const currentStrict = await getStrictFocus();
+  updateFocusUi(currentFocus, currentStrict);
   await loadTimerState();
   await loadSettings();
   await checkActiveTab();

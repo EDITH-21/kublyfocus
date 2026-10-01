@@ -1,14 +1,10 @@
 /**
- * BingeBlocker Official Website Configuration
+ * Knolect Official Website Configuration
  * Central single source of truth for product URLs, store links, and browser detection.
  */
 
-// Central Chrome Web Store Configuration URL
-// Set to official Chrome Web Store URL when published.
-// When empty (""), the website directs users to the dedicated /install page.
 const CHROME_STORE_URL = "";
 
-// Supported browser links (can be updated with direct store URLs when available)
 const BROWSER_STORE_URLS = {
   chrome: CHROME_STORE_URL,
   edge: CHROME_STORE_URL,
@@ -19,10 +15,10 @@ const BROWSER_STORE_URLS = {
 
 // Product Metadata
 const PRODUCT_INFO = {
-  name: "BingeBlocker",
+  name: "Knolect",
   version: "1.0.0",
-  tagline: "Transforming YouTube into a Productive Learning Environment",
-  shortDesc: "Watch what you came for. Skip everything else.",
+  tagline: "Turn YouTube into your learning space.",
+  shortDesc: "Learn what you came for. Block what pulls you away.",
   manifestVersion: 3
 };
 
@@ -74,15 +70,14 @@ function getInstallTarget(specificBrowser = null) {
     return {
       url: storeUrl,
       isDirectStore: true,
-      label: `Add to ${browser.label || 'Chrome'}`
+      label: `Install for ${browser.label || 'Chrome'}`
     };
   }
 
-  // Development mode fallback: Route to official install page
   return {
     url: "install.html",
     isDirectStore: false,
-    label: `Get Started — Free`
+    label: `Install Knolect — Free`
   };
 }
 

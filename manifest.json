@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "BingeBlocker - Focused YouTube Learning",
+  "name": "Knolect - Focused YouTube Learning",
   "version": "1.0.0",
-  "description": "Transforming YouTube into a productive learning environment by blocking feeds, shorts, comments, and recommendations.",
+  "description": "Turn YouTube into a focused learning environment. Block algorithmic feeds, shorts, comments, and distractions.",
   "icons": {
     "16": "assets/icons/icon-16.png",
     "48": "assets/icons/icon-48.png",
@@ -10,7 +10,7 @@
   },
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "BingeBlocker",
+    "default_title": "Knolect",
     "default_icon": {
       "16": "assets/icons/icon-16.png",
       "48": "assets/icons/icon-48.png",

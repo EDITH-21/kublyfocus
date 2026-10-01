@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Install BingeBlocker — Official Setup Guide</title>
-  <meta name="description" content="Official installation instructions for the BingeBlocker Chrome Extension across Google Chrome, Microsoft Edge, Brave, and Chromium browsers.">
-  
+  <title>How to Install Knolect — Setup Guide</title>
+  <meta name="description" content="Step-by-step installation instructions for Knolect on Chrome, Edge, Brave, and Opera.">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/install.css">
@@ -16,153 +14,107 @@
   <!-- Navbar -->
   <header class="navbar" role="banner">
     <div class="container nav-container">
-      <a href="index.html" class="brand-logo" aria-label="BingeBlocker Home">
-        <img src="assets/logo.svg" alt="BingeBlocker Logo" class="brand-logo-img" width="32" height="32">
-        <span>BingeBlocker</span>
+      <a href="index.html" class="brand-logo" aria-label="Knolect Home">
+        <img src="assets/logo.svg" alt="Knolect Logo" width="32" height="32">
+        <span>Knolect</span>
       </a>
 
       <nav class="nav-links">
         <a href="index.html#features" class="nav-link">Features</a>
         <a href="index.html#how-it-works" class="nav-link">How It Works</a>
-        <a href="index.html#privacy" class="nav-link">Privacy</a>
         <a href="index.html#faq" class="nav-link">FAQ</a>
+        <a href="support.html" class="nav-link">Support</a>
       </nav>
 
       <div class="nav-cta">
-        <a href="index.html" class="btn btn-secondary btn-sm">
-          ← Back to Overview
-        </a>
+        <a href="index.html" class="btn btn-secondary btn-sm">← Back to Overview</a>
       </div>
     </div>
   </header>
 
-  <main role="main" class="section">
-    <div class="container">
-      <!-- Page Header -->
-      <div class="install-page-header">
-        <div class="install-badge-pill">
-          <span>🚀</span> Quick Installation
-        </div>
-        <h1 class="install-title">Install BingeBlocker</h1>
-        <p class="install-subtitle">
-          Follow the simple steps below for your browser to activate distraction-free YouTube learning.
-        </p>
-      </div>
-
-      <!-- Browser Selector Tabs -->
-      <div class="install-browser-tabs">
-        <button type="button" class="browser-tab-btn active" data-browser="chrome">
-          <img src="assets/icons/chrome.svg" alt="" class="browser-tab-icon" width="20" height="20">
-          <span>Google Chrome</span>
-        </button>
-        <button type="button" class="browser-tab-btn" data-browser="edge">
-          <img src="assets/icons/edge.svg" alt="" class="browser-tab-icon" width="20" height="20">
-          <span>Microsoft Edge</span>
-        </button>
-        <button type="button" class="browser-tab-btn" data-browser="brave">
-          <img src="assets/icons/brave.svg" alt="" class="browser-tab-icon" width="20" height="20">
-          <span>Brave</span>
-        </button>
-        <button type="button" class="browser-tab-btn" data-browser="opera">
-          <img src="assets/icons/opera.svg" alt="" class="browser-tab-icon" width="20" height="20">
-          <span>Opera / Chromium</span>
-        </button>
-      </div>
-
-      <!-- Main Step Container -->
-      <div class="store-status-card">
-        <!-- Store Publication Banner -->
-        <div class="store-status-banner">
-          <div class="store-status-icon">📦</div>
-          <div class="store-status-info">
-            <h4>Installation Instructions for <span class="browser-name-insert">Google Chrome</span></h4>
-            <p>
-              To run BingeBlocker locally or from source, you can load the unpacked extension directly via your browser's extensions manager in less than a minute.
-            </p>
-          </div>
+  <main role="main">
+    <section class="section install-hero-section">
+      <div class="container install-container">
+        <div class="install-header">
+          <span class="section-tag">Quick Setup</span>
+          <h1 class="install-title">Install Knolect</h1>
+          <p class="install-subtitle">Follow these quick steps to load Knolect into your Chromium browser.</p>
         </div>
 
-        <!-- Step List -->
-        <div class="install-steps-wrapper">
+        <!-- Browser Selector Tabs -->
+        <div class="browser-tabs" role="tablist">
+          <button type="button" class="browser-tab active" data-browser="chrome">
+            <img src="assets/icons/chrome.svg" alt="" width="20" height="20">
+            <span>Chrome</span>
+          </button>
+          <button type="button" class="browser-tab" data-browser="edge">
+            <img src="assets/icons/edge.svg" alt="" width="20" height="20">
+            <span>Edge</span>
+          </button>
+          <button type="button" class="browser-tab" data-browser="brave">
+            <img src="assets/icons/brave.svg" alt="" width="20" height="20">
+            <span>Brave</span>
+          </button>
+          <button type="button" class="browser-tab" data-browser="opera">
+            <img src="assets/icons/opera.svg" alt="" width="20" height="20">
+            <span>Opera</span>
+          </button>
+        </div>
+
+        <!-- Installation Walkthrough Steps -->
+        <div class="install-steps-container">
           <!-- Step 1 -->
           <div class="install-step-card">
-            <div class="install-step-num">1</div>
-            <div class="install-step-content">
-              <h3 class="install-step-title">Open Extension Management</h3>
-              <p class="install-step-desc">
-                Open a new tab in <span class="browser-name-insert">Google Chrome</span> and paste the following address into your URL bar:
-              </p>
-              <div class="code-box">
-                <span id="extension-url-text">chrome://extensions</span>
-                <button type="button" id="btn-copy-ext-url" class="btn-copy">Copy URL</button>
-              </div>
+            <div class="step-badge">Step 1</div>
+            <h2 class="install-step-title">Open Extension Management</h2>
+            <p class="install-step-desc">Open a new tab in your browser and enter the extension management URL:</p>
+            <div class="code-copy-box">
+              <code id="extension-url-code">chrome://extensions/</code>
             </div>
           </div>
 
           <!-- Step 2 -->
           <div class="install-step-card">
-            <div class="install-step-num">2</div>
-            <div class="install-step-content">
-              <h3 class="install-step-title">Enable "Developer mode"</h3>
-              <p class="install-step-desc">
-                Look in the top-right corner of the Extensions page and turn ON the toggle switch labeled <strong>Developer mode</strong>.
-              </p>
-            </div>
+            <div class="step-badge">Step 2</div>
+            <h2 class="install-step-title">Enable Developer Mode</h2>
+            <p class="install-step-desc">Locate the <strong>Developer mode</strong> toggle switch in the top-right corner of the extensions page and turn it <strong>ON</strong>.</p>
           </div>
 
           <!-- Step 3 -->
           <div class="install-step-card">
-            <div class="install-step-num">3</div>
-            <div class="install-step-content">
-              <h3 class="install-step-title">Load Unpacked Extension</h3>
-              <p class="install-step-desc">
-                Click the <strong>Load unpacked</strong> button that appears in the top-left toolbar, then select the root folder containing this extension's <code>manifest.json</code>.
-              </p>
-            </div>
+            <div class="step-badge">Step 3</div>
+            <h2 class="install-step-title">Load Unpacked Extension</h2>
+            <p class="install-step-desc">Click the <strong>"Load unpacked"</strong> button in the top-left corner and select the Knolect extension folder on your computer.</p>
           </div>
 
           <!-- Step 4 -->
           <div class="install-step-card">
-            <div class="install-step-num">4</div>
-            <div class="install-step-content">
-              <h3 class="install-step-title">Open YouTube & Pin the Extension</h3>
-              <p class="install-step-desc">
-                Navigate to <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent-light); text-decoration: underline;">youtube.com</a>. Click the puzzle icon in your browser toolbar, pin <strong>BingeBlocker</strong>, and click it to toggle Focus Mode ON.
-              </p>
-            </div>
+            <div class="step-badge">Step 4</div>
+            <h2 class="install-step-title">Pin Knolect & Start Learning</h2>
+            <p class="install-step-desc">Click the puzzle icon (🧩) in your browser toolbar and pin <strong>Knolect</strong>. Then visit <a href="https://www.youtube.com" target="_blank" style="color:#10b981;">YouTube</a> to enjoy a distraction-free learning environment!</p>
           </div>
         </div>
       </div>
-
-      <!-- Verification Section -->
-      <div class="install-verify-card">
-        <h3 class="verify-title">Verification Checklist</h3>
-        <p class="verify-desc">
-          When Focus Mode is active on YouTube, your home feed is cleanly replaced by a focus hub, and sidebar recommendations on videos disappear.
-        </p>
-        <div class="verify-actions">
-          <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-            Open YouTube to Test
-          </a>
-          <a href="index.html#demo" class="btn btn-secondary">
-            View Live Simulator
-          </a>
-        </div>
-      </div>
-    </div>
+    </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer-bottom">
-        <div>&copy; 2026 BingeBlocker. Transforming YouTube into a Productive Learning Environment.</div>
-        <div><a href="index.html" style="color: var(--text-secondary);">Return to Homepage</a></div>
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/logo.svg" alt="Knolect Logo" width="28" height="28">
+          <span>Knolect</span>
+        </a>
+        <p class="footer-tagline">Turn YouTube into your learning space.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <span>© 2026 Knolect. All rights reserved.</span>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="js/config.js"></script>
   <script src="js/install.js"></script>
 </body>

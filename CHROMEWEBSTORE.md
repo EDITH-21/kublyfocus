@@ -1,29 +1,29 @@
-# Chrome Web Store Listing — BingeBlocker
+# Chrome Web Store Listing — Knolect
 
-**Last Updated:** 2026-09-22  
-**Extension Name:** BingeBlocker - Focused YouTube Learning  
-**Extension ID:** (assigned on upload)  
+**Last Updated:** 2026-10-01  
+**Extension Name:** Knolect - Focused YouTube Learning  
 **Target Category:** Productivity / Education  
 
 ---
 
 ## 1. Store Listing Metadata
 
-- **Name (max 45 chars):** BingeBlocker - Focused YouTube Learning
-- **Summary / Short Description (max 132 chars):** Transform YouTube into a productive study space. Block algorithmic feeds, shorts, and recommendations for focused learning.
+- **Name (max 45 chars):** Knolect - Focused YouTube Learning
+- **Summary / Short Description (max 132 chars):** Turn YouTube into your learning space. Block feeds, Shorts, non-educational searches, and distractions with Strict Focus Mode.
 - **Detailed Description:**
-Transform YouTube into an intentional, distraction-free learning environment.
+Turn YouTube into your learning space.
 
-YouTube is one of the world's greatest educational resources — but its recommendation algorithms, infinite homepage feeds, and addictive Shorts are engineered to maximize watch time rather than learning outcomes.
+YouTube is one of humanity's greatest educational libraries — but its recommendation algorithms, infinite homepage feeds, and addictive Shorts are engineered to maximize watch time rather than your learning outcomes.
 
-BingeBlocker empowers students, exam aspirants, developers, and lifelong learners to use YouTube with focus and purpose.
+Knolect empowers students, developers, exam aspirants, researchers, and lifelong learners to use YouTube with focus, intentionality, and zero distraction.
 
 Key Features:
-- 🎯 Focus Mode: Instantly remove homepage recommendation feeds, Shorts tabs, sidebar recommendations, and comment sections.
-- ⏱️ Session Timer: Built-in Pomodoro/Focus timer with 15, 25, 45, and 60-minute presets to structure study blocks.
-- ⭐ Channel Whitelist: Whitelist trusted educational channels (like MIT OpenCourseWare, 3Blue1Brown, freeCodeCamp, Khan Academy) for unrestricted study.
-- ⚡ Fast & Lightweight: Zero-latency CSS attribute engine that does not slow down your browser or video playback.
-- 🔒 100% Private & Local: No user data collection, no external servers, and no tracking.
+- 🛡️ Strict Focus Mode: An allowlist-first security model. Non-whitelisted videos and algorithmic search distractions are blocked with a clean learning prompt.
+- 🎯 Normal Focus Mode: Instantly removes homepage recommendation feeds, Shorts tabs, sidebar recommendations, and comment sections.
+- ⏱️ Session Timer: Built-in Pomodoro/Focus timer with 15, 25, 45, and 60-minute presets. Survives popup closing with toolbar badge updates.
+- ⭐ Channel Whitelist: Whitelist trusted educational creators (like MIT OpenCourseWare, 3Blue1Brown, freeCodeCamp, Khan Academy) for unrestricted intentional study.
+- ⚡ YouTube SPA Protection: Intercepts single-page app transitions and back/forward navigation so focus enforcement cannot be bypassed.
+- 🔒 100% Local Privacy: No browsing history logging, no video title tracking, and no external data harvesting.
 
 ---
 
@@ -31,15 +31,15 @@ Key Features:
 
 | Permission | Justification |
 |---|---|
-| `storage` | Required to save user preferences, focus mode state, custom whitelisted channels, and session timer configurations locally. |
-| `alarms` | Required to run precise session timers in the background without draining system resources or relying on open popups. |
-| `tabs` | Required to detect the active YouTube video channel for one-click whitelisting and send focus state updates to open YouTube tabs. |
-| `*://*.youtube.com/*` (host permission) | Required to apply distraction-blocking styles and elements exclusively on YouTube pages. |
+| `storage` | Required to save user focus preferences, custom channel whitelist, and session timer configurations locally. |
+| `alarms` | Required to run precise study session timers in the background without draining system resources or depending on an open popup. |
+| `tabs` | Required to detect the active YouTube channel for one-click whitelisting and broadcast focus state updates to open YouTube tabs. |
+| `*://*.youtube.com/*` (host permission) | Required to apply distraction-blocking styles, pause non-whitelisted videos, and display focus overlays exclusively on YouTube pages. |
 
 ---
 
 ## 3. Privacy & Data Use Disclosures
 
-- Single Purpose: Productivity extension to remove distracting elements on YouTube and provide a focus timer.
-- Data Collection: The extension does not collect, transmit, or share any personal user data. All configurations are stored locally on the user's device via `chrome.storage.local`.
+- Single Purpose: Productivity extension to eliminate distracting elements on YouTube, enforce intentional educational viewing, and provide study session timers.
+- Data Collection: Knolect does not collect, transmit, or monetize personal user data or browsing history. All user configurations remain local on the device via `chrome.storage.local`.
 - Remote Code: No remote JavaScript, `eval()`, or external CDNs are used.

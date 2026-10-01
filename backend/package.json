@@ -1,0 +1,18 @@
+{
+  "name": "knolect-backend",
+  "version": "1.0.0",
+  "description": "Knolect Backend REST API & Ecosystem Services",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/api.test.js"
+  },
+  "keywords": [
+    "knolect",
+    "productivity",
+    "api",
+    "focus"
+  ],
+  "author": "Knolect Team",
+  "license": "MIT"
+}

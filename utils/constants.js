@@ -1,52 +1,66 @@
 /**
- * BingeBlocker - Application Constants
+ * Knolect - Application Constants
  * Centralized message types, YouTube DOM selectors, and default configurations.
+ *
+ * Tagline: "Turn YouTube into a focused learning environment."
  */
 
 // Message Actions between Popup, Background, and Content Scripts
 const MESSAGE_TYPES = {
   // Focus Mode
-  GET_FOCUS_MODE: 'BINGEBLOCKER_GET_FOCUS_MODE',
-  TOGGLE_FOCUS_MODE: 'BINGEBLOCKER_TOGGLE_FOCUS_MODE',
-  FOCUS_MODE_CHANGED: 'BINGEBLOCKER_FOCUS_MODE_CHANGED',
+  GET_FOCUS_MODE: 'KNOLECT_GET_FOCUS_MODE',
+  TOGGLE_FOCUS_MODE: 'KNOLECT_TOGGLE_FOCUS_MODE',
+  FOCUS_MODE_CHANGED: 'KNOLECT_FOCUS_MODE_CHANGED',
+
+  // Strict Focus Mode
+  GET_STRICT_FOCUS: 'KNOLECT_GET_STRICT_FOCUS',
+  TOGGLE_STRICT_FOCUS: 'KNOLECT_TOGGLE_STRICT_FOCUS',
+  STRICT_FOCUS_CHANGED: 'KNOLECT_STRICT_FOCUS_CHANGED',
 
   // Session Timer
-  GET_TIMER: 'BINGEBLOCKER_GET_TIMER',
-  START_TIMER: 'BINGEBLOCKER_START_TIMER',
-  PAUSE_TIMER: 'BINGEBLOCKER_PAUSE_TIMER',
-  RESET_TIMER: 'BINGEBLOCKER_RESET_TIMER',
-  SET_TIMER_DURATION: 'BINGEBLOCKER_SET_TIMER_DURATION',
-  TIMER_UPDATED: 'BINGEBLOCKER_TIMER_UPDATED',
-  TIMER_FINISHED: 'BINGEBLOCKER_TIMER_FINISHED',
+  GET_TIMER: 'KNOLECT_GET_TIMER',
+  START_TIMER: 'KNOLECT_START_TIMER',
+  PAUSE_TIMER: 'KNOLECT_PAUSE_TIMER',
+  RESET_TIMER: 'KNOLECT_RESET_TIMER',
+  SET_TIMER_DURATION: 'KNOLECT_SET_TIMER_DURATION',
+  TIMER_UPDATED: 'KNOLECT_TIMER_UPDATED',
+  TIMER_FINISHED: 'KNOLECT_TIMER_FINISHED',
 
   // Channel Whitelist
-  GET_WHITELIST: 'BINGEBLOCKER_GET_WHITELIST',
-  ADD_WHITELIST: 'BINGEBLOCKER_ADD_WHITELIST',
-  REMOVE_WHITELIST: 'BINGEBLOCKER_REMOVE_WHITELIST',
-  CHECK_WHITELIST: 'BINGEBLOCKER_CHECK_WHITELIST',
-  WHITELIST_CHANGED: 'BINGEBLOCKER_WHITELIST_CHANGED',
+  GET_WHITELIST: 'KNOLECT_GET_WHITELIST',
+  ADD_WHITELIST: 'KNOLECT_ADD_WHITELIST',
+  REMOVE_WHITELIST: 'KNOLECT_REMOVE_WHITELIST',
+  CHECK_WHITELIST: 'KNOLECT_CHECK_WHITELIST',
+  WHITELIST_CHANGED: 'KNOLECT_WHITELIST_CHANGED',
 
   // Settings
-  GET_SETTINGS: 'BINGEBLOCKER_GET_SETTINGS',
-  UPDATE_SETTINGS: 'BINGEBLOCKER_UPDATE_SETTINGS',
-  SETTINGS_CHANGED: 'BINGEBLOCKER_SETTINGS_CHANGED',
+  GET_SETTINGS: 'KNOLECT_GET_SETTINGS',
+  UPDATE_SETTINGS: 'KNOLECT_UPDATE_SETTINGS',
+  SETTINGS_CHANGED: 'KNOLECT_SETTINGS_CHANGED',
 
-  // Page Context
-  QUERY_PAGE_STATUS: 'BINGEBLOCKER_QUERY_PAGE_STATUS',
-  PAGE_STATUS_RESPONSE: 'BINGEBLOCKER_PAGE_STATUS_RESPONSE'
+  // Page Context & Enforcement
+  QUERY_PAGE_STATUS: 'KNOLECT_QUERY_PAGE_STATUS',
+  PAGE_STATUS_RESPONSE: 'KNOLECT_PAGE_STATUS_RESPONSE',
+  FORCE_REAPPLY: 'KNOLECT_FORCE_REAPPLY',
+
+  // Analytics (Privacy-Safe)
+  LOG_ANALYTICS_EVENT: 'KNOLECT_LOG_ANALYTICS_EVENT'
 };
 
 // Storage Keys
 const STORAGE_KEYS = {
   FOCUS_MODE: 'focusMode',
+  STRICT_FOCUS: 'strictFocus',
   WHITELIST: 'whitelist',
   SETTINGS: 'settings',
-  TIMER: 'timer'
+  TIMER: 'timer',
+  ONBOARDING: 'onboardingCompleted'
 };
 
 // Default Configuration State
 const DEFAULT_STORAGE = {
-  focusMode: true, // Enabled by default so users immediately experience distraction-free learning
+  focusMode: true, // Enabled by default for immediate learning environment
+  strictFocus: true, // Strict Focus enabled by default: Allowlist-first access control
   whitelist: [
     {
       id: 'mit-ocw',
@@ -79,6 +93,7 @@ const DEFAULT_STORAGE = {
     hideRecommendations: true,
     hideHomeFeed: true,
     hideEndScreen: true,
+    blockSearch: true, // In Strict Focus, blocks non-educational search distraction
     defaultTimerDuration: 1500 // 25 minutes in seconds
   },
   timer: {
@@ -86,7 +101,8 @@ const DEFAULT_STORAGE = {
     remaining: 1500,
     running: false,
     endTime: null
-  }
+  },
+  onboardingCompleted: true
 };
 
 // Centralized YouTube Selectors
@@ -95,12 +111,29 @@ const YT_SELECTORS = {
   pageManager: 'ytd-page-manager',
   watchFlexy: 'ytd-watch-flexy',
   browse: 'ytd-browse',
-  homePageContents: 'ytd-browse[page-subtype="home"] #contents, ytd-browse[page-subtype="home"] ytd-rich-grid-renderer, ytd-browse[page-subtype="home"] #primary',
+  player: '#movie_player, .html5-video-player',
+  videoElement: 'video.html5-main-video',
+
+  // Home page feed
+  homePageContents: 'ytd-browse[page-subtype="home"] #contents, ytd-browse[page-subtype="home"] ytd-rich-grid-renderer, ytd-browse[page-subtype="home"] #primary, ytd-two-column-browse-results-renderer[page-subtype="home"]',
+
+  // Search Results
+  searchResults: 'ytd-search, ytd-search #contents, ytd-two-column-search-results-renderer',
+
+  // Shorts
   shortsNavButtons: 'ytd-guide-entry-renderer a[title="Shorts"], ytd-mini-guide-entry-renderer[aria-label="Shorts"], a[title="Shorts"], a[href^="/shorts"]',
   shortsShelves: 'ytd-reel-shelf-renderer, ytd-rich-section-renderer:has(ytd-reel-shelf-renderer), ytd-rich-shelf-renderer[is-shorts]',
-  relatedVideos: '#secondary #related, ytd-watch-next-secondary-results-renderer, #related',
+  shortsPlayer: 'ytd-shorts, ytm-shorts, #shorts-container',
+
+  // Watch page elements
+  relatedVideos: '#secondary #related, #secondary-inner #related, ytd-watch-next-secondary-results-renderer, #related',
   comments: 'ytd-comments#comments, #comments, ytd-item-section-renderer[section-identifier="comment-item-section"]',
-  endScreen: '.ytp-ce-element, .ytp-endscreen-content, .ytp-ce-covering-overlay'
+  endScreen: '.ytp-ce-element, .ytp-endscreen-content, .ytp-ce-covering-overlay',
+
+  // Channel details on watch & channel pages
+  channelNameWatch: '#owner #channel-name a, ytd-video-owner-renderer #channel-name a, #upload-info #channel-name a, ytd-channel-name a',
+  channelHandleWatch: '#owner #channel-name a[href^="/@"], #owner ytd-channel-name a, #upload-info a[href^="/@"]',
+  channelPageHeader: 'ytd-channel-name#channel-header-name, ytd-c4-tabbed-header-renderer #channel-name, #channel-header yt-formatted-string'
 };
 
 // Attach to global scope for seamless access in content scripts & service workers

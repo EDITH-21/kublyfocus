@@ -1,11 +1,11 @@
 /**
- * BingeBlocker - Storage Layer
+ * Knolect - Storage Layer
  * Centralized async wrapper around chrome.storage.local with defaults and robust fallback.
  */
 
-// In environments where constants are loaded via script tag vs module
-const _DEFAULTS = (typeof DEFAULT_STORAGE !== 'undefined') ? DEFAULT_STORAGE : {
-  focusMode: false,
+const _DEFAULTS = (typeof globalThis.DEFAULT_STORAGE !== 'undefined') ? globalThis.DEFAULT_STORAGE : {
+  focusMode: true,
+  strictFocus: true,
   whitelist: [
     { id: 'mit-ocw', name: 'MIT OpenCourseWare', identifier: '@mitocw', addedAt: 1700000000000 },
     { id: '3blue1brown', name: '3Blue1Brown', identifier: '@3blue1brown', addedAt: 1700000000000 },
@@ -18,6 +18,7 @@ const _DEFAULTS = (typeof DEFAULT_STORAGE !== 'undefined') ? DEFAULT_STORAGE : {
     hideRecommendations: true,
     hideHomeFeed: true,
     hideEndScreen: true,
+    blockSearch: true,
     defaultTimerDuration: 1500
   },
   timer: {
@@ -25,7 +26,8 @@ const _DEFAULTS = (typeof DEFAULT_STORAGE !== 'undefined') ? DEFAULT_STORAGE : {
     remaining: 1500,
     running: false,
     endTime: null
-  }
+  },
+  onboardingCompleted: true
 };
 
 /**
@@ -38,19 +40,18 @@ async function getStorageData(keys = null) {
     try {
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
         chrome.storage.local.get(keys, (result) => {
-          if (chrome.runtime.lastError) {
-            console.error('[BingeBlocker Storage] Error reading storage:', chrome.runtime.lastError);
+          if (chrome.runtime && chrome.runtime.lastError) {
+            console.error('[Knolect Storage] Error reading storage:', chrome.runtime.lastError);
             resolve({});
           } else {
             resolve(result || {});
           }
         });
       } else {
-        console.warn('[BingeBlocker Storage] chrome.storage.local not available');
         resolve({});
       }
     } catch (err) {
-      console.error('[BingeBlocker Storage] Exception in getStorageData:', err);
+      console.error('[Knolect Storage] Exception in getStorageData:', err);
       resolve({});
     }
   });
@@ -66,19 +67,18 @@ async function setStorageData(items) {
     try {
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
         chrome.storage.local.set(items, () => {
-          if (chrome.runtime.lastError) {
-            console.error('[BingeBlocker Storage] Error writing storage:', chrome.runtime.lastError);
+          if (chrome.runtime && chrome.runtime.lastError) {
+            console.error('[Knolect Storage] Error writing storage:', chrome.runtime.lastError);
             resolve(false);
           } else {
             resolve(true);
           }
         });
       } else {
-        console.warn('[BingeBlocker Storage] chrome.storage.local not available');
         resolve(false);
       }
     } catch (err) {
-      console.error('[BingeBlocker Storage] Exception in setStorageData:', err);
+      console.error('[Knolect Storage] Exception in setStorageData:', err);
       resolve(false);
     }
   });
@@ -97,6 +97,10 @@ async function initStorageDefaults() {
     updates.focusMode = _DEFAULTS.focusMode;
     needsUpdate = true;
   }
+  if (typeof current.strictFocus === 'undefined') {
+    updates.strictFocus = _DEFAULTS.strictFocus;
+    needsUpdate = true;
+  }
   if (!Array.isArray(current.whitelist)) {
     updates.whitelist = _DEFAULTS.whitelist;
     needsUpdate = true;
@@ -105,7 +109,6 @@ async function initStorageDefaults() {
     updates.settings = _DEFAULTS.settings;
     needsUpdate = true;
   } else {
-    // Ensure all individual settings exist
     const mergedSettings = { ..._DEFAULTS.settings, ...current.settings };
     if (JSON.stringify(mergedSettings) !== JSON.stringify(current.settings)) {
       updates.settings = mergedSettings;
@@ -147,6 +150,25 @@ async function getFocusMode() {
 async function setFocusMode(enabled) {
   const boolVal = Boolean(enabled);
   return await setStorageData({ focusMode: boolVal });
+}
+
+/**
+ * Get Strict Focus State
+ * @returns {Promise<boolean>}
+ */
+async function getStrictFocus() {
+  const data = await getStorageData('strictFocus');
+  return typeof data.strictFocus === 'boolean' ? data.strictFocus : _DEFAULTS.strictFocus;
+}
+
+/**
+ * Set Strict Focus State
+ * @param {boolean} enabled
+ * @returns {Promise<boolean>}
+ */
+async function setStrictFocus(enabled) {
+  const boolVal = Boolean(enabled);
+  return await setStorageData({ strictFocus: boolVal });
 }
 
 /**
@@ -259,8 +281,8 @@ async function isChannelWhitelisted(channelInfo) {
   const targetHandle = (channelInfo.handle || '').toLowerCase().trim();
 
   return list.some(item => {
-    const itemName = item.name.toLowerCase().trim();
-    const itemId = item.identifier.toLowerCase().trim();
+    const itemName = (item.name || '').toLowerCase().trim();
+    const itemId = (item.identifier || '').toLowerCase().trim();
     const itemHandle = (item.handle || '').toLowerCase().trim();
 
     if (targetHandle && itemHandle && (targetHandle === itemHandle || targetHandle === itemId)) return true;
@@ -287,7 +309,6 @@ async function getTimerState() {
       timer.running = false;
       timer.remaining = 0;
       timer.endTime = null;
-      // Persist state change
       await setStorageData({ timer });
     }
   }
@@ -313,6 +334,8 @@ if (typeof globalThis !== 'undefined') {
   globalThis.initStorageDefaults = initStorageDefaults;
   globalThis.getFocusMode = getFocusMode;
   globalThis.setFocusMode = setFocusMode;
+  globalThis.getStrictFocus = getStrictFocus;
+  globalThis.setStrictFocus = setStrictFocus;
   globalThis.getSettings = getSettings;
   globalThis.saveSettings = saveSettings;
   globalThis.getWhitelist = getWhitelist;
@@ -332,6 +355,8 @@ if (typeof module !== 'undefined' && module.exports) {
     initStorageDefaults,
     getFocusMode,
     setFocusMode,
+    getStrictFocus,
+    setStrictFocus,
     getSettings,
     saveSettings,
     getWhitelist,
