@@ -32,7 +32,7 @@
       </button>
       <button type="button" class="tab-btn" data-tab="tab-whitelist">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Whitelist
+        Learning Channels
       </button>
       <button type="button" class="tab-btn" data-tab="tab-settings">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -63,7 +63,7 @@
               Strict Focus
               <span class="badge-mini">ALLOWLIST ONLY</span>
             </span>
-            <p class="card-hint">Blocks search & non-whitelisted videos</p>
+            <p class="card-hint">Blocks search & non-learning channels</p>
           </div>
           <label class="switch switch-sm">
             <input type="checkbox" id="strict-toggle" checked>
@@ -76,11 +76,12 @@
       <section id="active-tab-context" class="card tab-context-card hidden">
         <div class="channel-context-inner">
           <div class="channel-info">
-            <span class="context-eyebrow">Current Channel</span>
+            <span class="context-eyebrow">Active Channel</span>
             <span id="current-channel-name" class="channel-title">Loading...</span>
+            <span id="current-channel-classification" class="channel-category-tag"></span>
           </div>
           <button type="button" id="btn-quick-whitelist" class="btn-secondary btn-sm">
-            + Whitelist
+            + Add Learning Channel
           </button>
         </div>
       </section>
@@ -124,25 +125,37 @@
       </section>
     </main>
 
-    <!-- Tab 2: Whitelist View -->
+    <!-- Tab 2: Learning Channels View -->
     <main id="tab-whitelist" class="tab-content">
       <section class="card">
         <div class="section-title-row">
-          <h2 class="section-title">Whitelisted Channels</h2>
+          <h2 class="section-title">Learning Channels</h2>
           <span id="whitelist-count-badge" class="count-badge">0</span>
         </div>
-        <p class="section-desc">Approved channels are exempt from Strict Focus blocking.</p>
+        <p class="section-desc">Only approved educational channels are allowed during Strict Focus Mode.</p>
 
         <!-- Add Channel Form -->
         <form id="whitelist-form" class="whitelist-input-row">
-          <input type="text" id="whitelist-input" placeholder="Channel name, handle (@MIT) or URL" required autocomplete="off">
+          <input type="text" id="whitelist-input" placeholder="Enter channel name, @handle or URL" required autocomplete="off">
           <button type="submit" class="btn-primary btn-sm">Add</button>
         </form>
 
+        <!-- Live Classification Preview Card -->
+        <div id="classification-preview-card" class="classification-card hidden"></div>
+
         <div id="whitelist-feedback" class="feedback-msg hidden"></div>
 
-        <!-- Whitelist Channel List -->
+        <!-- Suggested Learning Channels Section -->
+        <div class="suggested-section">
+          <span class="suggested-title">⭐ Suggested Learning Channels</span>
+          <div id="suggested-chips-container" class="suggested-chips">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Approved Learning Channel List -->
         <div class="whitelist-container">
+          <div class="whitelist-header-label">Approved Learning Channels</div>
           <ul id="whitelist-items" class="whitelist-list">
             <!-- Dynamically populated -->
           </ul>
@@ -234,13 +247,14 @@
     <footer class="footer">
       <span>Knolect v1.0.0</span>
       <span class="footer-dot">•</span>
-      <span>Focused YouTube Learning</span>
+      <span>Turn YouTube into your learning space</span>
     </footer>
   </div>
 
-  <!-- Scripts -->
+  <!-- Scripts in dependency order -->
   <script src="../utils/constants.js"></script>
   <script src="../utils/helpers.js"></script>
+  <script src="../utils/classifier.js"></script>
   <script src="../storage/storage.js"></script>
   <script src="../utils/messaging.js"></script>
   <script src="popup.js"></script>

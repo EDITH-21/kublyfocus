@@ -26,12 +26,19 @@ const MESSAGE_TYPES = {
   TIMER_UPDATED: 'KNOLECT_TIMER_UPDATED',
   TIMER_FINISHED: 'KNOLECT_TIMER_FINISHED',
 
-  // Channel Whitelist
-  GET_WHITELIST: 'KNOLECT_GET_WHITELIST',
-  ADD_WHITELIST: 'KNOLECT_ADD_WHITELIST',
-  REMOVE_WHITELIST: 'KNOLECT_REMOVE_WHITELIST',
+  // Learning Channels (New Allowlist System)
+  GET_LEARNING_CHANNELS: 'KNOLECT_GET_LEARNING_CHANNELS',
+  ADD_LEARNING_CHANNEL: 'KNOLECT_ADD_LEARNING_CHANNEL',
+  REMOVE_LEARNING_CHANNEL: 'KNOLECT_REMOVE_LEARNING_CHANNEL',
+  CLASSIFY_CHANNEL: 'KNOLECT_CLASSIFY_CHANNEL',
+  LEARNING_CHANNELS_CHANGED: 'KNOLECT_LEARNING_CHANNELS_CHANGED',
+
+  // Backward-compatible Whitelist aliases
+  GET_WHITELIST: 'KNOLECT_GET_LEARNING_CHANNELS',
+  ADD_WHITELIST: 'KNOLECT_ADD_LEARNING_CHANNEL',
+  REMOVE_WHITELIST: 'KNOLECT_REMOVE_LEARNING_CHANNEL',
   CHECK_WHITELIST: 'KNOLECT_CHECK_WHITELIST',
-  WHITELIST_CHANGED: 'KNOLECT_WHITELIST_CHANGED',
+  WHITELIST_CHANGED: 'KNOLECT_LEARNING_CHANNELS_CHANGED',
 
   // Settings
   GET_SETTINGS: 'KNOLECT_GET_SETTINGS',
@@ -51,42 +58,88 @@ const MESSAGE_TYPES = {
 const STORAGE_KEYS = {
   FOCUS_MODE: 'focusMode',
   STRICT_FOCUS: 'strictFocus',
-  WHITELIST: 'whitelist',
+  LEARNING_CHANNELS: 'learningChannels',
+  WHITELIST: 'whitelist', // legacy key for migration
   SETTINGS: 'settings',
   TIMER: 'timer',
   ONBOARDING: 'onboardingCompleted'
 };
 
+// Initial Verified Learning Channels
+const INITIAL_LEARNING_CHANNELS = [
+  {
+    id: 'ch_mitocw',
+    channelId: 'UC_x5XG1OV2P6uZZ5FSM9Ttw',
+    name: 'MIT OpenCourseWare',
+    handle: '@mitocw',
+    normalizedHandle: 'mitocw',
+    identifier: '@mitocw',
+    category: 'education',
+    confidence: 100,
+    reasons: ['Official university courseware and STEM lectures.'],
+    source: 'system_verified',
+    addedAt: 1700000000000
+  },
+  {
+    id: 'ch_3blue1brown',
+    channelId: 'UCYO_jab_esuFRV4b17AJtAw',
+    name: '3Blue1Brown',
+    handle: '@3blue1brown',
+    normalizedHandle: '3blue1brown',
+    identifier: '@3blue1brown',
+    category: 'education',
+    confidence: 100,
+    reasons: ['Mathematics, calculus, linear algebra and neural networks.'],
+    source: 'system_verified',
+    addedAt: 1700000000000
+  },
+  {
+    id: 'ch_freecodecamp',
+    channelId: 'UC8butISFwT-Wl7EV0hUK0BQ',
+    name: 'freeCodeCamp.org',
+    handle: '@freecodecamp',
+    normalizedHandle: 'freecodecamp',
+    identifier: '@freecodecamp',
+    category: 'education',
+    confidence: 100,
+    reasons: ['Computer science and programming tutorials.'],
+    source: 'system_verified',
+    addedAt: 1700000000000
+  },
+  {
+    id: 'ch_khanacademy',
+    channelId: 'UC4a-Gbdw7vOaccHmFo40b9g',
+    name: 'Khan Academy',
+    handle: '@khanacademy',
+    normalizedHandle: 'khanacademy',
+    identifier: '@khanacademy',
+    category: 'education',
+    confidence: 100,
+    reasons: ['Comprehensive academic lessons.'],
+    source: 'system_verified',
+    addedAt: 1700000000000
+  },
+  {
+    id: 'ch_pw_foundation',
+    channelId: 'UCV3ab_4Tsq_j3_cI-8n_rAw',
+    name: 'PW Foundation',
+    handle: '@PW-Foundation',
+    normalizedHandle: 'pw-foundation',
+    identifier: '@pw-foundation',
+    category: 'education',
+    confidence: 99,
+    reasons: ['Class 9th & 10th foundation, Olympiad, and STEM preparation.'],
+    source: 'system_verified',
+    addedAt: 1700000000000
+  }
+];
+
 // Default Configuration State
 const DEFAULT_STORAGE = {
   focusMode: true, // Enabled by default for immediate learning environment
   strictFocus: true, // Strict Focus enabled by default: Allowlist-first access control
-  whitelist: [
-    {
-      id: 'mit-ocw',
-      name: 'MIT OpenCourseWare',
-      identifier: '@mitocw',
-      addedAt: 1700000000000
-    },
-    {
-      id: '3blue1brown',
-      name: '3Blue1Brown',
-      identifier: '@3blue1brown',
-      addedAt: 1700000000000
-    },
-    {
-      id: 'freecodecamp',
-      name: 'freeCodeCamp.org',
-      identifier: '@freecodecamp',
-      addedAt: 1700000000000
-    },
-    {
-      id: 'khanacademy',
-      name: 'Khan Academy',
-      identifier: '@khanacademy',
-      addedAt: 1700000000000
-    }
-  ],
+  learningChannels: INITIAL_LEARNING_CHANNELS,
+  whitelist: INITIAL_LEARNING_CHANNELS, // Legacy alias for backward compatibility
   settings: {
     hideShorts: true,
     hideComments: true,
@@ -112,7 +165,7 @@ const YT_SELECTORS = {
   watchFlexy: 'ytd-watch-flexy',
   browse: 'ytd-browse',
   player: '#movie_player, .html5-video-player',
-  videoElement: 'video.html5-main-video',
+  videoElement: 'video.html5-main-video, video',
 
   // Home page feed
   homePageContents: 'ytd-browse[page-subtype="home"] #contents, ytd-browse[page-subtype="home"] ytd-rich-grid-renderer, ytd-browse[page-subtype="home"] #primary, ytd-two-column-browse-results-renderer[page-subtype="home"]',
@@ -130,16 +183,20 @@ const YT_SELECTORS = {
   comments: 'ytd-comments#comments, #comments, ytd-item-section-renderer[section-identifier="comment-item-section"]',
   endScreen: '.ytp-ce-element, .ytp-endscreen-content, .ytp-ce-covering-overlay',
 
+  // Video title & metadata
+  videoTitleWatch: 'ytd-watch-metadata #title h1, h1.title, #container > h1 > yt-formatted-string',
+
   // Channel details on watch & channel pages
-  channelNameWatch: '#owner #channel-name a, ytd-video-owner-renderer #channel-name a, #upload-info #channel-name a, ytd-channel-name a',
-  channelHandleWatch: '#owner #channel-name a[href^="/@"], #owner ytd-channel-name a, #upload-info a[href^="/@"]',
-  channelPageHeader: 'ytd-channel-name#channel-header-name, ytd-c4-tabbed-header-renderer #channel-name, #channel-header yt-formatted-string'
+  channelNameWatch: '#owner #channel-name a, ytd-video-owner-renderer #channel-name a, #upload-info #channel-name a, ytd-channel-name a, ytd-watch-metadata #owner a',
+  channelHandleWatch: '#owner #channel-name a[href^="/@"], #owner ytd-channel-name a, #upload-info a[href^="/@"], ytd-watch-metadata #owner a[href^="/@"]',
+  channelPageHeader: 'ytd-channel-name#channel-header-name, ytd-c4-tabbed-header-renderer #channel-name, #channel-header yt-formatted-string, ytd-tabbed-page-header ytd-channel-name'
 };
 
 // Attach to global scope for seamless access in content scripts & service workers
 if (typeof globalThis !== 'undefined') {
   globalThis.MESSAGE_TYPES = MESSAGE_TYPES;
   globalThis.STORAGE_KEYS = STORAGE_KEYS;
+  globalThis.INITIAL_LEARNING_CHANNELS = INITIAL_LEARNING_CHANNELS;
   globalThis.DEFAULT_STORAGE = DEFAULT_STORAGE;
   globalThis.YT_SELECTORS = YT_SELECTORS;
 }
@@ -148,6 +205,7 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     MESSAGE_TYPES,
     STORAGE_KEYS,
+    INITIAL_LEARNING_CHANNELS,
     DEFAULT_STORAGE,
     YT_SELECTORS
   };

@@ -1,17 +1,14 @@
 /**
  * Knolect - Storage Layer
- * Centralized async wrapper around chrome.storage.local with defaults and robust fallback.
+ * Centralized async wrapper around chrome.storage.local with defaults,
+ * schema migrations, and strict learning-channel verification.
  */
 
 const _DEFAULTS = (typeof globalThis.DEFAULT_STORAGE !== 'undefined') ? globalThis.DEFAULT_STORAGE : {
   focusMode: true,
   strictFocus: true,
-  whitelist: [
-    { id: 'mit-ocw', name: 'MIT OpenCourseWare', identifier: '@mitocw', addedAt: 1700000000000 },
-    { id: '3blue1brown', name: '3Blue1Brown', identifier: '@3blue1brown', addedAt: 1700000000000 },
-    { id: 'freecodecamp', name: 'freeCodeCamp.org', identifier: '@freecodecamp', addedAt: 1700000000000 },
-    { id: 'khanacademy', name: 'Khan Academy', identifier: '@khanacademy', addedAt: 1700000000000 }
-  ],
+  learningChannels: (typeof globalThis.INITIAL_LEARNING_CHANNELS !== 'undefined') ? globalThis.INITIAL_LEARNING_CHANNELS : [],
+  whitelist: (typeof globalThis.INITIAL_LEARNING_CHANNELS !== 'undefined') ? globalThis.INITIAL_LEARNING_CHANNELS : [],
   settings: {
     hideShorts: true,
     hideComments: true,
@@ -85,7 +82,7 @@ async function setStorageData(items) {
 }
 
 /**
- * Initialize default storage data if missing
+ * Initialize default storage data & run migrations if needed
  * @returns {Promise<Object>}
  */
 async function initStorageDefaults() {
@@ -101,36 +98,62 @@ async function initStorageDefaults() {
     updates.strictFocus = _DEFAULTS.strictFocus;
     needsUpdate = true;
   }
-  if (!Array.isArray(current.whitelist)) {
-    updates.whitelist = _DEFAULTS.whitelist;
-    needsUpdate = true;
+
+  // Check learningChannels or run migration from legacy whitelist
+  if (!Array.isArray(current.learningChannels)) {
+    if (Array.isArray(current.whitelist) && current.whitelist.length > 0) {
+      // Migrate legacy whitelist items safely
+      const migrated = [];
+      for (const item of current.whitelist) {
+        const classified = (typeof globalThis.classifyChannel === 'function')
+          ? globalThis.classifyChannel(item)
+          : { eligible: true, category: 'education', confidence: 80, reasons: [] };
+
+        if (classified.eligible) {
+          migrated.push({
+            id: item.id || ('ch_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6)),
+            channelId: item.channelId || '',
+            name: item.name || item.identifier,
+            handle: item.handle || (item.identifier && item.identifier.startsWith('@') ? item.identifier : ''),
+            normalizedHandle: (item.handle || item.identifier || '').replace(/^@/, '').toLowerCase(),
+            identifier: item.identifier || (item.handle ? item.handle.toLowerCase() : ''),
+            category: classified.category || 'education',
+            confidence: classified.confidence || 85,
+            reasons: classified.reasons || ['Migrated learning channel'],
+            source: 'migrated_verified',
+            addedAt: item.addedAt || Date.now()
+          });
+        }
+      }
+      updates.learningChannels = migrated.length > 0 ? migrated : _DEFAULTS.learningChannels;
+      updates.whitelist = updates.learningChannels;
+      needsUpdate = true;
+    } else {
+      updates.learningChannels = _DEFAULTS.learningChannels;
+      updates.whitelist = _DEFAULTS.learningChannels;
+      needsUpdate = true;
+    }
   }
-  if (!current.settings || typeof current.settings !== 'object') {
+
+  if (!current.settings) {
     updates.settings = _DEFAULTS.settings;
     needsUpdate = true;
-  } else {
-    const mergedSettings = { ..._DEFAULTS.settings, ...current.settings };
-    if (JSON.stringify(mergedSettings) !== JSON.stringify(current.settings)) {
-      updates.settings = mergedSettings;
-      needsUpdate = true;
-    }
   }
-  if (!current.timer || typeof current.timer !== 'object') {
+  if (!current.timer) {
     updates.timer = _DEFAULTS.timer;
     needsUpdate = true;
-  } else {
-    const mergedTimer = { ..._DEFAULTS.timer, ...current.timer };
-    if (JSON.stringify(mergedTimer) !== JSON.stringify(current.timer)) {
-      updates.timer = mergedTimer;
-      needsUpdate = true;
-    }
+  }
+  if (typeof current.onboardingCompleted === 'undefined') {
+    updates.onboardingCompleted = true;
+    needsUpdate = true;
   }
 
   if (needsUpdate) {
     await setStorageData(updates);
+    return { ...current, ...updates };
   }
 
-  return await getStorageData(null);
+  return current;
 }
 
 /**
@@ -148,8 +171,7 @@ async function getFocusMode() {
  * @returns {Promise<boolean>}
  */
 async function setFocusMode(enabled) {
-  const boolVal = Boolean(enabled);
-  return await setStorageData({ focusMode: boolVal });
+  return await setStorageData({ focusMode: Boolean(enabled) });
 }
 
 /**
@@ -167,8 +189,37 @@ async function getStrictFocus() {
  * @returns {Promise<boolean>}
  */
 async function setStrictFocus(enabled) {
-  const boolVal = Boolean(enabled);
-  return await setStorageData({ strictFocus: boolVal });
+  return await setStorageData({ strictFocus: Boolean(enabled) });
+}
+
+/**
+ * Get Timer State
+ * @returns {Promise<Object>}
+ */
+async function getTimerState() {
+  const data = await getStorageData('timer');
+  const timer = data.timer || _DEFAULTS.timer;
+
+  if (timer.running && timer.endTime) {
+    const now = Date.now();
+    const remaining = Math.max(0, Math.ceil((timer.endTime - now) / 1000));
+    return {
+      ...timer,
+      remaining,
+      running: remaining > 0
+    };
+  }
+
+  return timer;
+}
+
+/**
+ * Save Timer State
+ * @param {Object} timerState
+ * @returns {Promise<boolean>}
+ */
+async function saveTimerState(timerState) {
+  return await setStorageData({ timer: timerState });
 }
 
 /**
@@ -192,142 +243,217 @@ async function saveSettings(newSettings) {
 }
 
 /**
- * Get Channel Whitelist
- * @returns {Promise<Array<{ id: string, name: string, identifier: string, handle?: string, addedAt?: number }>>}
+ * Get Approved Learning Channels
+ * @returns {Promise<Array<Object>>}
+ */
+async function getLearningChannels() {
+  const data = await getStorageData(['learningChannels', 'whitelist']);
+  if (Array.isArray(data.learningChannels) && data.learningChannels.length > 0) {
+    return data.learningChannels;
+  }
+  if (Array.isArray(data.whitelist) && data.whitelist.length > 0) {
+    return data.whitelist;
+  }
+  return _DEFAULTS.learningChannels;
+}
+
+/**
+ * Legacy alias for getLearningChannels
  */
 async function getWhitelist() {
-  const data = await getStorageData('whitelist');
-  return Array.isArray(data.whitelist) ? data.whitelist : _DEFAULTS.whitelist;
+  return await getLearningChannels();
 }
 
 /**
- * Save Whitelist
- * @param {Array} whitelist
+ * Save Learning Channels
+ * @param {Array} channels
  * @returns {Promise<boolean>}
  */
-async function saveWhitelist(whitelist) {
-  const validList = Array.isArray(whitelist) ? whitelist : [];
-  return await setStorageData({ whitelist: validList });
-}
-
-/**
- * Add a Channel to Whitelist
- * @param {{ name: string, identifier: string, handle?: string }} channel
- * @returns {Promise<{ success: boolean, whitelist: Array, error?: string }>}
- */
-async function addWhitelistChannel(channel) {
-  if (!channel || !channel.name || !channel.identifier) {
-    return { success: false, error: 'Channel name and identifier are required.' };
-  }
-
-  const list = await getWhitelist();
-  const normalizedId = channel.identifier.toLowerCase().trim();
-
-  // Check duplicate
-  const exists = list.some(item =>
-    item.identifier.toLowerCase().trim() === normalizedId ||
-    (channel.handle && item.handle && item.handle.toLowerCase().trim() === channel.handle.toLowerCase().trim())
-  );
-
-  if (exists) {
-    return { success: false, error: 'Channel is already in your whitelist.', whitelist: list };
-  }
-
-  const newItem = {
-    id: 'ch_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
-    name: channel.name.trim(),
-    identifier: normalizedId,
-    handle: channel.handle ? channel.handle.trim() : (normalizedId.startsWith('@') ? normalizedId : ''),
-    addedAt: Date.now()
-  };
-
-  const updated = [newItem, ...list];
-  await saveWhitelist(updated);
-  return { success: true, channel: newItem, whitelist: updated };
-}
-
-/**
- * Remove a Channel from Whitelist
- * @param {string} idOrIdentifier
- * @returns {Promise<{ success: boolean, whitelist: Array }>}
- */
-async function removeWhitelistChannel(idOrIdentifier) {
-  if (!idOrIdentifier) return { success: false, whitelist: await getWhitelist() };
-
-  const list = await getWhitelist();
-  const target = String(idOrIdentifier).toLowerCase().trim();
-
-  const filtered = list.filter(item =>
-    item.id !== idOrIdentifier &&
-    item.identifier.toLowerCase().trim() !== target &&
-    (item.handle ? item.handle.toLowerCase().trim() !== target : true)
-  );
-
-  await saveWhitelist(filtered);
-  return { success: true, whitelist: filtered };
-}
-
-/**
- * Check if a channel is whitelisted
- * @param {{ name?: string, identifier?: string, handle?: string }} channelInfo
- * @returns {Promise<boolean>}
- */
-async function isChannelWhitelisted(channelInfo) {
-  if (!channelInfo) return false;
-  const list = await getWhitelist();
-
-  const targetName = (channelInfo.name || '').toLowerCase().trim();
-  const targetId = (channelInfo.identifier || '').toLowerCase().trim();
-  const targetHandle = (channelInfo.handle || '').toLowerCase().trim();
-
-  return list.some(item => {
-    const itemName = (item.name || '').toLowerCase().trim();
-    const itemId = (item.identifier || '').toLowerCase().trim();
-    const itemHandle = (item.handle || '').toLowerCase().trim();
-
-    if (targetHandle && itemHandle && (targetHandle === itemHandle || targetHandle === itemId)) return true;
-    if (targetId && (itemId === targetId || itemHandle === targetId)) return true;
-    if (targetName && (itemName === targetName || itemId === targetName)) return true;
-    return false;
+async function saveLearningChannels(channels) {
+  const validList = Array.isArray(channels) ? channels : [];
+  return await setStorageData({
+    learningChannels: validList,
+    whitelist: validList // Mirror to legacy whitelist key
   });
 }
 
 /**
- * Get Timer State with live remaining calculation
- * @returns {Promise<Object>}
+ * Legacy alias for saveLearningChannels
  */
-async function getTimerState() {
-  const data = await getStorageData('timer');
-  const timer = { ..._DEFAULTS.timer, ...(data.timer || {}) };
-
-  if (timer.running && timer.endTime) {
-    const remainingMs = timer.endTime - Date.now();
-    const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
-    timer.remaining = remainingSec;
-
-    if (remainingSec <= 0) {
-      timer.running = false;
-      timer.remaining = 0;
-      timer.endTime = null;
-      await setStorageData({ timer });
-    }
-  }
-
-  return timer;
+async function saveWhitelist(whitelist) {
+  return await saveLearningChannels(whitelist);
 }
 
 /**
- * Save Timer State
- * @param {Object} timerState
- * @returns {Promise<boolean>}
+ * Add a Channel to Learning Channels Allowlist
+ * Runs deterministic classification and refuses arbitrary entertainment channels.
+ * @param {Object|string} channelInput
+ * @returns {Promise<{ success: boolean, channel?: Object, learningChannels?: Array, error?: string, reasons?: string[] }>}
  */
-async function saveTimerState(timerState) {
-  const current = await getTimerState();
-  const merged = { ...current, ...(timerState || {}) };
-  return await setStorageData({ timer: merged });
+async function addLearningChannel(channelInput) {
+  if (!channelInput) {
+    return { success: false, error: 'Channel details are required.' };
+  }
+
+  // 1. Resolve Identity
+  const identity = (typeof globalThis.resolveChannelIdentity === 'function')
+    ? globalThis.resolveChannelIdentity(channelInput)
+    : { name: channelInput.name || '', handle: channelInput.handle || '', normalizedHandle: '', channelId: channelInput.channelId || '' };
+
+  if (!identity.name && !identity.handle && !identity.channelId) {
+    return { success: false, error: 'Please enter a valid channel name, @handle, or YouTube URL.' };
+  }
+
+  // 2. Classify Channel
+  const classification = (typeof globalThis.classifyChannel === 'function')
+    ? globalThis.classifyChannel({ ...channelInput, ...identity })
+    : { eligible: true, category: 'education', confidence: 90, reasons: [] };
+
+  if (!classification.eligible) {
+    return {
+      success: false,
+      error: `Cannot add "${identity.name || identity.handle}": Channel does not meet educational criteria for Strict Focus Mode.`,
+      category: classification.category,
+      reasons: classification.reasons,
+      confidence: classification.confidence
+    };
+  }
+
+  const list = await getLearningChannels();
+  const normalizedHandle = identity.normalizedHandle || (identity.handle || '').replace(/^@/, '').toLowerCase();
+  const normalizedId = (identity.channelId || '').toLowerCase();
+  const normalizedName = (identity.name || '').toLowerCase().trim();
+
+  // Check duplicate
+  const exists = list.some(item => {
+    const itemHandle = (item.normalizedHandle || (item.handle || '')).replace(/^@/, '').toLowerCase();
+    const itemId = (item.channelId || item.identifier || '').toLowerCase();
+    const itemName = (item.name || '').toLowerCase().trim();
+
+    if (normalizedHandle && itemHandle && normalizedHandle === itemHandle) return true;
+    if (normalizedId && itemId && normalizedId === itemId) return true;
+    if (normalizedName && itemName && normalizedName === itemName) return true;
+    return false;
+  });
+
+  if (exists) {
+    return { success: false, error: 'This channel is already in your Learning Channels list.', learningChannels: list };
+  }
+
+  const newItem = {
+    id: 'ch_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+    channelId: identity.channelId || '',
+    name: identity.name || (identity.handle ? identity.handle.slice(1) : 'Learning Channel'),
+    handle: identity.handle || (normalizedHandle ? `@${normalizedHandle}` : ''),
+    normalizedHandle,
+    identifier: identity.handle || identity.channelId || `@${normalizedHandle}`,
+    category: classification.category || 'education',
+    confidence: classification.confidence || 90,
+    reasons: classification.reasons || ['Verified learning content'],
+    source: classification.verified ? 'system_verified' : 'user_approved',
+    addedAt: Date.now()
+  };
+
+  const updated = [newItem, ...list];
+  await saveLearningChannels(updated);
+  return { success: true, channel: newItem, learningChannels: updated, classification };
 }
 
-// Assign to globalThis for content scripts, popups, and service worker
+/**
+ * Legacy alias for addLearningChannel
+ */
+async function addWhitelistChannel(channel) {
+  return await addLearningChannel(channel);
+}
+
+/**
+ * Remove a Channel from Learning Channels
+ * @param {string} idOrIdentifier
+ * @returns {Promise<{ success: boolean, learningChannels: Array }>}
+ */
+async function removeLearningChannel(idOrIdentifier) {
+  if (!idOrIdentifier) return { success: false, learningChannels: await getLearningChannels() };
+
+  const list = await getLearningChannels();
+  const target = String(idOrIdentifier).toLowerCase().trim().replace(/^@/, '');
+
+  const filtered = list.filter(item => {
+    const itemId = String(item.id || '').toLowerCase().trim();
+    const itemChId = String(item.channelId || '').toLowerCase().trim();
+    const itemHandle = String(item.handle || item.identifier || '').toLowerCase().trim().replace(/^@/, '');
+    const itemNorm = String(item.normalizedHandle || '').toLowerCase().trim();
+
+    return itemId !== target && itemChId !== target && itemHandle !== target && itemNorm !== target;
+  });
+
+  await saveLearningChannels(filtered);
+  return { success: true, learningChannels: filtered, whitelist: filtered };
+}
+
+/**
+ * Legacy alias for removeLearningChannel
+ */
+async function removeWhitelistChannel(idOrIdentifier) {
+  return await removeLearningChannel(idOrIdentifier);
+}
+
+/**
+ * Check if a channel is approved for learning in Strict Focus Mode
+ * Follows strict evaluation order:
+ * 1. System-verified channels
+ * 2. User-approved channels
+ * 3. Eligibility validation
+ * @param {Object|string} channelInfo
+ * @returns {Promise<boolean>}
+ */
+async function isChannelLearningApproved(channelInfo) {
+  if (!channelInfo) return false;
+
+  const identity = (typeof globalThis.resolveChannelIdentity === 'function')
+    ? globalThis.resolveChannelIdentity(channelInfo)
+    : { name: channelInfo.name || '', handle: channelInfo.handle || '', normalizedHandle: '', channelId: channelInfo.channelId || '' };
+
+  // 1. Check System Verified Learning Channels Registry
+  if (typeof globalThis.isSystemVerifiedLearningChannel === 'function') {
+    const verified = globalThis.isSystemVerifiedLearningChannel(identity);
+    if (verified) return true;
+  }
+
+  // 2. Check User-Approved Stored Learning Channels
+  const list = await getLearningChannels();
+  const targetHandle = (identity.normalizedHandle || (identity.handle || '')).replace(/^@/, '').toLowerCase().trim();
+  const targetId = (identity.channelId || '').toLowerCase().trim();
+  const targetName = (identity.name || '').toLowerCase().trim();
+
+  const matched = list.find(item => {
+    const itemHandle = (item.normalizedHandle || (item.handle || item.identifier || '')).replace(/^@/, '').toLowerCase().trim();
+    const itemId = (item.channelId || item.identifier || '').toLowerCase().trim();
+    const itemName = (item.name || '').toLowerCase().trim();
+
+    if (targetHandle && itemHandle && targetHandle === itemHandle) return true;
+    if (targetId && itemId && targetId === itemId) return true;
+    if (targetName && itemName && targetName === itemName) return true;
+    return false;
+  });
+
+  if (!matched) return false;
+
+  // 3. Validate that stored entry is still eligible
+  if (typeof globalThis.isStillEligible === 'function') {
+    return globalThis.isStillEligible(matched);
+  }
+
+  return matched.category === 'education' && matched.eligible !== false;
+}
+
+/**
+ * Legacy alias for isChannelLearningApproved
+ */
+async function isChannelWhitelisted(channelInfo) {
+  return await isChannelLearningApproved(channelInfo);
+}
+
+// Global scope attachment
 if (typeof globalThis !== 'undefined') {
   globalThis.getStorageData = getStorageData;
   globalThis.setStorageData = setStorageData;
@@ -336,18 +462,24 @@ if (typeof globalThis !== 'undefined') {
   globalThis.setFocusMode = setFocusMode;
   globalThis.getStrictFocus = getStrictFocus;
   globalThis.setStrictFocus = setStrictFocus;
+  globalThis.getTimerState = getTimerState;
+  globalThis.saveTimerState = saveTimerState;
   globalThis.getSettings = getSettings;
   globalThis.saveSettings = saveSettings;
+  globalThis.getLearningChannels = getLearningChannels;
+  globalThis.saveLearningChannels = saveLearningChannels;
+  globalThis.addLearningChannel = addLearningChannel;
+  globalThis.removeLearningChannel = removeLearningChannel;
+  globalThis.isChannelLearningApproved = isChannelLearningApproved;
+
+  // Legacy aliases
   globalThis.getWhitelist = getWhitelist;
   globalThis.saveWhitelist = saveWhitelist;
   globalThis.addWhitelistChannel = addWhitelistChannel;
   globalThis.removeWhitelistChannel = removeWhitelistChannel;
   globalThis.isChannelWhitelisted = isChannelWhitelisted;
-  globalThis.getTimerState = getTimerState;
-  globalThis.saveTimerState = saveTimerState;
 }
 
-// Module export for node/tests
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     getStorageData,
@@ -357,14 +489,19 @@ if (typeof module !== 'undefined' && module.exports) {
     setFocusMode,
     getStrictFocus,
     setStrictFocus,
+    getTimerState,
+    saveTimerState,
     getSettings,
     saveSettings,
+    getLearningChannels,
+    saveLearningChannels,
+    addLearningChannel,
+    removeLearningChannel,
+    isChannelLearningApproved,
     getWhitelist,
     saveWhitelist,
     addWhitelistChannel,
     removeWhitelistChannel,
-    isChannelWhitelisted,
-    getTimerState,
-    saveTimerState
+    isChannelWhitelisted
   };
 }

@@ -23,9 +23,11 @@
       const focusMode = typeof data.focusMode === 'boolean' ? data.focusMode : true;
       const strictFocus = typeof data.strictFocus === 'boolean' ? data.strictFocus : true;
       const settings = data.settings || DEFAULT_STORAGE.settings;
-      const whitelist = Array.isArray(data.whitelist) ? data.whitelist : DEFAULT_STORAGE.whitelist;
+      const learningChannels = Array.isArray(data.learningChannels)
+        ? data.learningChannels
+        : (Array.isArray(data.whitelist) ? data.whitelist : DEFAULT_STORAGE.learningChannels);
 
-      await engine.updateState({ focusMode, strictFocus, settings, whitelist });
+      await engine.updateState({ focusMode, strictFocus, settings, learningChannels, whitelist: learningChannels });
     } catch (err) {
       console.error('[Knolect] Initialization error:', err);
     }
@@ -104,8 +106,10 @@
             break;
           }
 
+          case MESSAGE_TYPES.LEARNING_CHANNELS_CHANGED:
           case MESSAGE_TYPES.WHITELIST_CHANGED: {
-            await engine.updateState({ whitelist: message.whitelist });
+            const channels = message.learningChannels || message.whitelist;
+            await engine.updateState({ learningChannels: channels, whitelist: channels });
             sendResponse({ success: true });
             break;
           }
@@ -118,7 +122,7 @@
 
           case MESSAGE_TYPES.QUERY_PAGE_STATUS: {
             const currentChannel = engine.detectCurrentChannel();
-            const isWhitelisted = engine.isCurrentWhitelisted;
+            const isApproved = engine.isCurrentLearningApproved;
             const pathname = window.location.pathname;
             const isWatchPage = pathname.includes('/watch');
             const isHomePage = pathname === '/' || pathname === '';
@@ -127,7 +131,9 @@
             sendResponse({
               success: true,
               channel: currentChannel,
-              isWhitelisted,
+              isApproved,
+              isWhitelisted: isApproved,
+              classification: engine.currentClassification,
               isWatchPage,
               isHomePage,
               isSearchPage,

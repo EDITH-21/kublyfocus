@@ -36,6 +36,7 @@
       "js": [
         "utils/constants.js",
         "utils/helpers.js",
+        "utils/classifier.js",
         "storage/storage.js",
         "utils/messaging.js",
         "content/focus-mode.js",

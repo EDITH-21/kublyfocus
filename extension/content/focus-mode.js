@@ -1,7 +1,7 @@
 /**
  * Knolect - Focus Mode & Strict Focus Engine
- * Enforces allowlist-first access control, search blocking, video pausing,
- * and high-fidelity learning environment overlays.
+ * Enforces allowlist-first access control for verified Learning Channels,
+ * blocks search exploration, pauses non-learning videos, and renders clean study spaces.
  */
 
 class KnolectFocusEngine {
@@ -17,10 +17,12 @@ class KnolectFocusEngine {
       blockSearch: true,
       defaultTimerDuration: 1500
     };
-    this.whitelist = [];
-    this.currentChannel = { name: '', identifier: '', handle: '' };
-    this.isCurrentWhitelisted = false;
-    this.blockedOverlay = null;
+    this.learningChannels = [];
+    this.currentChannel = { name: '', identifier: '', handle: '', normalizedHandle: '', channelId: '' };
+    this.isCurrentLearningApproved = false;
+    this.currentClassification = null;
+    this.detectionRetryCount = 0;
+    this.detectionTimer = null;
 
     // Inspirational learning quotes
     this.quotes = [
@@ -29,18 +31,23 @@ class KnolectFocusEngine {
       "\"The expert in anything was once a beginner.\" — Helen Hayes",
       "\"Focus is a superpower in a distracted world.\" — Cal Newport",
       "\"Small disciplines repeated with consistency every day lead to great achievements.\" — John C. Maxwell",
-      "\"Concentrate all your thoughts upon the work in hand. The sun's rays do not burn until brought to a focus.\" — Alexander Graham Bell"
+      "\"Concentrate all your thoughts upon the work in hand. The sun's rays do not burn until brought to a focus.\" — Alexander Graham Bell",
+      "\"Education is not the learning of facts, but the training of the mind to think.\" — Albert Einstein"
     ];
   }
 
   /**
    * Update internal state and re-enforce
    */
-  async updateState({ focusMode, strictFocus, settings, whitelist }) {
+  async updateState({ focusMode, strictFocus, settings, learningChannels, whitelist }) {
     if (typeof focusMode === 'boolean') this.focusMode = focusMode;
     if (typeof strictFocus === 'boolean') this.strictFocus = strictFocus;
     if (settings) this.settings = { ...this.settings, ...settings };
-    if (Array.isArray(whitelist)) this.whitelist = whitelist;
+    if (Array.isArray(learningChannels)) {
+      this.learningChannels = learningChannels;
+    } else if (Array.isArray(whitelist)) {
+      this.learningChannels = whitelist;
+    }
 
     await this.apply();
   }
@@ -68,8 +75,8 @@ class KnolectFocusEngine {
       el.setAttribute('data-hide-endscreen', this.settings.hideEndScreen ? 'true' : 'false');
     });
 
-    // Evaluate channel whitelist
-    await this.evaluateChannelWhitelist();
+    // Evaluate channel learning approval
+    await this.evaluateChannelLearningApproval();
 
     // Enforce URL & Page-Specific Rules (Strict Focus Allowlist)
     this.enforcePageRules();
@@ -92,6 +99,7 @@ class KnolectFocusEngine {
       el.removeAttribute('data-hide-home-feed');
       el.removeAttribute('data-hide-endscreen');
       el.removeAttribute('data-knolect-whitelisted');
+      el.removeAttribute('data-knolect-learning-approved');
     });
 
     // Remove block screens & placeholders
@@ -107,28 +115,27 @@ class KnolectFocusEngine {
   }
 
   /**
-   * Extract channel information from page / video player
+   * Extract channel metadata with comprehensive fallback selectors
    */
   detectCurrentChannel() {
     let name = '';
     let handle = '';
-    let identifier = '';
+    let channelId = '';
+    let videoTitle = '';
 
     const pathname = window.location.pathname;
 
-    // 1. Channel Page (e.g. /@username or /channel/UC...)
+    // 1. Channel Page (e.g. /@handle or /channel/UC... or /c/...)
     if (pathname.startsWith('/@') || pathname.startsWith('/channel/') || pathname.startsWith('/c/')) {
       const parts = pathname.split('/').filter(Boolean);
       if (parts[0] && parts[0].startsWith('@')) {
         handle = parts[0];
-        identifier = handle.toLowerCase();
         name = handle.slice(1);
       } else if (parts[0] === 'channel' && parts[1]) {
-        identifier = parts[1].toLowerCase();
-        name = parts[1];
+        channelId = parts[1];
       }
 
-      const headerElem = document.querySelector('ytd-channel-name#channel-header-name, ytd-c4-tabbed-header-renderer #channel-name, #channel-header yt-formatted-string');
+      const headerElem = document.querySelector('ytd-channel-name#channel-header-name, ytd-c4-tabbed-header-renderer #channel-name, #channel-header yt-formatted-string, ytd-tabbed-page-header ytd-channel-name');
       if (headerElem && headerElem.textContent) {
         name = headerElem.textContent.trim();
       }
@@ -136,59 +143,130 @@ class KnolectFocusEngine {
 
     // 2. Watch Page (/watch?v=...)
     if (pathname.includes('/watch')) {
-      const ownerLink = document.querySelector('#owner #channel-name a, ytd-video-owner-renderer #channel-name a, #upload-info #channel-name a, ytd-channel-name a');
+      // Channel link & handle
+      const ownerLink = document.querySelector('#owner #channel-name a, ytd-video-owner-renderer #channel-name a, #upload-info #channel-name a, ytd-channel-name a, ytd-watch-metadata #owner a');
       if (ownerLink) {
         name = ownerLink.textContent.trim();
         const href = ownerLink.getAttribute('href') || '';
         if (href.startsWith('/@')) {
           handle = href.split('/')[1] || href;
-          identifier = handle.toLowerCase();
         } else if (href.includes('/channel/')) {
-          identifier = href.split('/channel/')[1] || '';
+          channelId = href.split('/channel/')[1] || '';
+        }
+      }
+
+      // Meta tag fallbacks (often available immediately in DOM)
+      if (!channelId) {
+        const metaChId = document.querySelector('meta[itemprop="channelId"]');
+        if (metaChId) channelId = metaChId.getAttribute('content') || '';
+      }
+      if (!name) {
+        const metaAuthor = document.querySelector('span[itemprop="author"] link[itemprop="name"], meta[itemprop="name"]');
+        if (metaAuthor) name = metaAuthor.getAttribute('content') || '';
+      }
+
+      // Video title
+      const titleEl = document.querySelector('ytd-watch-metadata #title h1, h1.title, #container > h1 > yt-formatted-string');
+      if (titleEl) {
+        videoTitle = titleEl.textContent.trim();
+      }
+    }
+
+    const resolved = (typeof globalThis.resolveChannelIdentity === 'function')
+      ? globalThis.resolveChannelIdentity({ name, handle, channelId })
+      : { name, handle, channelId, normalizedHandle: (handle || '').replace(/^@/, '').toLowerCase() };
+
+    return {
+      ...resolved,
+      videoTitle
+    };
+  }
+
+  /**
+   * Evaluate whether the active channel is approved for learning
+   */
+  async evaluateChannelLearningApproval() {
+    this.currentChannel = this.detectCurrentChannel();
+    const docEl = document.documentElement;
+
+    // If channel metadata is not yet populated on watch page, schedule a quick retry
+    if (window.location.pathname.includes('/watch') && !this.currentChannel.name && !this.currentChannel.handle && !this.currentChannel.channelId) {
+      if (this.detectionRetryCount < 5) {
+        this.detectionRetryCount++;
+        clearTimeout(this.detectionTimer);
+        this.detectionTimer = setTimeout(async () => {
+          await this.evaluateChannelLearningApproval();
+          this.enforcePageRules();
+        }, 150 * this.detectionRetryCount);
+        return;
+      }
+    } else {
+      this.detectionRetryCount = 0;
+    }
+
+    if (!this.currentChannel.name && !this.currentChannel.handle && !this.currentChannel.channelId) {
+      this.isCurrentLearningApproved = false;
+      if (docEl) {
+        docEl.removeAttribute('data-knolect-whitelisted');
+        docEl.removeAttribute('data-knolect-learning-approved');
+      }
+      return;
+    }
+
+    // 1. Check System Verified Learning Channels
+    let isApproved = false;
+    if (typeof globalThis.isSystemVerifiedLearningChannel === 'function') {
+      const verified = globalThis.isSystemVerifiedLearningChannel(this.currentChannel);
+      if (verified) {
+        isApproved = true;
+      }
+    }
+
+    // 2. Check User-Approved Stored Learning Channels
+    if (!isApproved) {
+      const targetHandle = (this.currentChannel.normalizedHandle || (this.currentChannel.handle || '')).replace(/^@/, '').toLowerCase().trim();
+      const targetId = (this.currentChannel.channelId || '').toLowerCase().trim();
+      const targetName = (this.currentChannel.name || '').toLowerCase().trim();
+
+      const matched = this.learningChannels.find(item => {
+        const itemHandle = (item.normalizedHandle || (item.handle || item.identifier || '')).replace(/^@/, '').toLowerCase().trim();
+        const itemId = (item.channelId || item.identifier || '').toLowerCase().trim();
+        const itemName = (item.name || '').toLowerCase().trim();
+
+        if (targetHandle && itemHandle && targetHandle === itemHandle) return true;
+        if (targetId && itemId && targetId === itemId) return true;
+        if (targetName && itemName && targetName === itemName) return true;
+        return false;
+      });
+
+      if (matched) {
+        // Validate that stored entry is still eligible
+        if (typeof globalThis.isStillEligible === 'function') {
+          isApproved = globalThis.isStillEligible(matched);
+        } else {
+          isApproved = matched.category === 'education' && matched.eligible !== false;
         }
       }
     }
 
-    if (!identifier && name) {
-      identifier = name.toLowerCase().replace(/\s+/g, '');
+    this.isCurrentLearningApproved = isApproved;
+
+    // Run local classifier for context
+    if (typeof globalThis.classifyChannel === 'function') {
+      this.currentClassification = globalThis.classifyChannel(this.currentChannel);
     }
 
-    return { name, identifier, handle };
-  }
-
-  /**
-   * Evaluate if current channel is in whitelist
-   */
-  async evaluateChannelWhitelist() {
-    this.currentChannel = this.detectCurrentChannel();
-    const docEl = document.documentElement;
-
-    if (!this.currentChannel.name && !this.currentChannel.identifier) {
-      this.isCurrentWhitelisted = false;
-      if (docEl) docEl.removeAttribute('data-knolect-whitelisted');
-      return;
-    }
-
-    const targetName = this.currentChannel.name.toLowerCase().trim();
-    const targetId = this.currentChannel.identifier.toLowerCase().trim();
-    const targetHandle = (this.currentChannel.handle || '').toLowerCase().trim();
-
-    this.isCurrentWhitelisted = this.whitelist.some(item => {
-      const itemName = (item.name || '').toLowerCase().trim();
-      const itemId = (item.identifier || '').toLowerCase().trim();
-      const itemHandle = (item.handle || '').toLowerCase().trim();
-
-      if (targetHandle && itemHandle && (targetHandle === itemHandle || targetHandle === itemId)) return true;
-      if (targetId && (itemId === targetId || itemHandle === targetId)) return true;
-      if (targetName && (itemName === targetName || itemId === targetName)) return true;
-      return false;
-    });
-
-    if (this.isCurrentWhitelisted) {
-      if (docEl) docEl.setAttribute('data-knolect-whitelisted', 'true');
+    if (this.isCurrentLearningApproved) {
+      if (docEl) {
+        docEl.setAttribute('data-knolect-whitelisted', 'true');
+        docEl.setAttribute('data-knolect-learning-approved', 'true');
+      }
       this.injectWhitelistIndicator();
     } else {
-      if (docEl) docEl.removeAttribute('data-knolect-whitelisted');
+      if (docEl) {
+        docEl.removeAttribute('data-knolect-whitelisted');
+        docEl.removeAttribute('data-knolect-learning-approved');
+      }
       const badge = document.getElementById('knolect-whitelist-badge');
       if (badge) badge.remove();
     }
@@ -222,46 +300,48 @@ class KnolectFocusEngine {
       this.pauseVideo();
       this.renderBlockScreen({
         title: "Search Disabled in Strict Focus",
-        message: "Search is disabled during your active Focus Session to prevent distraction. Intentional learning begins with your approved educational channels.",
-        actionText: "Return to Learning",
+        message: "Search is disabled during your active Focus Session to prevent algorithmic distraction loops. Study with your approved Learning Channels.",
+        actionText: "Return to Learning Space",
         actionType: "home",
-        showWhitelist: true
+        showLearningChannels: true
       });
       return;
     }
 
     // 3. YouTube Shorts Blocking (/shorts/...)
+    // Note: Shorts remain blocked under Strict Focus even if uploaded by a learning channel
     if (isShorts && this.focusMode) {
       this.pauseVideo();
       this.renderBlockScreen({
-        title: "Shorts Blocked",
-        message: "Short-form video feeds are disabled to protect your attention and study progress.",
-        actionText: "Return to Learning",
+        title: "Shorts Feed Blocked",
+        message: "Short-form video feeds are disabled to protect your deep focus and study momentum.",
+        actionText: "Return to Learning Space",
         actionType: "home",
-        showWhitelist: true
+        showLearningChannels: true
       });
       return;
     }
 
     // 4. Video Watch Page (/watch?v=...)
     if (isWatch && this.focusMode) {
-      if (this.strictFocus && !this.isCurrentWhitelisted) {
-        // Strict Focus: Block non-whitelisted videos
+      if (this.strictFocus && !this.isCurrentLearningApproved) {
+        // Strict Focus: Block non-approved videos
         this.pauseVideo();
-        const chName = this.currentChannel.name || 'this creator';
+        const chName = this.currentChannel.name || this.currentChannel.handle || 'this channel';
         this.renderBlockScreen({
-          title: "Stay Focused",
-          message: `This video (${chName}) is not in your Whitelist. During Strict Focus, only approved learning channels are accessible.`,
-          actionText: "Return to Learning",
+          title: "Stay Focused on Learning",
+          message: `This video (${chName}) is not in your approved Learning Channels. During Strict Focus, only verified educational content is accessible.`,
+          actionText: "Return to Learning Space",
           actionType: "home",
-          allowWhitelistCurrent: true,
-          currentChannel: this.currentChannel
+          allowApprovalEvaluation: true,
+          currentChannel: this.currentChannel,
+          classification: this.currentClassification
         });
         return;
       } else {
-        // Allowed (Whitelisted or Normal Focus)
+        // Allowed (Learning Approved or Normal Focus)
         this.removeBlockScreen();
-        if (this.isCurrentWhitelisted) {
+        if (this.isCurrentLearningApproved) {
           this.injectWhitelistIndicator();
         }
       }
@@ -269,19 +349,21 @@ class KnolectFocusEngine {
     }
 
     // 5. Channel Page
-    if (isChannel && this.focusMode && this.strictFocus && !this.isCurrentWhitelisted) {
+    if (isChannel && this.focusMode && this.strictFocus && !this.isCurrentLearningApproved) {
+      const chName = this.currentChannel.name || this.currentChannel.handle || 'this channel';
       this.renderBlockScreen({
-        title: "Channel Not in Whitelist",
-        message: `This channel is currently blocked under Strict Focus Mode.`,
-        actionText: "Return to Learning",
+        title: "Channel Blocked in Strict Focus",
+        message: `"${chName}" is not an approved Learning Channel.`,
+        actionText: "Return to Learning Space",
         actionType: "home",
-        allowWhitelistCurrent: true,
-        currentChannel: this.currentChannel
+        allowApprovalEvaluation: true,
+        currentChannel: this.currentChannel,
+        classification: this.currentClassification
       });
       return;
     }
 
-    // Other pages: Clear block screen if conditions pass
+    // Other pages: Clear block screen
     this.removeBlockScreen();
   }
 
@@ -302,7 +384,7 @@ class KnolectFocusEngine {
   /**
    * Render modern Knolect Block Screen Overlay
    */
-  renderBlockScreen({ title, message, actionText, actionType, showWhitelist, allowWhitelistCurrent, currentChannel }) {
+  renderBlockScreen({ title, message, actionText, showLearningChannels, allowApprovalEvaluation, currentChannel, classification }) {
     let screen = document.getElementById('knolect-block-screen');
     if (!screen) {
       screen = document.createElement('div');
@@ -311,14 +393,15 @@ class KnolectFocusEngine {
       document.body.appendChild(screen);
     }
 
-    // Build whitelisted channel list
+    // Build approved learning channels list
     let channelsHtml = '';
-    if ((showWhitelist || allowWhitelistCurrent) && this.whitelist && this.whitelist.length > 0) {
-      const chips = this.whitelist.map(ch => {
-        const link = ch.identifier.startsWith('@')
-          ? `https://www.youtube.com/${ch.identifier}`
-          : `https://www.youtube.com/@${encodeURIComponent(ch.name.replace(/\s+/g, ''))}`;
-        return `<a href="${link}" class="knolect-chip-link">📚 ${ch.name}</a>`;
+    const channels = this.learningChannels || [];
+    if ((showLearningChannels || allowApprovalEvaluation) && channels.length > 0) {
+      const chips = channels.map(ch => {
+        const link = (ch.handle && ch.handle.startsWith('@'))
+          ? `https://www.youtube.com/${ch.handle}`
+          : (ch.channelId ? `https://www.youtube.com/channel/${ch.channelId}` : `https://www.youtube.com/@${encodeURIComponent(ch.name.replace(/\s+/g, ''))}`);
+        return `<a href="${link}" class="knolect-chip-link">📚 ${(typeof globalThis.escapeHtml === 'function') ? globalThis.escapeHtml(ch.name) : ch.name}</a>`;
       }).join('');
 
       channelsHtml = `
@@ -329,13 +412,25 @@ class KnolectFocusEngine {
       `;
     }
 
-    let whitelistActionHtml = '';
-    if (allowWhitelistCurrent && currentChannel && (currentChannel.name || currentChannel.handle)) {
-      whitelistActionHtml = `
-        <button type="button" class="knolect-btn-secondary" id="knolect-btn-whitelist-now">
-          <span>⭐</span> Whitelist & Allow "${currentChannel.name || currentChannel.handle}"
-        </button>
-      `;
+    // Channel Evaluation & Approval Action
+    let approvalActionHtml = '';
+    if (allowApprovalEvaluation && currentChannel && (currentChannel.name || currentChannel.handle)) {
+      const isEligible = classification && classification.eligible;
+      const chName = (typeof globalThis.escapeHtml === 'function') ? globalThis.escapeHtml(currentChannel.name || currentChannel.handle) : (currentChannel.name || currentChannel.handle);
+
+      if (isEligible) {
+        approvalActionHtml = `
+          <button type="button" class="knolect-btn-secondary" id="knolect-btn-approve-channel">
+            <span>✓</span> Add "${chName}" to Learning Channels (${classification.confidence}% Match)
+          </button>
+        `;
+      } else {
+        approvalActionHtml = `
+          <div class="knolect-ineligible-notice">
+            <span>🚫</span> "${chName}" is classified as entertainment/non-learning and cannot bypass Strict Focus.
+          </div>
+        `;
+      }
     }
 
     screen.innerHTML = `
@@ -348,9 +443,9 @@ class KnolectFocusEngine {
 
         <div class="knolect-block-actions">
           <button type="button" class="knolect-btn-primary" id="knolect-btn-block-action">
-            <span>🏠</span> ${actionText || 'Return to Learning'}
+            <span>🏠</span> ${actionText || 'Return to Learning Space'}
           </button>
-          ${whitelistActionHtml}
+          ${approvalActionHtml}
         </div>
 
         ${channelsHtml}
@@ -365,20 +460,16 @@ class KnolectFocusEngine {
       });
     }
 
-    const whitelistBtn = screen.querySelector('#knolect-btn-whitelist-now');
-    if (whitelistBtn && currentChannel) {
-      whitelistBtn.addEventListener('click', async () => {
-        if (typeof globalThis.addWhitelistChannel === 'function') {
-          await globalThis.addWhitelistChannel(currentChannel);
+    const approveBtn = screen.querySelector('#knolect-btn-approve-channel');
+    if (approveBtn && currentChannel) {
+      approveBtn.addEventListener('click', async () => {
+        if (typeof globalThis.addLearningChannel === 'function') {
+          const res = await globalThis.addLearningChannel(currentChannel);
+          if (res.success) {
+            this.removeBlockScreen();
+            window.location.reload();
+          }
         }
-        if (typeof globalThis.sendRuntimeMessage === 'function') {
-          await globalThis.sendRuntimeMessage({
-            type: (globalThis.MESSAGE_TYPES && globalThis.MESSAGE_TYPES.ADD_WHITELIST) || 'KNOLECT_ADD_WHITELIST',
-            channel: currentChannel
-          });
-        }
-        this.removeBlockScreen();
-        window.location.reload();
       });
     }
   }
@@ -409,19 +500,18 @@ class KnolectFocusEngine {
     placeholder.className = 'knolect-home-container';
 
     let channelsHtml = '';
-    if (this.whitelist && this.whitelist.length > 0) {
-      const chips = this.whitelist.map(ch => {
-        const link = ch.identifier.startsWith('@')
-          ? `https://www.youtube.com/${ch.identifier}`
-          : (ch.identifier.startsWith('uc') || ch.identifier.startsWith('UC')
-              ? `https://www.youtube.com/channel/${ch.identifier}`
-              : `https://www.youtube.com/@${encodeURIComponent(ch.name.replace(/\s+/g, ''))}`);
-        return `<a href="${link}" class="knolect-chip-link">📚 ${ch.name}</a>`;
+    const channels = this.learningChannels || [];
+    if (channels.length > 0) {
+      const chips = channels.map(ch => {
+        const link = (ch.handle && ch.handle.startsWith('@'))
+          ? `https://www.youtube.com/${ch.handle}`
+          : (ch.channelId ? `https://www.youtube.com/channel/${ch.channelId}` : `https://www.youtube.com/@${encodeURIComponent(ch.name.replace(/\s+/g, ''))}`);
+        return `<a href="${link}" class="knolect-chip-link">📚 ${(typeof globalThis.escapeHtml === 'function') ? globalThis.escapeHtml(ch.name) : ch.name}</a>`;
       }).join('');
 
       channelsHtml = `
         <div class="knolect-channels-quick">
-          <div class="knolect-channels-title">Your Whitelisted Learning Channels</div>
+          <div class="knolect-channels-title">Your Approved Learning Channels</div>
           <div class="knolect-chips-grid">
             ${chips}
           </div>
@@ -432,7 +522,7 @@ class KnolectFocusEngine {
     placeholder.innerHTML = `
       <div class="knolect-card">
         <div class="knolect-badge-pill">
-          <span>🎯</span> ${this.strictFocus ? 'Strict Focus Active' : 'Focus Mode Active'}
+          <span>🎯</span> ${this.strictFocus ? 'Strict Focus Active (Allowlist Mode)' : 'Focus Mode Active'}
         </div>
         <h1 class="knolect-title">Turn YouTube into Your Learning Space</h1>
         <p class="knolect-subtitle">Learn what you came for. Block what pulls you away.</p>
@@ -449,66 +539,56 @@ class KnolectFocusEngine {
   }
 
   /**
-   * Inject Whitelist Badge on Watch Page
+   * Inject visual badge on approved learning channels
    */
   injectWhitelistIndicator() {
     if (document.getElementById('knolect-whitelist-badge')) return;
 
-    const titleContainer = document.querySelector('#title h1, ytd-watch-metadata #title, #above-the-fold #title');
-    if (!titleContainer) return;
-
     const badge = document.createElement('div');
     badge.id = 'knolect-whitelist-badge';
-    badge.className = 'knolect-whitelist-indicator';
-    badge.innerHTML = `<span>⭐</span> Whitelisted Channel: <strong>${this.currentChannel.name || 'Learning Content'}</strong> (Unrestricted)`;
+    badge.className = 'knolect-verified-badge';
+    badge.innerHTML = `
+      <span>✓</span>
+      <span>Learning Channel Approved</span>
+    `;
 
-    titleContainer.parentNode.insertBefore(badge, titleContainer);
+    const targetHeader = document.querySelector('ytd-channel-name#channel-header-name, #owner ytd-channel-name, ytd-video-owner-renderer ytd-channel-name');
+    if (targetHeader && targetHeader.parentElement) {
+      targetHeader.parentElement.appendChild(badge);
+    }
   }
 
   /**
-   * Render or update the on-page floating status bar
+   * Render discrete floating focus badge
    */
   renderFloatingBar() {
-    let bar = document.getElementById('knolect-floating-control');
+    let bar = document.getElementById('knolect-floating-bar');
+    if (!this.focusMode) {
+      if (bar) bar.remove();
+      return;
+    }
+
     if (!bar) {
       bar = document.createElement('div');
-      bar.id = 'knolect-floating-control';
-      bar.className = 'knolect-floating-bar';
+      bar.id = 'knolect-floating-bar';
+      bar.className = 'knolect-float-indicator';
       document.body.appendChild(bar);
     }
 
-    const isOn = this.focusMode;
-    const isStrict = this.strictFocus;
-
     bar.innerHTML = `
-      <div class="knolect-float-pill ${isOn ? '' : 'off'}">
-        <span>${isOn ? '🎯' : '💤'}</span>
-        <span>Knolect ${isOn ? (isStrict ? 'Strict' : 'ON') : 'OFF'}</span>
+      <div class="knolect-float-pill" title="Knolect Focus Active">
+        <span class="knolect-dot ${this.strictFocus ? 'knolect-dot-strict' : 'knolect-dot-on'}"></span>
+        <span class="knolect-float-text">KNOLECT ${this.strictFocus ? 'STRICT' : 'FOCUS'}</span>
       </div>
-      <button type="button" class="knolect-float-toggle ${isOn ? '' : 'off'}" id="knolect-btn-toggle-float">
-        ${isOn ? 'Pause' : 'Activate'}
-      </button>
     `;
-
-    const toggleBtn = bar.querySelector('#knolect-btn-toggle-float');
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const newState = !this.focusMode;
-        if (typeof globalThis.sendRuntimeMessage === 'function') {
-          await globalThis.sendRuntimeMessage({
-            type: (globalThis.MESSAGE_TYPES && globalThis.MESSAGE_TYPES.TOGGLE_FOCUS_MODE) || 'KNOLECT_TOGGLE_FOCUS_MODE',
-            enabled: newState
-          });
-        }
-        await this.updateState({ focusMode: newState });
-      });
-    }
   }
 }
 
-// Attach to window & globalThis
-if (typeof window !== 'undefined') {
-  window.KnolectFocusEngine = KnolectFocusEngine;
+// Global scope attachment
+if (typeof globalThis !== 'undefined') {
   globalThis.KnolectFocusEngine = KnolectFocusEngine;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { KnolectFocusEngine };
 }

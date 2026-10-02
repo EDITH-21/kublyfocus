@@ -8,6 +8,7 @@ try {
   importScripts(
     '../utils/constants.js',
     '../utils/helpers.js',
+    '../utils/classifier.js',
     '../storage/storage.js',
     '../utils/messaging.js'
   );
@@ -99,26 +100,26 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 chrome.runtime.onStartup.addListener(async () => {
   console.log('[Knolect] Browser startup');
   await syncTimerState();
-  await updateExtensionBadge();
 });
 
-// Alarm Listener
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === TIMER_ALARM_NAME) {
     await handleTimerCompletion();
   }
 });
 
-// Watch storage changes to keep badge updated
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'local') {
-    if (changes.focusMode || changes.strictFocus || changes.timer) {
-      updateExtensionBadge();
-    }
+// Storage Change Listener - Keep badge in sync
+chrome.storage.onChanged.addListener(async (changes, areaName) => {
+  if (areaName !== 'local') return;
+
+  if (changes.focusMode || changes.strictFocus || changes.timer) {
+    await updateExtensionBadge();
   }
 });
 
-// Central Message Routing Listener
+/**
+ * Central Message Router for runtime messages
+ */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message || !message.type) return false;
 
@@ -141,7 +142,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           break;
         }
 
-        // --- Strict Focus Mode ---
+        // --- Strict Focus ---
         case MESSAGE_TYPES.GET_STRICT_FOCUS: {
           const strictFocus = await getStrictFocus();
           sendResponse({ success: true, strictFocus });
@@ -235,34 +236,43 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           break;
         }
 
-        // --- Whitelist ---
-        case MESSAGE_TYPES.GET_WHITELIST: {
-          const whitelist = await getWhitelist();
-          sendResponse({ success: true, whitelist });
+        // --- Channel Classification ---
+        case MESSAGE_TYPES.CLASSIFY_CHANNEL: {
+          const classification = classifyChannel(message.channel);
+          sendResponse({ success: true, classification });
           break;
         }
 
-        case MESSAGE_TYPES.ADD_WHITELIST: {
-          const result = await addWhitelistChannel(message.channel);
+        // --- Learning Channels (Allowlist) ---
+        case MESSAGE_TYPES.GET_LEARNING_CHANNELS: {
+          const learningChannels = await getLearningChannels();
+          sendResponse({ success: true, learningChannels, whitelist: learningChannels });
+          break;
+        }
+
+        case MESSAGE_TYPES.ADD_LEARNING_CHANNEL: {
+          const result = await addLearningChannel(message.channel);
           if (result.success) {
-            await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.WHITELIST_CHANGED, whitelist: result.whitelist });
+            await broadcastToYouTubeTabs({
+              type: MESSAGE_TYPES.LEARNING_CHANNELS_CHANGED,
+              learningChannels: result.learningChannels,
+              whitelist: result.learningChannels
+            });
           }
           sendResponse(result);
           break;
         }
 
-        case MESSAGE_TYPES.REMOVE_WHITELIST: {
-          const result = await removeWhitelistChannel(message.idOrIdentifier);
+        case MESSAGE_TYPES.REMOVE_LEARNING_CHANNEL: {
+          const result = await removeLearningChannel(message.idOrIdentifier);
           if (result.success) {
-            await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.WHITELIST_CHANGED, whitelist: result.whitelist });
+            await broadcastToYouTubeTabs({
+              type: MESSAGE_TYPES.LEARNING_CHANNELS_CHANGED,
+              learningChannels: result.learningChannels,
+              whitelist: result.learningChannels
+            });
           }
           sendResponse(result);
-          break;
-        }
-
-        case MESSAGE_TYPES.CHECK_WHITELIST: {
-          const isWhitelisted = await isChannelWhitelisted(message.channel);
-          sendResponse({ success: true, isWhitelisted });
           break;
         }
 
@@ -275,21 +285,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         case MESSAGE_TYPES.UPDATE_SETTINGS: {
           await saveSettings(message.settings);
-          const updated = await getSettings();
-          await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.SETTINGS_CHANGED, settings: updated });
-          sendResponse({ success: true, settings: updated });
+          const settings = await getSettings();
+          await broadcastToYouTubeTabs({ type: MESSAGE_TYPES.SETTINGS_CHANGED, settings });
+          sendResponse({ success: true, settings });
           break;
         }
 
         default:
-          sendResponse({ success: false, error: 'Unknown message type' });
-          break;
+          sendResponse({ error: 'Unknown message type' });
       }
     } catch (err) {
-      console.error('[Knolect Service Worker] Error processing message:', err);
-      sendResponse({ success: false, error: err.message });
+      console.error('[Knolect Service Worker] Message handling exception:', err);
+      sendResponse({ error: err.message });
     }
   })();
 
-  return true;
+  return true; // Keep message channel open for asynchronous sendResponse
 });

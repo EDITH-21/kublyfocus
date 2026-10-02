@@ -184,6 +184,20 @@
   border-color: #475569 !important;
 }
 
+.knolect-ineligible-notice {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  color: #fca5a5 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-align: left !important;
+}
+
 .knolect-block-whitelist-box {
   margin-top: 24px !important;
   border-top: 1px solid #334155 !important;

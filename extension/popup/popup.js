@@ -1,6 +1,7 @@
 /**
  * Knolect - Popup Controller
- * Manages popup UI state, tabs, focus toggling, strict focus, live timer, whitelist, and settings.
+ * Manages popup UI state, tabs, focus toggling, strict focus, live timer,
+ * Learning Channels allowlist, and local classification previews.
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const strictToggle = document.getElementById('strict-toggle');
   const activeTabCard = document.getElementById('active-tab-context');
   const currentChannelName = document.getElementById('current-channel-name');
+  const currentChannelClassification = document.getElementById('current-channel-classification');
   const btnQuickWhitelist = document.getElementById('btn-quick-whitelist');
   const nonYtBanner = document.getElementById('non-yt-banner');
 
@@ -39,10 +41,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const timerBtnReset = document.getElementById('timer-btn-reset');
   const presetButtons = document.querySelectorAll('.preset-btn');
 
-  // DOM Elements - Whitelist Tab
+  // DOM Elements - Learning Channels Tab
   const whitelistForm = document.getElementById('whitelist-form');
   const whitelistInput = document.getElementById('whitelist-input');
+  const classificationPreviewCard = document.getElementById('classification-preview-card');
   const whitelistFeedback = document.getElementById('whitelist-feedback');
+  const suggestedChipsContainer = document.getElementById('suggested-chips-container');
   const whitelistItems = document.getElementById('whitelist-items');
   const whitelistCountBadge = document.getElementById('whitelist-count-badge');
 
@@ -68,7 +72,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (targetContent) targetContent.classList.add('active');
 
       if (targetId === 'tab-whitelist') {
-        renderWhitelist();
+        renderLearningChannels();
+        renderSuggestedChips();
       }
     });
   });
@@ -106,8 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   strictToggle.addEventListener('change', async () => {
     const isStrict = strictToggle.checked;
-    const isFocus = focusToggle.checked;
-    updateFocusUi(isFocus, isStrict);
+    updateFocusUi(focusToggle.checked, isStrict);
 
     await sendRuntimeMessage({
       type: MESSAGE_TYPES.TOGGLE_STRICT_FOCUS,
@@ -116,89 +120,118 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   /* ==========================================================================
-     3. Active YouTube Tab Detection & Quick Whitelist
+     3. Active Tab Context & Channel Detection
      ========================================================================== */
   async function checkActiveTab() {
     try {
-      if (!chrome.tabs || !chrome.tabs.query) return;
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      const tabs = await getActiveTabs();
+      const currentTab = tabs && tabs[0];
 
-      if (tab && tab.url && (tab.url.includes('youtube.com') || tab.url.includes('youtu.be'))) {
-        nonYtBanner.classList.add('hidden');
+      if (!currentTab || !currentTab.url) {
+        showNonYouTubeView();
+        return;
+      }
 
-        if (tab.id) {
-          const response = await sendTabMessage(tab.id, { type: MESSAGE_TYPES.QUERY_PAGE_STATUS });
-          if (response && response.channel && (response.channel.name || response.channel.handle)) {
-            activeTabContext = response.channel;
-            currentChannelName.textContent = response.channel.name || response.channel.handle;
-            activeTabCard.classList.remove('hidden');
+      if (!isYouTubeUrl(currentTab.url)) {
+        showNonYouTubeView();
+        return;
+      }
 
-            const isWhitelisted = await isChannelWhitelisted(response.channel);
-            if (isWhitelisted) {
-              btnQuickWhitelist.textContent = 'Whitelisted ✓';
-              btnQuickWhitelist.disabled = true;
-              btnQuickWhitelist.className = 'btn-ghost btn-sm';
-            } else {
-              btnQuickWhitelist.textContent = '+ Whitelist';
-              btnQuickWhitelist.disabled = false;
-              btnQuickWhitelist.className = 'btn-secondary btn-sm';
-            }
-            return;
+      // Hide non-YT notice
+      nonYtBanner.classList.add('hidden');
+      activeTabCard.classList.remove('hidden');
+
+      // Query content script for live status
+      const response = await sendTabMessage(currentTab.id, { type: MESSAGE_TYPES.QUERY_PAGE_STATUS });
+
+      if (response && response.channel && (response.channel.name || response.channel.handle)) {
+        activeTabContext = response.channel;
+        const displayName = response.channel.name || response.channel.handle;
+        currentChannelName.textContent = displayName;
+
+        const isApproved = response.isApproved || response.isWhitelisted;
+        if (isApproved) {
+          currentChannelClassification.textContent = '✓ Approved Learning Channel';
+          currentChannelClassification.style.color = '#10b981';
+          btnQuickWhitelist.textContent = '✓ Approved';
+          btnQuickWhitelist.disabled = true;
+          btnQuickWhitelist.className = 'btn-secondary btn-sm';
+        } else {
+          // Classify the current channel
+          const classification = (typeof globalThis.classifyChannel === 'function')
+            ? globalThis.classifyChannel(response.channel)
+            : { eligible: true, category: 'education' };
+
+          if (classification.eligible) {
+            currentChannelClassification.textContent = `💡 Educational Channel (${classification.confidence}% Match)`;
+            currentChannelClassification.style.color = '#38bdf8';
+            btnQuickWhitelist.textContent = '+ Add Learning Channel';
+            btnQuickWhitelist.disabled = false;
+            btnQuickWhitelist.className = 'btn-primary btn-sm';
+          } else {
+            currentChannelClassification.textContent = '🚫 Entertainment Channel (Blocked in Strict Focus)';
+            currentChannelClassification.style.color = '#f87171';
+            btnQuickWhitelist.textContent = 'Keep Blocked';
+            btnQuickWhitelist.disabled = true;
+            btnQuickWhitelist.className = 'btn-ghost btn-sm';
           }
         }
       } else {
-        nonYtBanner.classList.remove('hidden');
-        activeTabCard.classList.add('hidden');
+        currentChannelName.textContent = 'YouTube Browsing';
+        currentChannelClassification.textContent = 'Focus Mode Active';
+        currentChannelClassification.style.color = '#94a3b8';
+        btnQuickWhitelist.classList.add('hidden');
       }
     } catch (e) {
-      console.debug('[Knolect Popup] Tab check notice:', e);
+      console.debug('[Knolect Popup] Active tab check notice:', e);
+      showNonYouTubeView();
     }
+  }
+
+  function showNonYouTubeView() {
+    activeTabCard.classList.add('hidden');
+    nonYtBanner.classList.remove('hidden');
   }
 
   btnQuickWhitelist.addEventListener('click', async () => {
     if (!activeTabContext) return;
-    const result = await addWhitelistChannel(activeTabContext);
-    if (result.success) {
-      btnQuickWhitelist.textContent = 'Whitelisted ✓';
-      btnQuickWhitelist.disabled = true;
-      btnQuickWhitelist.className = 'btn-ghost btn-sm';
-      renderWhitelist();
-
-      // Refresh tab enforcement
-      if (chrome.tabs && chrome.tabs.query) {
-        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        if (tab && tab.id) {
-          await sendTabMessage(tab.id, { type: MESSAGE_TYPES.FORCE_REAPPLY });
-        }
-      }
+    const res = await addLearningChannel(activeTabContext);
+    if (res.success) {
+      showWhitelistFeedback(`Added "${activeTabContext.name || activeTabContext.handle}" to Learning Channels!`, 'success');
+      await checkActiveTab();
+      renderLearningChannels();
+    } else {
+      showWhitelistFeedback(res.error || 'Channel is not eligible for Learning Allowlist.', 'error');
     }
   });
 
   /* ==========================================================================
-     4. Session Timer
+     4. Live Session Timer
      ========================================================================== */
   function renderTimerDisplay() {
-    if (currentTimerState.running && currentTimerState.endTime) {
-      const remainingMs = currentTimerState.endTime - Date.now();
-      currentTimerState.remaining = Math.max(0, Math.ceil(remainingMs / 1000));
-    }
-
     timerDisplay.textContent = formatSeconds(currentTimerState.remaining);
 
     if (currentTimerState.running) {
-      timerStatusText.textContent = 'Learning session in progress 🔥';
+      timerStatusText.textContent = 'Session in progress — Keep learning!';
+      timerStatusText.style.color = '#10b981';
       timerBtnStart.classList.add('hidden');
       timerBtnPause.classList.remove('hidden');
+    } else if (currentTimerState.remaining < currentTimerState.duration && currentTimerState.remaining > 0) {
+      timerStatusText.textContent = 'Session paused';
+      timerStatusText.style.color = '#f59e0b';
+      timerBtnStart.classList.remove('hidden');
+      timerBtnPause.classList.add('hidden');
     } else {
-      timerStatusText.textContent = currentTimerState.remaining === 0 ? 'Session completed! Take a break ☕' : 'Ready to focus';
+      timerStatusText.textContent = 'Ready to focus';
+      timerStatusText.style.color = '#94a3b8';
       timerBtnStart.classList.remove('hidden');
       timerBtnPause.classList.add('hidden');
     }
 
-    const curMin = Math.round(currentTimerState.duration / 60);
+    // Update preset buttons active state
     presetButtons.forEach(btn => {
-      const btnMin = parseInt(btn.getAttribute('data-min'), 10);
-      if (btnMin === curMin) {
+      const min = parseInt(btn.getAttribute('data-min'), 10);
+      if (min * 60 === currentTimerState.duration) {
         btn.classList.add('active');
       } else {
         btn.classList.remove('active');
@@ -206,26 +239,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  function startLiveTimerTick() {
-    if (timerInterval) clearInterval(timerInterval);
+  function startLocalTimerTicker() {
+    clearInterval(timerInterval);
     timerInterval = setInterval(() => {
-      if (currentTimerState.running) {
-        renderTimerDisplay();
+      if (currentTimerState.running && currentTimerState.endTime) {
+        const now = Date.now();
+        const diffMs = currentTimerState.endTime - now;
+        currentTimerState.remaining = Math.max(0, Math.ceil(diffMs / 1000));
+
         if (currentTimerState.remaining <= 0) {
           currentTimerState.running = false;
-          renderTimerDisplay();
+          currentTimerState.endTime = null;
+          clearInterval(timerInterval);
         }
+        renderTimerDisplay();
       }
-    }, 500);
-  }
-
-  async function loadTimerState() {
-    const timer = await getTimerState();
-    currentTimerState = timer;
-    renderTimerDisplay();
-    if (timer.running) {
-      startLiveTimerTick();
-    }
+    }, 1000);
   }
 
   timerBtnStart.addEventListener('click', async () => {
@@ -233,7 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (response && response.timer) {
       currentTimerState = response.timer;
       renderTimerDisplay();
-      startLiveTimerTick();
+      startLocalTimerTicker();
     }
   });
 
@@ -242,6 +271,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (response && response.timer) {
       currentTimerState = response.timer;
       renderTimerDisplay();
+      clearInterval(timerInterval);
     }
   });
 
@@ -250,6 +280,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (response && response.timer) {
       currentTimerState = response.timer;
       renderTimerDisplay();
+      clearInterval(timerInterval);
     }
   });
 
@@ -272,17 +303,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   /* ==========================================================================
-     5. Whitelist Manager
+     5. Learning Channels Manager & Live Classifier Preview
      ========================================================================== */
-  async function renderWhitelist() {
-    const list = await getWhitelist();
+  async function renderLearningChannels() {
+    const list = await getLearningChannels();
     whitelistCountBadge.textContent = list.length;
     whitelistItems.innerHTML = '';
 
     if (!list || list.length === 0) {
       whitelistItems.innerHTML = `
         <li class="whitelist-empty">
-          No channels whitelisted yet.<br>Add your favorite educational channels above.
+          No learning channels added yet.<br>Add educational channels above or choose from suggested channels.
         </li>
       `;
       return;
@@ -295,21 +326,33 @@ document.addEventListener('DOMContentLoaded', async () => {
       const infoDiv = document.createElement('div');
       infoDiv.className = 'whitelist-item-info';
 
+      const nameRow = document.createElement('div');
+      nameRow.style.display = 'flex';
+      nameRow.style.alignItems = 'center';
+
       const nameSpan = document.createElement('span');
       nameSpan.className = 'whitelist-name';
       nameSpan.textContent = channel.name;
+      nameRow.appendChild(nameSpan);
+
+      if (channel.source === 'system_verified' || channel.confidence >= 95) {
+        const verifiedTag = document.createElement('span');
+        verifiedTag.className = 'verified-badge-mini';
+        verifiedTag.innerHTML = '✓ Verified';
+        nameRow.appendChild(verifiedTag);
+      }
 
       const idSpan = document.createElement('span');
       idSpan.className = 'whitelist-id';
       idSpan.textContent = channel.handle || channel.identifier;
 
-      infoDiv.appendChild(nameSpan);
+      infoDiv.appendChild(nameRow);
       infoDiv.appendChild(idSpan);
 
       const removeBtn = document.createElement('button');
       removeBtn.type = 'button';
       removeBtn.className = 'btn-remove';
-      removeBtn.title = 'Remove from Whitelist';
+      removeBtn.title = 'Remove from Learning Channels';
       removeBtn.innerHTML = `
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -318,10 +361,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       `;
 
       removeBtn.addEventListener('click', async () => {
-        const res = await removeWhitelistChannel(channel.id || channel.identifier);
+        const res = await removeLearningChannel(channel.id || channel.channelId || channel.identifier);
         if (res.success) {
-          showWhitelistFeedback('Channel removed.', 'success');
-          renderWhitelist();
+          showWhitelistFeedback('Channel removed from allowlist.', 'success');
+          renderLearningChannels();
           checkActiveTab();
         }
       });
@@ -332,80 +375,177 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  function renderSuggestedChips() {
+    if (!suggestedChipsContainer) return;
+    suggestedChipsContainer.innerHTML = '';
+
+    const suggestions = [
+      { name: 'PW Foundation', handle: '@PW-Foundation' },
+      { name: 'freeCodeCamp', handle: '@freecodecamp' },
+      { name: 'MIT OCW', handle: '@mitocw' },
+      { name: 'Gate Smashers', handle: '@GateSmashers' },
+      { name: 'Khan Academy', handle: '@khanacademy' },
+      { name: '3Blue1Brown', handle: '@3blue1brown' }
+    ];
+
+    suggestions.forEach(item => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'suggested-chip';
+      chip.textContent = `+ ${item.name}`;
+
+      chip.addEventListener('click', async () => {
+        const res = await addLearningChannel(item);
+        if (res.success) {
+          showWhitelistFeedback(`Added "${item.name}" to Learning Channels!`, 'success');
+          renderLearningChannels();
+          checkActiveTab();
+        } else {
+          showWhitelistFeedback(res.error || 'Already added.', 'error');
+        }
+      });
+
+      suggestedChipsContainer.appendChild(chip);
+    });
+  }
+
   function showWhitelistFeedback(msg, type = 'success') {
     whitelistFeedback.textContent = msg;
     whitelistFeedback.className = `feedback-msg ${type}`;
     whitelistFeedback.classList.remove('hidden');
     setTimeout(() => {
       whitelistFeedback.classList.add('hidden');
-    }, 3000);
+    }, 4000);
   }
 
+  // Handle classification preview on form submit
   whitelistForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const rawVal = whitelistInput.value.trim();
     if (!rawVal) return;
 
     const normalized = normalizeChannelInfo(rawVal);
-    const result = await addWhitelistChannel(normalized);
+    const classification = (typeof globalThis.classifyChannel === 'function')
+      ? globalThis.classifyChannel(normalized)
+      : { eligible: true, category: 'education', confidence: 90, reasons: [] };
 
-    if (result.success) {
-      whitelistInput.value = '';
-      showWhitelistFeedback(`Added "${normalized.name}" to whitelist.`, 'success');
-      renderWhitelist();
-      checkActiveTab();
+    // Render Preview Card
+    classificationPreviewCard.classList.remove('hidden');
+    classificationPreviewCard.className = `classification-card ${classification.eligible ? 'approved' : 'rejected'}`;
+
+    if (classification.eligible) {
+      const reasonsList = (classification.reasons || [])
+        .slice(0, 3)
+        .map(r => `<li>${escapeHtml(r)}</li>`)
+        .join('');
+
+      classificationPreviewCard.innerHTML = `
+        <div class="classification-title">
+          <span>✓</span>
+          <span>Learning Channel Verified (${classification.confidence}% Match)</span>
+        </div>
+        <div style="font-weight:600;color:#f8fafc;">${escapeHtml(normalized.name)} ${normalized.handle ? `<span style="color:#94a3b8;font-size:10px;">${escapeHtml(normalized.handle)}</span>` : ''}</div>
+        <ul class="classification-reasons">${reasonsList}</ul>
+        <div class="classification-actions">
+          <button type="button" id="btn-confirm-add-channel" class="btn-primary btn-sm">Add to Learning Channels</button>
+          <button type="button" id="btn-cancel-preview" class="btn-ghost btn-sm">Cancel</button>
+        </div>
+      `;
+
+      document.getElementById('btn-confirm-add-channel').addEventListener('click', async () => {
+        const result = await addLearningChannel(normalized);
+        if (result.success) {
+          whitelistInput.value = '';
+          classificationPreviewCard.classList.add('hidden');
+          showWhitelistFeedback(`Added "${normalized.name}" to Learning Channels.`, 'success');
+          renderLearningChannels();
+          checkActiveTab();
+        } else {
+          showWhitelistFeedback(result.error || 'Failed to add channel.', 'error');
+        }
+      });
+
+      document.getElementById('btn-cancel-preview').addEventListener('click', () => {
+        classificationPreviewCard.classList.add('hidden');
+      });
+
     } else {
-      showWhitelistFeedback(result.error || 'Failed to add channel.', 'error');
+      const reasonsList = (classification.reasons || [])
+        .slice(0, 2)
+        .map(r => `<li>${escapeHtml(r)}</li>`)
+        .join('');
+
+      classificationPreviewCard.innerHTML = `
+        <div class="classification-title">
+          <span>🚫</span>
+          <span>Channel Not Eligible for Strict Focus</span>
+        </div>
+        <div style="font-weight:600;color:#f8fafc;">${escapeHtml(normalized.name)}</div>
+        <p style="margin:0;color:var(--text-secondary);font-size:10px;">
+          This channel does not appear to be primarily focused on educational content. Strict Focus Mode keeps non-learning channels blocked.
+        </p>
+        <ul class="classification-reasons">${reasonsList}</ul>
+        <div class="classification-actions">
+          <button type="button" id="btn-dismiss-preview" class="btn-secondary btn-sm">Keep Blocked</button>
+        </div>
+      `;
+
+      document.getElementById('btn-dismiss-preview').addEventListener('click', () => {
+        classificationPreviewCard.classList.add('hidden');
+      });
     }
   });
 
   /* ==========================================================================
-     6. Settings Tab
+     6. Settings Manager
      ========================================================================== */
   async function loadSettings() {
     const settings = await getSettings();
-
     settingHideShorts.checked = Boolean(settings.hideShorts);
     settingHideComments.checked = Boolean(settings.hideComments);
     settingHideRecs.checked = Boolean(settings.hideRecommendations);
     settingHideHomeFeed.checked = Boolean(settings.hideHomeFeed);
     settingHideEndScreen.checked = Boolean(settings.hideEndScreen);
-
     if (settings.defaultTimerDuration) {
       settingDefaultTimer.value = String(settings.defaultTimerDuration);
     }
   }
 
-  async function handleSettingChange() {
-    const updated = {
-      hideShorts: settingHideShorts.checked,
-      hideComments: settingHideComments.checked,
-      hideRecommendations: settingHideRecs.checked,
-      hideHomeFeed: settingHideHomeFeed.checked,
-      hideEndScreen: settingHideEndScreen.checked,
-      defaultTimerDuration: parseInt(settingDefaultTimer.value, 10) || 1500
-    };
-
+  async function updateSettingValue(key, value) {
+    const updateObj = { [key]: value };
+    await saveSettings(updateObj);
     await sendRuntimeMessage({
       type: MESSAGE_TYPES.UPDATE_SETTINGS,
-      settings: updated
+      settings: updateObj
     });
   }
 
-  settingHideShorts.addEventListener('change', handleSettingChange);
-  settingHideComments.addEventListener('change', handleSettingChange);
-  settingHideRecs.addEventListener('change', handleSettingChange);
-  settingHideHomeFeed.addEventListener('change', handleSettingChange);
-  settingHideEndScreen.addEventListener('change', handleSettingChange);
-  settingDefaultTimer.addEventListener('change', handleSettingChange);
+  settingHideShorts.addEventListener('change', () => updateSettingValue('hideShorts', settingHideShorts.checked));
+  settingHideComments.addEventListener('change', () => updateSettingValue('hideComments', settingHideComments.checked));
+  settingHideRecs.addEventListener('change', () => updateSettingValue('hideRecommendations', settingHideRecs.checked));
+  settingHideHomeFeed.addEventListener('change', () => updateSettingValue('hideHomeFeed', settingHideHomeFeed.checked));
+  settingHideEndScreen.addEventListener('change', () => updateSettingValue('hideEndScreen', settingHideEndScreen.checked));
+  settingDefaultTimer.addEventListener('change', () => updateSettingValue('defaultTimerDuration', parseInt(settingDefaultTimer.value, 10)));
 
   /* ==========================================================================
-     7. Initialize Popup State
+     7. Initialization
      ========================================================================== */
-  const currentFocus = await getFocusMode();
-  const currentStrict = await getStrictFocus();
-  updateFocusUi(currentFocus, currentStrict);
-  await loadTimerState();
-  await loadSettings();
-  await checkActiveTab();
+  async function initPopup() {
+    await initStorageDefaults();
+
+    const focusMode = await getFocusMode();
+    const strictFocus = await getStrictFocus();
+    updateFocusUi(focusMode, strictFocus);
+
+    currentTimerState = await getTimerState();
+    renderTimerDisplay();
+    if (currentTimerState.running) {
+      startLocalTimerTicker();
+    }
+
+    await loadSettings();
+    await checkActiveTab();
+  }
+
+  await initPopup();
 });
