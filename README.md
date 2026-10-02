@@ -52,23 +52,25 @@
 
 ```
 focenza/
-├── manifest.json            # Manifest V3 extension configuration
-├── popup/
-│   ├── popup.html           # Modern popup UI (Focus, Whitelist, Settings)
-│   ├── popup.css            # Dark/light theme design system
-│   └── popup.js             # Live UI controller & state synchronizer
-├── content/
-│   ├── content.js           # Content script entrypoint & SPA navigation observer
-│   ├── focus-mode.js        # Core Strict Focus engine & block screen overlay
-│   └── content.css          # Zero-layout-shift distraction hiding rules
-├── background/
-│   └── service-worker.js    # Service worker (alarms, badge, message routing)
-├── storage/
-│   └── storage.js           # Centralized async chrome.storage.local wrapper
-├── utils/
-│   ├── constants.js         # Message types, storage keys, YouTube selectors
-│   ├── messaging.js         # Runtime & tab message communication helpers
-│   └── helpers.js           # Time formatting, channel normalization & debounce
+├── extension/               # Chrome Extension (Manifest V3)
+│   ├── manifest.json        # Extension configuration
+│   ├── popup/               # Modern popup UI (Focus, Whitelist, Settings)
+│   │   ├── popup.html
+│   │   ├── popup.css
+│   │   └── popup.js
+│   ├── content/             # Content scripts & SPA observers
+│   │   ├── content.js
+│   │   ├── focus-mode.js    # Strict Focus engine & study block overlay
+│   │   └── content.css      # Distraction blocking stylesheet
+│   ├── background/          # Background service worker (alarms, badge, messages)
+│   │   └── service-worker.js
+│   ├── storage/             # chrome.storage.local helper
+│   │   └── storage.js
+│   ├── utils/               # Constants, helpers, messaging
+│   │   ├── constants.js
+│   │   ├── helpers.js
+│   │   └── messaging.js
+│   └── assets/icons/        # Extension icons (16, 48, 128)
 ├── backend/
 │   ├── src/
 │   │   ├── config/db.js     # Data store engine & MongoDB connector
@@ -119,5 +121,5 @@ node server.js
 1. Open Google Chrome and navigate to `chrome://extensions/`.
 2. Enable **Developer mode** in the top-right corner.
 3. Click **"Load unpacked"** in the top-left corner.
-4. Select the project folder (`c:\Users\shiva\Desktop\focenza`).
+4. Select the **`extension`** folder inside this directory (`c:\Users\shiva\Desktop\focenza\extension`).
 5. Open [YouTube](https://www.youtube.com) and test Strict Focus Mode.

@@ -16,9 +16,12 @@ function assert(condition, message) {
   }
 }
 
+const extDir = path.join(__dirname, 'extension');
+assert(fs.existsSync(extDir), 'extension/ directory exists');
+
 // 1. Manifest JSON Verification
-const manifestPath = path.join(__dirname, 'manifest.json');
-assert(fs.existsSync(manifestPath), 'manifest.json exists');
+const manifestPath = path.join(extDir, 'manifest.json');
+assert(fs.existsSync(manifestPath), 'manifest.json exists in extension/');
 
 let manifest;
 try {
@@ -34,7 +37,7 @@ try {
 // 2. Icon files verification
 if (manifest && manifest.icons) {
   for (const [size, iconRelPath] of Object.entries(manifest.icons)) {
-    const iconAbs = path.join(__dirname, iconRelPath);
+    const iconAbs = path.join(extDir, iconRelPath);
     assert(fs.existsSync(iconAbs), `Icon file exists: ${iconRelPath}`);
     const stat = fs.statSync(iconAbs);
     assert(stat.size > 50, `Icon file is non-empty: ${iconRelPath} (${stat.size} bytes)`);
@@ -42,32 +45,32 @@ if (manifest && manifest.icons) {
 }
 
 // 3. Popup files verification
-const popupHtml = path.join(__dirname, manifest.action.default_popup);
-const popupCss = path.join(__dirname, 'popup', 'popup.css');
-const popupJs = path.join(__dirname, 'popup', 'popup.js');
+const popupHtml = path.join(extDir, manifest.action.default_popup);
+const popupCss = path.join(extDir, 'popup', 'popup.css');
+const popupJs = path.join(extDir, 'popup', 'popup.js');
 
 assert(fs.existsSync(popupHtml), 'popup.html exists');
 assert(fs.existsSync(popupCss), 'popup.css exists');
 assert(fs.existsSync(popupJs), 'popup.js exists');
 
 // 4. Background Service Worker verification
-const swPath = path.join(__dirname, manifest.background.service_worker);
+const swPath = path.join(extDir, manifest.background.service_worker);
 assert(fs.existsSync(swPath), 'service-worker.js exists');
 
 // 5. Content Script files verification
 if (manifest && manifest.content_scripts) {
   manifest.content_scripts.forEach((cs) => {
     (cs.js || []).forEach(jsFile => {
-      assert(fs.existsSync(path.join(__dirname, jsFile)), `Content script JS exists: ${jsFile}`);
+      assert(fs.existsSync(path.join(extDir, jsFile)), `Content script JS exists: ${jsFile}`);
     });
     (cs.css || []).forEach(cssFile => {
-      assert(fs.existsSync(path.join(__dirname, cssFile)), `Content script CSS exists: ${cssFile}`);
+      assert(fs.existsSync(path.join(extDir, cssFile)), `Content script CSS exists: ${cssFile}`);
     });
   });
 }
 
 // 6. Helper logic unit tests
-const helpers = require('./utils/helpers.js');
+const helpers = require('./extension/utils/helpers.js');
 assert(helpers.formatSeconds(1500) === '25:00', 'formatSeconds(1500) returns 25:00');
 assert(helpers.formatSeconds(0) === '00:00', 'formatSeconds(0) returns 00:00');
 assert(helpers.formatSeconds(3665) === '01:01:05', 'formatSeconds(3665) returns 01:01:05');
@@ -82,7 +85,7 @@ const norm3 = helpers.normalizeChannelInfo('Apna College');
 assert(norm3.name === 'Apna College', 'normalizeChannelInfo handles channel name');
 
 // 7. Constants verification
-const constants = require('./utils/constants.js');
+const constants = require('./extension/utils/constants.js');
 assert(constants.MESSAGE_TYPES.TOGGLE_FOCUS_MODE, 'TOGGLE_FOCUS_MODE message constant exists');
 assert(constants.MESSAGE_TYPES.TOGGLE_STRICT_FOCUS, 'TOGGLE_STRICT_FOCUS message constant exists');
 assert(constants.DEFAULT_STORAGE.focusMode === true, 'DEFAULT_STORAGE has focusMode true');
