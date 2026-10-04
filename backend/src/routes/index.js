@@ -74,6 +74,7 @@ function registerRoutes(app) {
   app.get('/api/admin/error-logs', requireAdmin, adminController.getErrorLogs);
   app.get('/api/admin/audit-logs', requireAdmin, adminController.getAuditLogs);
   app.get('/api/admin/health', adminController.getSystemHealth);
+  app.get('/api/health', adminController.getSystemHealth);
 }
 
 module.exports = registerRoutes;
