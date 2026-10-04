@@ -1,37 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "outputDirectory": "website",
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/index.js"
-    },
-    {
-      "source": "/dashboard",
-      "destination": "/website/dashboard.html"
-    },
-    {
-      "source": "/admin",
-      "destination": "/website/admin.html"
-    },
-    {
-      "source": "/install",
-      "destination": "/website/install.html"
-    },
-    {
-      "source": "/support",
-      "destination": "/website/support.html"
-    },
-    {
-      "source": "/",
-      "destination": "/website/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/website/$1"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
