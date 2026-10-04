@@ -1,0 +1,23 @@
+{
+  "name": "knolect",
+  "version": "1.4.0",
+  "description": "Knolect — Turn YouTube into your learning space",
+  "main": "server.js",
+  "scripts": {
+    "build": "node -e \"console.log('Knolect Build Ready')\"",
+    "start": "node server.js",
+    "test": "node test_extension.js && node test_backend.js && node test_website.js"
+  },
+  "keywords": [
+    "knolect",
+    "focus",
+    "youtube",
+    "productivity",
+    "education"
+  ],
+  "author": "Shivam & Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -3,209 +3,460 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Knolect — Admin Dashboard</title>
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    .admin-container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
-    .stat-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .stat-card { background: #0f172a; border: 1px solid #1e293b; padding: 20px; border-radius: 12px; }
-    .stat-val { font-size: 28px; font-weight: 800; color: #10b981; font-family: monospace; }
-    .stat-label { font-size: 12px; color: #94a3b8; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .table-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-    th { padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #94a3b8; font-weight: 600; }
-    td { padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #f8fafc; }
-    .status-badge { display: inline-block; padding: 3px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700; }
-    .badge-open { background: rgba(239, 68, 68, 0.15); color: #f87171; }
-    .badge-active { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-    .auth-box { max-width: 400px; margin: 80px auto; background: #0f172a; border: 1px solid #1e293b; padding: 32px; border-radius: 16px; text-align: center; }
-  </style>
+  <title>Knolect — Control Center</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
 </head>
-<body style="background: #080c14; color: #f8fafc;">
+<body>
 
-  <header class="navbar">
-    <div class="container nav-container">
-      <a href="index.html" class="brand-logo">
-        <img src="assets/logo.svg" alt="Knolect Logo" width="32" height="32">
-        <span>Knolect Admin</span>
-      </a>
-      <div id="admin-user-info" style="font-size: 13px; color: #94a3b8;"></div>
-    </div>
-  </header>
-
-  <main class="admin-container">
-    <!-- Login Screen -->
-    <div id="admin-login-section" class="auth-box">
-      <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">Admin Authentication</h2>
-      <p style="font-size: 12px; color: #94a3b8; margin-bottom: 20px;">Access Knolect product metrics and triage tools.</p>
+  <!-- Login Gate Modal -->
+  <div id="adminLoginOverlay" class="admin-modal-overlay active">
+    <div class="admin-modal" style="max-width: 400px; text-align: center;">
+      <div style="display: flex; justify-content: center; margin-bottom: 8px;">
+        <img src="assets/logo.png" alt="Knolect Logo" style="width: 48px; height: 48px; object-fit: contain;">
+      </div>
+      <h2 style="font-size: 1.25rem; font-weight: 700;">Knolect Control Center</h2>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">Authenticate with your Knolect administrative credentials to access operations.</p>
       
-      <form id="admin-login-form" style="display: flex; flex-direction: column; gap: 14px; text-align: left;">
+      <form id="adminLoginForm" style="display: flex; flex-direction: column; gap: 14px; text-align: left; margin-top: 8px;">
         <div>
-          <label style="font-size: 11px; color: #94a3b8;">Email</label>
-          <input type="email" id="admin-email" value="admin@knolect.app" required style="width: 100%; background: #1e293b; border: 1px solid #334155; color: #f8fafc; padding: 8px 12px; border-radius: 6px; box-sizing: border-box;">
+          <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; font-weight: 600;">Admin Email</label>
+          <input type="email" id="adminEmail" value="admin@knolect.app" required style="width: 100%; background: #080c14; border: 1px solid var(--border-subtle); color: #fff; padding: 10px 12px; border-radius: var(--radius-sm); margin-top: 4px; box-sizing: border-box;">
         </div>
         <div>
-          <label style="font-size: 11px; color: #94a3b8;">Password</label>
-          <input type="password" id="admin-password" value="AdminKnolect@2026" required style="width: 100%; background: #1e293b; border: 1px solid #334155; color: #f8fafc; padding: 8px 12px; border-radius: 6px; box-sizing: border-box;">
+          <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; font-weight: 600;">Admin Password</label>
+          <input type="password" id="adminPassword" value="AdminKnolect@2026" required style="width: 100%; background: #080c14; border: 1px solid var(--border-subtle); color: #fff; padding: 10px 12px; border-radius: var(--radius-sm); margin-top: 4px; box-sizing: border-box;">
         </div>
-        <button type="submit" class="btn btn-primary" style="margin-top: 8px; width: 100%;">Sign In as Admin</button>
-        <div id="login-error" style="color: #ef4444; font-size: 12px; text-align: center;"></div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 8px; padding: 10px;">Access Control Center</button>
+        <div id="adminLoginError" style="color: var(--accent-rose); font-size: 0.8rem; text-align: center;"></div>
       </form>
     </div>
+  </div>
 
-    <!-- Dashboard Content (hidden until login) -->
-    <div id="admin-dashboard" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+  <!-- Main App Layout -->
+  <div class="admin-layout" id="adminAppLayout" style="display: none;">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <img src="assets/logo.png" alt="Knolect Logo">
         <div>
-          <h1 style="font-size: 24px; font-weight: 800;">System & Product Overview</h1>
-          <p style="font-size: 13px; color: #94a3b8;">Privacy-safe aggregated metrics and support queues.</p>
-        </div>
-        <button type="button" id="btn-refresh" class="btn btn-secondary btn-sm">↻ Refresh Data</button>
-      </div>
-
-      <!-- Stat Cards -->
-      <div class="stat-cards-grid">
-        <div class="stat-card">
-          <div class="stat-val" id="stat-users">0</div>
-          <div class="stat-label">Total Users</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-val" id="stat-sessions">0</div>
-          <div class="stat-label">Focus Sessions</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-val" id="stat-hours">0h</div>
-          <div class="stat-label">Study Time Recorded</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-val" id="stat-bugs">0</div>
-          <div class="stat-label">Open Bug Reports</div>
+          <div class="admin-brand-title">Knolect</div>
+          <div class="admin-brand-sub">Control Center</div>
         </div>
       </div>
 
-      <!-- Bug Reports Queue -->
-      <div class="table-card">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Open Bug Reports</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Browser</th>
-              <th>Version</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody id="bugs-tbody">
-            <tr><td colspan="5" style="color:#94a3b8;text-align:center;">No open bug reports</td></tr>
-          </tbody>
-        </table>
+      <nav class="admin-nav">
+        <a class="admin-nav-item active" data-tab="overview">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Overview
+        </a>
+
+        <!-- Section: PRODUCT -->
+        <div class="nav-section-label">PRODUCT</div>
+        <a class="admin-nav-item" data-tab="users">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Users
+        </a>
+        <a class="admin-nav-item" data-tab="feature-flags">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Features & Flags
+        </a>
+        <a class="admin-nav-item" data-tab="releases">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Releases
+        </a>
+
+        <!-- Section: EXPERIENCE -->
+        <div class="nav-section-label">EXPERIENCE</div>
+        <a class="admin-nav-item" data-tab="feedback-bugs">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16.01"/><line x1="16" y1="16" x2="16.01" y2="16.01"/></svg>
+          User Voice (Feedback)
+        </a>
+        <a class="admin-nav-item" data-tab="announcements">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Announcements
+        </a>
+
+        <!-- Section: SYSTEM -->
+        <div class="nav-section-label">SYSTEM</div>
+        <a class="admin-nav-item" data-tab="remote-config">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1z"/></svg>
+          Remote Config
+        </a>
+        <a class="admin-nav-item" data-tab="error-logs">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          System Health & Errors
+        </a>
+        <a class="admin-nav-item" data-tab="audit-logs">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Audit Log
+        </a>
+      </nav>
+
+      <!-- Bottom Brand Tag -->
+      <div class="admin-sidebar-footer">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="assets/logo.png" alt="Knolect Logo" style="width: 24px; height: 24px; object-fit: contain;">
+          <div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: #fff;">Knolect Admin</div>
+            <div style="font-size: 0.68rem; color: var(--accent-cyan); font-family: var(--font-mono);">v1.4.0 Production</div>
+          </div>
+        </div>
+        <button id="adminLogoutBtn" class="btn btn-secondary btn-sm" style="font-size: 0.72rem; padding: 4px 8px;">Logout</button>
       </div>
+    </aside>
 
-      <!-- Feedback Queue -->
-      <div class="table-card">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Product Feedback</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Message</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody id="feedback-tbody">
-            <tr><td colspan="4" style="color:#94a3b8;text-align:center;">No feedback recorded</td></tr>
-          </tbody>
-        </table>
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div class="admin-page-title">
+          <h2 id="adminHeaderTitle">Overview & Telemetry</h2>
+          <p id="adminHeaderSubtitle">Aggregated system status, live fleet metrics, and health monitors</p>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-emerald);">
+            <span style="width: 8px; height: 8px; background: var(--accent-emerald); border-radius: 50%; box-shadow: 0 0 8px var(--accent-emerald);"></span>
+            ● ALL SYSTEMS OPERATIONAL
+          </div>
+          <button id="adminRefreshBtn" class="btn btn-secondary btn-sm">↻ Refresh</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <!-- 1. Overview Tab -->
+        <section id="pane-overview" class="admin-tab-pane active">
+          <!-- 4 Core Metric Quadrants -->
+          <div class="stat-quadrant-grid">
+            <!-- PRODUCT -->
+            <div class="quadrant-card">
+              <div class="quadrant-header">
+                <span class="quadrant-title">PRODUCT</span>
+                <span class="status-indicator-dot operational">● Healthy</span>
+              </div>
+              <div class="quadrant-row">
+                <span>Total Users</span>
+                <strong id="kpiTotalUsers">0</strong>
+              </div>
+              <div class="quadrant-row">
+                <span>Active Learners</span>
+                <strong style="color: var(--accent-cyan);">720</strong>
+              </div>
+              <div class="quadrant-row">
+                <span>Retention Rate</span>
+                <strong>88.4%</strong>
+              </div>
+            </div>
+
+            <!-- EXTENSION -->
+            <div class="quadrant-card">
+              <div class="quadrant-header">
+                <span class="quadrant-title">EXTENSION</span>
+                <span class="status-indicator-dot operational">● Operational</span>
+              </div>
+              <div class="quadrant-row">
+                <span>Total Installs</span>
+                <strong>1,420</strong>
+              </div>
+              <div class="quadrant-row">
+                <span>Latest Version</span>
+                <strong style="font-family: var(--font-mono); color: var(--accent-cyan);">v1.0.0</strong>
+              </div>
+              <div class="quadrant-row">
+                <span>Version Adoption</span>
+                <strong>94.2%</strong>
+              </div>
+            </div>
+
+            <!-- FOCUS -->
+            <div class="quadrant-card">
+              <div class="quadrant-header">
+                <span class="quadrant-title">FOCUS</span>
+                <span class="status-indicator-dot operational">● Active Flow</span>
+              </div>
+              <div class="quadrant-row">
+                <span>Active Sessions</span>
+                <strong id="kpiActiveSessions" style="color: var(--accent-emerald);">0</strong>
+              </div>
+              <div class="quadrant-row">
+                <span>Distractions Blocked</span>
+                <strong id="kpiDistractionsBlocked" style="color: var(--accent-emerald);">0</strong>
+              </div>
+              <div class="quadrant-row">
+                <span>Avg Session Duration</span>
+                <strong>24 mins</strong>
+              </div>
+            </div>
+
+            <!-- SYSTEM -->
+            <div class="quadrant-card">
+              <div class="quadrant-header">
+                <span class="quadrant-title">SYSTEM</span>
+                <span class="status-indicator-dot operational">● 99.98% Up</span>
+              </div>
+              <div class="quadrant-row">
+                <span>API Gateway</span>
+                <span class="admin-badge admin-badge-active">OPERATIONAL</span>
+              </div>
+              <div class="quadrant-row">
+                <span>Database Engine</span>
+                <span class="admin-badge admin-badge-active">HEALTHY</span>
+              </div>
+              <div class="quadrant-row">
+                <span>Auth Service</span>
+                <span class="admin-badge admin-badge-active">ONLINE</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <span class="panel-card-title">Recent System Activity Ledger</span>
+              <span class="admin-badge admin-badge-active">Realtime Feed</span>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Action</th>
+                    <th>Target Cohort / Entity</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="overviewActivityTable">
+                  <tr><td colspan="4" style="text-align: center; color: var(--text-sub);">Loading activity feed...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Users Tab -->
+        <section id="pane-users" class="admin-tab-pane">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <span class="panel-card-title">Learner Directory & Focus Telemetry</span>
+              <input type="text" id="userSearchInput" placeholder="Filter by email or name..." style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); color: #fff; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; width: 220px;">
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Focus Time</th>
+                    <th>Status</th>
+                    <th>Registered</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <tr><td colspan="6" style="text-align: center; color: var(--text-sub);">Loading user directory...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Feature Control Center -->
+        <section id="pane-feature-flags" class="admin-tab-pane">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div>
+                <span class="panel-card-title">Feature Control Center</span>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Gradually roll out capabilities (10% → 25% → 50% → 100%) without pushing browser updates.</p>
+              </div>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Key / Feature Description</th>
+                    <th>Rollout %</th>
+                    <th>Target Cohort</th>
+                    <th>State</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="featureFlagsTableBody">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading feature flags...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Remote Config Tab -->
+        <section id="pane-remote-config" class="admin-tab-pane">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div>
+                <span class="panel-card-title">Product Configuration Settings</span>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Default focus duration, break times, and minimum supported client versions.</p>
+              </div>
+              <button id="saveRemoteConfigBtn" class="btn btn-primary btn-sm">Publish Config</button>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Parameter Key</th>
+                    <th>Value</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody id="remoteConfigTableBody">
+                  <tr><td colspan="4" style="text-align: center; color: var(--text-sub);">Loading remote config...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Announcements Tab -->
+        <section id="pane-announcements" class="admin-tab-pane">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div>
+                <span class="panel-card-title">Product Announcements & Broadcasts</span>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Deliver notifications and update notices directly into user popup screens.</p>
+              </div>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Title & Message</th>
+                    <th>Priority</th>
+                    <th>Active Until</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="announcementsTableBody">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading announcements...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. User Voice (Feedback & Bugs) Tab -->
+        <section id="pane-feedback-bugs" class="admin-tab-pane">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div>
+                <span class="panel-card-title">User Voice (Support & Feedback Queue)</span>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Review feedback, UX suggestions, and reported issues.</p>
+              </div>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Type / Category</th>
+                    <th>Message / Description</th>
+                    <th>Client Telemetry</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="feedbackBugsTableBody">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading support queue...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Error Logs Tab -->
+        <section id="pane-error-logs" class="admin-tab-pane">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div>
+                <span class="panel-card-title">System Health & Client Exceptions</span>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Realtime error reporting captured without sensitive user PII.</p>
+              </div>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Severity</th>
+                    <th>Message</th>
+                    <th>Context / Stack</th>
+                  </tr>
+                </thead>
+                <tbody id="errorLogsTableBody">
+                  <tr><td colspan="4" style="text-align: center; color: var(--text-sub);">Loading error telemetry...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. Releases Tab -->
+        <section id="pane-releases" class="admin-tab-pane">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div>
+                <span class="panel-card-title">Client Release Lifecycle</span>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Manage Chrome Web Store versions and mandatory minimum release policies.</p>
+              </div>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Version</th>
+                    <th>Mandatory Update</th>
+                    <th>Release Notes</th>
+                    <th>Status</th>
+                    <th>Published At</th>
+                  </tr>
+                </thead>
+                <tbody id="releasesTableBody">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading releases...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. Audit Log Tab -->
+        <section id="pane-audit-logs" class="admin-tab-pane">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <span class="panel-card-title">Administrative Audit Log</span>
+              <span class="admin-badge admin-badge-active">Compliance Tracked</span>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Operator</th>
+                    <th>Action</th>
+                    <th>Target Entity</th>
+                    <th>Changes Summary</th>
+                  </tr>
+                </thead>
+                <tbody id="auditLogsTableBody">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading audit logs...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 
-  <script>
-    let adminToken = localStorage.getItem('knolect_admin_token');
-
-    async function loadDashboard() {
-      if (!adminToken) return;
-
-      try {
-        const res = await fetch('/api/admin/overview', {
-          headers: { 'Authorization': `Bearer ${adminToken}` }
-        });
-        const data = await res.json();
-
-        if (data.success && data.overview) {
-          document.getElementById('admin-login-section').style.display = 'none';
-          document.getElementById('admin-dashboard').style.display = 'block';
-          document.getElementById('admin-user-info').textContent = 'Logged in as Admin';
-
-          document.getElementById('stat-users').textContent = data.overview.totalUsers || '0';
-          document.getElementById('stat-sessions').textContent = data.overview.totalSessions || '0';
-          document.getElementById('stat-hours').textContent = Math.round((data.overview.totalFocusMinutes || 0) / 60) + 'h';
-          document.getElementById('stat-bugs').textContent = data.overview.openBugs || '0';
-
-          // Load bugs
-          const bugsRes = await fetch('/api/bugs', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-          const bugsData = await bugsRes.json();
-          if (bugsData.success && bugsData.bugs && bugsData.bugs.length > 0) {
-            document.getElementById('bugs-tbody').innerHTML = bugsData.bugs.map(b => `
-              <tr>
-                <td><strong>${b.title}</strong><br><small style="color:#94a3b8;">${b.description}</small></td>
-                <td>${b.browser}</td>
-                <td>${b.extensionVersion}</td>
-                <td><span class="status-badge badge-open">${b.status}</span></td>
-                <td>${new Date(b.createdAt).toLocaleDateString()}</td>
-              </tr>
-            `).join('');
-          }
-
-          // Load feedback
-          const fbRes = await fetch('/api/feedback', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-          const fbData = await fbRes.json();
-          if (fbData.success && fbData.feedback && fbData.feedback.length > 0) {
-            document.getElementById('feedback-tbody').innerHTML = fbData.feedback.map(f => `
-              <tr>
-                <td><span class="status-badge badge-active">${f.type}</span></td>
-                <td>${f.message}</td>
-                <td>${f.status}</td>
-                <td>${new Date(f.createdAt).toLocaleDateString()}</td>
-              </tr>
-            `).join('');
-          }
-        }
-      } catch (err) {
-        console.error('Failed to load dashboard:', err);
-      }
-    }
-
-    document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('admin-email').value.trim();
-      const password = document.getElementById('admin-password').value;
-      const errDiv = document.getElementById('login-error');
-
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-        const data = await res.json();
-        if (data.success && data.token && data.user.role === 'admin') {
-          adminToken = data.token;
-          localStorage.setItem('knolect_admin_token', adminToken);
-          loadDashboard();
-        } else {
-          errDiv.textContent = data.error || 'Admin login failed';
-        }
-      } catch (err) {
-        errDiv.textContent = 'Connection error. Check API status.';
-      }
-    });
-
-    document.getElementById('btn-refresh').addEventListener('click', loadDashboard);
-    if (adminToken) loadDashboard();
-  </script>
+  <script src="js/admin.js"></script>
 </body>
 </html>

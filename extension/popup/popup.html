@@ -3,51 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Knolect</title>
+  <title>Knolect — Focus Control Center</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="popup-container">
-    <!-- Header -->
+    <!-- Header with Official Brand Asset -->
     <header class="header">
       <div class="logo-group">
-        <div class="logo-icon">
-          <img src="../assets/icons/icon-48.png" alt="Knolect Logo" width="28" height="28">
-        </div>
+        <img src="../assets/icons/logo.png" alt="Knolect" class="brand-logo-img" width="32" height="32">
         <div class="logo-text">
           <h1 class="brand-title">Knolect</h1>
-          <p class="brand-tagline">YouTube Focused Learning</p>
+          <p class="brand-tagline">YouTube Focus OS</p>
         </div>
       </div>
       <div class="header-status">
-        <span id="header-status-pill" class="status-pill status-on">STRICT</span>
+        <span id="header-status-pill" class="status-pill status-on">● ACTIVE</span>
       </div>
     </header>
 
     <!-- Navigation Tabs -->
     <nav class="nav-tabs">
       <button type="button" class="tab-btn active" data-tab="tab-focus">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
         Focus
       </button>
-      <button type="button" class="tab-btn" data-tab="tab-whitelist">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <button type="button" class="tab-btn" data-tab="tab-channels">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Learning Channels
       </button>
       <button type="button" class="tab-btn" data-tab="tab-settings">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         Settings
       </button>
     </nav>
 
-    <!-- Tab 1: Focus View -->
+    <!-- Tab 1: Focus Control Center -->
     <main id="tab-focus" class="tab-content active">
-      <!-- Main Focus Toggle Card -->
-      <section class="card focus-card">
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <span class="card-label">Focus Mode</span>
-            <p class="card-hint">Blocks feeds, Shorts, and recommendations</p>
+      <!-- Focus Mode Master State -->
+      <section class="card focus-master-card">
+        <div class="focus-state-header">
+          <div class="focus-title-group">
+            <span class="focus-eyebrow">SYSTEM STATE</span>
+            <div class="focus-state-row">
+              <span id="focus-state-text" class="focus-state-label">FOCUS MODE</span>
+              <span id="focus-live-badge" class="live-dot-badge active">● ACTIVE</span>
+            </div>
           </div>
           <label class="switch">
             <input type="checkbox" id="focus-toggle" checked>
@@ -55,15 +56,12 @@
           </label>
         </div>
 
-        <div class="card-sub-divider"></div>
+        <div class="card-divider"></div>
 
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <span class="card-label" style="display:flex;align-items:center;gap:6px;">
-              Strict Focus
-              <span class="badge-mini">ALLOWLIST ONLY</span>
-            </span>
-            <p class="card-hint">Blocks search & non-learning channels</p>
+        <div class="strict-row">
+          <div class="strict-info">
+            <span class="strict-title">Strict Focus</span>
+            <span class="badge-mini">ALLOWLIST ONLY</span>
           </div>
           <label class="switch switch-sm">
             <input type="checkbox" id="strict-toggle" checked>
@@ -72,15 +70,15 @@
         </div>
       </section>
 
-      <!-- Active Tab Context Card -->
+      <!-- Active YouTube Channel Context -->
       <section id="active-tab-context" class="card tab-context-card hidden">
         <div class="channel-context-inner">
           <div class="channel-info">
-            <span class="context-eyebrow">Active Channel</span>
+            <span class="context-eyebrow">YOUTUBE CONTEXT</span>
             <span id="current-channel-name" class="channel-title">Loading...</span>
             <span id="current-channel-classification" class="channel-category-tag"></span>
           </div>
-          <button type="button" id="btn-quick-whitelist" class="btn-secondary btn-sm">
+          <button type="button" id="btn-quick-whitelist" class="btn-primary btn-sm">
             + Add Learning Channel
           </button>
         </div>
@@ -88,13 +86,16 @@
 
       <!-- Non-YouTube Banner -->
       <div id="non-yt-banner" class="non-yt-notice hidden">
-        <span>💡</span> Open YouTube to experience focused learning.
+        <span>💡</span> Open YouTube to experience your focused learning space.
       </div>
 
-      <!-- Session Timer Card -->
+      <!-- Current Session Timer Card -->
       <section class="card timer-card">
-        <div class="timer-header">
-          <span class="card-label">Session Timer</span>
+        <div class="timer-card-header">
+          <div class="timer-label-group">
+            <span class="context-eyebrow">CURRENT SESSION</span>
+            <span id="timer-status-text" class="timer-subtext">Focus duration</span>
+          </div>
           <div class="timer-presets">
             <button type="button" class="preset-btn" data-min="15">15m</button>
             <button type="button" class="preset-btn active" data-min="25">25m</button>
@@ -105,39 +106,83 @@
 
         <div class="timer-display-wrapper">
           <div id="timer-display" class="timer-digits">25:00</div>
-          <div id="timer-status-text" class="timer-subtext">Ready to focus</div>
         </div>
 
-        <div class="timer-controls">
-          <button type="button" id="timer-btn-start" class="btn-primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Start
+        <div class="timer-controls-grid">
+          <button type="button" id="timer-btn-start" class="btn-primary btn-block">
+            <span>▶</span> START SESSION
           </button>
-          <button type="button" id="timer-btn-pause" class="btn-secondary hidden">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-            Pause
+          <button type="button" id="timer-btn-pause" class="btn-secondary btn-block hidden">
+            <span>⏸</span> PAUSE
           </button>
-          <button type="button" id="timer-btn-reset" class="btn-ghost">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-            Reset
+          <button type="button" id="timer-btn-reset" class="btn-ghost btn-block">
+            <span>⏹</span> END SESSION
           </button>
         </div>
       </section>
+
+      <!-- Learning Access Matrix (Section 5 Requirement) -->
+      <section class="card access-matrix-card">
+        <span class="context-eyebrow">LEARNING ACCESS ENFORCEMENT</span>
+        <div class="access-rules-grid">
+          <div class="access-col allowed-col">
+            <span class="rule-item allowed">✓ Approved channels</span>
+            <span class="rule-item allowed">✓ Learning content</span>
+          </div>
+          <div class="access-col blocked-col">
+            <span class="rule-item blocked">✕ Recommendations</span>
+            <span class="rule-item blocked">✕ Shorts</span>
+            <span class="rule-item blocked">✕ Distracting searches</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Today's Focus Performance Metrics (Section 5 Requirement) -->
+      <section class="card today-stats-card">
+        <div class="today-stats-header">
+          <span class="context-eyebrow">TODAY'S PERFORMANCE</span>
+          <a href="http://localhost:3000/dashboard" target="_blank" class="dashboard-link">Open Dashboard ↗</a>
+        </div>
+        <div class="stats-metric-row">
+          <div class="stat-mini-box">
+            <span id="stat-focus-time" class="stat-mini-value">1h 42m</span>
+            <span class="stat-mini-label">Focus time</span>
+          </div>
+          <div class="stat-mini-box">
+            <span id="stat-sessions" class="stat-mini-value">4</span>
+            <span class="stat-mini-label">Sessions</span>
+          </div>
+          <div class="stat-mini-box">
+            <span id="stat-blocked" class="stat-mini-value">37</span>
+            <span class="stat-mini-label">Blocked</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Action Navigation -->
+      <div class="popup-quick-nav">
+        <button type="button" class="btn-secondary btn-sm nav-switch-btn" data-target="tab-channels">
+          Manage Learning Channels
+        </button>
+        <button type="button" class="btn-ghost btn-sm nav-switch-btn" data-target="tab-settings">
+          Settings
+        </button>
+      </div>
     </main>
 
     <!-- Tab 2: Learning Channels View -->
-    <main id="tab-whitelist" class="tab-content">
+    <main id="tab-channels" class="tab-content">
       <section class="card">
         <div class="section-title-row">
           <h2 class="section-title">Learning Channels</h2>
           <span id="whitelist-count-badge" class="count-badge">0</span>
         </div>
-        <p class="section-desc">Only approved educational channels are allowed during Strict Focus Mode.</p>
+        <p class="section-desc">Approved educational channels are allowed during Strict Focus Mode.</p>
 
         <!-- Add Channel Form -->
         <form id="whitelist-form" class="whitelist-input-row">
-          <input type="text" id="whitelist-input" placeholder="Enter channel name, @handle or URL" required autocomplete="off">
-          <button type="submit" class="btn-primary btn-sm">Add</button>
+          <input type="text" id="whitelist-input" placeholder="Channel name, @handle or URL" required autocomplete="off">
+          <button type="submit" class="btn-primary btn-sm">+ Add</button>
         </form>
 
         <!-- Live Classification Preview Card -->
@@ -145,20 +190,16 @@
 
         <div id="whitelist-feedback" class="feedback-msg hidden"></div>
 
-        <!-- Suggested Learning Channels Section -->
+        <!-- Suggested Learning Channels -->
         <div class="suggested-section">
-          <span class="suggested-title">⭐ Suggested Learning Channels</span>
-          <div id="suggested-chips-container" class="suggested-chips">
-            <!-- Dynamically populated -->
-          </div>
+          <span class="suggested-title">⭐ Verified Learning Channels</span>
+          <div id="suggested-chips-container" class="suggested-chips"></div>
         </div>
 
-        <!-- Approved Learning Channel List -->
+        <!-- Approved Channel List -->
         <div class="whitelist-container">
-          <div class="whitelist-header-label">Approved Learning Channels</div>
-          <ul id="whitelist-items" class="whitelist-list">
-            <!-- Dynamically populated -->
-          </ul>
+          <div class="whitelist-header-label">Approved Learning Allowlist</div>
+          <ul id="whitelist-items" class="whitelist-list"></ul>
         </div>
       </section>
     </main>
@@ -167,13 +208,13 @@
     <main id="tab-settings" class="tab-content">
       <section class="card">
         <h2 class="section-title">Distraction Controls</h2>
-        <p class="section-desc">Customize which YouTube elements to hide when Focus Mode is ON.</p>
+        <p class="section-desc">Customize YouTube elements hidden when Focus Mode is ON.</p>
 
         <div class="settings-list">
           <div class="setting-item">
             <div class="setting-text">
               <span class="setting-title">Hide Shorts</span>
-              <span class="setting-desc">Remove Shorts navigation and reel shelves</span>
+              <span class="setting-desc">Remove Shorts navigation, reels, and feeds</span>
             </div>
             <label class="switch switch-sm">
               <input type="checkbox" id="setting-hide-shorts" checked>
@@ -240,6 +281,14 @@
             <option value="3600">60 minutes</option>
           </select>
         </div>
+
+        <div class="setting-divider"></div>
+
+        <div class="dashboard-promo-box">
+          <span class="promo-title">Knolect User Dashboard</span>
+          <p class="promo-desc">Access in-depth focus analytics, historical sessions, and account management.</p>
+          <a href="http://localhost:3000/dashboard" target="_blank" class="btn btn-secondary btn-sm" style="display:inline-block;text-decoration:none;">Open Full Dashboard ↗</a>
+        </div>
       </section>
     </main>
 
@@ -251,7 +300,7 @@
     </footer>
   </div>
 
-  <!-- Scripts in dependency order -->
+  <!-- Scripts -->
   <script src="../utils/constants.js"></script>
   <script src="../utils/helpers.js"></script>
   <script src="../utils/classifier.js"></script>

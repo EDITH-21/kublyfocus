@@ -22,7 +22,7 @@
   <meta name="twitter:description" content="Learn what you came for. Block what pulls you away. Eliminate YouTube distractions and focus on intentional learning.">
   
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" href="assets/logo.png">
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/styles.css">
@@ -36,7 +36,7 @@
   <header class="navbar" role="banner">
     <div class="container nav-container">
       <a href="index.html" class="brand-logo" aria-label="Knolect Home">
-        <img src="assets/logo.svg" alt="Knolect Logo" class="brand-logo-img" width="32" height="32">
+        <img src="assets/logo.png" alt="Knolect Logo" class="brand-logo-img" width="32" height="32">
         <span>Knolect</span>
       </a>
 
@@ -47,6 +47,7 @@
         <a href="#how-it-works" class="nav-link">How It Works</a>
         <a href="#privacy" class="nav-link">Privacy</a>
         <a href="#faq" class="nav-link">FAQ</a>
+        <a href="dashboard.html" class="nav-link" style="color: var(--accent-cyan, #38bdf8);">Dashboard</a>
         <a href="support.html" class="nav-link">Support</a>
       </nav>
 
@@ -641,6 +642,95 @@
     </section>
 
     <!-- ========================================================================
+         9.5 DISTINCTIVE FOCUS OS SHOWCASE
+         ======================================================================== -->
+    <section class="section" style="padding-top: 0;">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Focus OS Architecture</span>
+          <h2 class="section-title">Engineered For Cognitive Flow</h2>
+          <p class="section-desc">Realtime visual indicators designed to protect your attention without intrusion.</p>
+        </div>
+
+        <div class="knolect-focus-showcase">
+          <!-- 1. Circular Focus Ring -->
+          <div class="knolect-visual-box">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="focus-state-badge">
+                <span class="focus-state-dot"></span>
+                FOCUS ACTIVE
+              </span>
+              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:#38bdf8;">DEEP SESSION</span>
+            </div>
+
+            <div class="focus-ring-container">
+              <div class="focus-ring-circle">
+                <div class="focus-ring-inner">
+                  <span class="focus-ring-time">42:18</span>
+                  <span class="focus-ring-label">FOCUS</span>
+                </div>
+              </div>
+              <span class="focus-ring-subtext">Deep learning session in progress</span>
+            </div>
+          </div>
+
+          <!-- 2. Distraction -> Blocked & Learning Signal -->
+          <div class="knolect-visual-box">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--text-muted);">LEARNING SIGNAL</span>
+              <span class="badge badge-success" style="font-size:0.72rem;">QUALIFIED</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px; margin: 12px 0;">
+              <div class="transformation-card">
+                <span class="distraction-text">Algorithmic Feed</span>
+                <span class="transform-arrow">→</span>
+                <span class="blocked-text">BLOCKED</span>
+              </div>
+              <div class="transformation-card">
+                <span class="distraction-text">Shorts Carousel</span>
+                <span class="transform-arrow">→</span>
+                <span class="blocked-text">REMOVED</span>
+              </div>
+              <div class="transformation-card">
+                <span style="color:#f8fafc; font-weight:600;">Physics Wallah</span>
+                <span class="transform-arrow">→</span>
+                <span style="color:#38bdf8; font-weight:700;">ALLOWED</span>
+              </div>
+            </div>
+
+            <p style="font-size:0.8rem; color:var(--text-muted); line-height:1.5;">
+              Deterministic multi-signal classifier allows qualified educational channels and intercepts endless loops.
+            </p>
+          </div>
+        </div>
+
+        <!-- Focus Timeline -->
+        <div class="focus-timeline-strip">
+          <div class="timeline-step completed">
+            <span>●</span>
+            <span>START</span>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step completed">
+            <span>●</span>
+            <span>LEARNING</span>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step active">
+            <span>◉</span>
+            <span>FOCUS MODE</span>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <span>○</span>
+            <span>COMPLETED</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
          10. FINAL CTA
          ======================================================================== -->
     <section class="section cta-section">
@@ -649,7 +739,7 @@
         <p class="cta-subtitle">Join thousands of students and self-learners reclaiming their study hours.</p>
         <div class="cta-actions">
           <a href="install.html" class="btn btn-primary btn-lg js-install-cta">
-            <span class="js-cta-label">Install Knolect — Free</span>
+            <span class="js-cta-label">Get Knolect — Free</span>
           </a>
         </div>
       </div>
@@ -657,43 +747,92 @@
   </main>
 
   <!-- ========================================================================
-       11. FOOTER
+       11. MASTER BRAND FOOTER
        ======================================================================== -->
-  <footer class="footer" role="contentinfo">
-    <div class="container footer-container">
-      <div class="footer-brand">
-        <a href="index.html" class="brand-logo">
-          <img src="assets/logo.svg" alt="Knolect Logo" width="28" height="28">
-          <span>Knolect</span>
-        </a>
-        <p class="footer-tagline">Turn YouTube into your learning space.</p>
+  <footer class="footer-master" role="contentinfo">
+    <div class="container">
+      <div class="footer-master-grid">
+        <!-- Brand Statement Column -->
+        <div class="footer-brand-hero">
+          <a href="index.html" class="footer-brand-lockup" aria-label="Knolect Home">
+            <img src="assets/logo.png" alt="Knolect Logo">
+            <span class="footer-brand-title">Knolect</span>
+          </a>
+          <div class="footer-brand-tagline">Turn YouTube into your learning space.</div>
+          <p class="footer-brand-desc">
+            A focused learning environment designed to help you use YouTube intentionally — without the endless distractions.
+          </p>
+          <a href="install.html" class="footer-brand-cta">
+            Start Focusing <span>→</span>
+          </a>
+        </div>
+
+        <!-- Col 1: Product -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Product</div>
+          <div class="footer-col-links">
+            <a href="index.html#features">Features</a>
+            <a href="index.html#how-it-works">How It Works</a>
+            <a href="install.html">Installation</a>
+            <a href="index.html#focus-mode">Focus Mode</a>
+            <a href="dashboard.html">User Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Col 2: Resources -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Resources</div>
+          <div class="footer-col-links">
+            <a href="support.html">Help Center</a>
+            <a href="index.html#faq">FAQ</a>
+            <a href="index.html#privacy">Privacy</a>
+            <a href="support.html#send-feedback">Feedback</a>
+          </div>
+        </div>
+
+        <!-- Col 3: Support -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Support</div>
+          <div class="footer-col-links">
+            <a href="support.html#report-bug">Report a Bug</a>
+            <a href="support.html#send-feedback">Send Feedback</a>
+            <a href="support.html">Contact</a>
+            <a href="admin.html">Admin Command</a>
+          </div>
+        </div>
+
+        <!-- Col 4: Knolect -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Knolect</div>
+          <div class="footer-col-links">
+            <a href="index.html#problem">About</a>
+            <a href="install.html">Changelog</a>
+            <a href="index.html#focus-mode">Status</a>
+          </div>
+        </div>
       </div>
 
-      <div class="footer-links-grid">
-        <div class="footer-col">
-          <h4 class="footer-col-title">Product</h4>
-          <a href="index.html#features">Features</a>
-          <a href="index.html#how-it-works">How It Works</a>
-          <a href="install.html">Installation</a>
-        </div>
-        <div class="footer-col">
-          <h4 class="footer-col-title">Resources</h4>
-          <a href="index.html#privacy">Privacy</a>
-          <a href="index.html#faq">FAQ</a>
-          <a href="support.html">Help & Feedback</a>
-        </div>
-        <div class="footer-col">
-          <h4 class="footer-col-title">Support</h4>
-          <a href="support.html">Help Center</a>
-          <a href="support.html#send-feedback">Send Feedback</a>
-          <a href="support.html#report-bug">Report a Bug</a>
-        </div>
+      <!-- Distinctive Visual Focus Line -->
+      <div class="footer-focus-divider">
+        <span class="footer-focus-line"></span>
+        <span>LEARN ───── FOCUS ───── BUILD</span>
+        <span class="footer-focus-line"></span>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container footer-bottom-inner">
-        <span>© 2026 Knolect. All rights reserved.</span>
-        <span>Empowering focused learners worldwide.</span>
+
+      <!-- Bottom Bar with Team Credit & Live Status -->
+      <div class="footer-bottom-bar">
+        <div>
+          <span>© 2026 Knolect · All rights reserved.</span>
+        </div>
+        <div class="footer-founder-credit">
+          A project by Shivam & Team
+        </div>
+        <div>
+          <span class="footer-status-pill">
+            <span class="footer-status-dot"></span>
+            All systems operational
+          </span>
+        </div>
       </div>
     </div>
   </footer>

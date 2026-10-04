@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knolect — Focus Center</title>
+  <meta name="description" content="Personal Focus Center, learning analytics, and YouTube study session management.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;">
+          <img src="assets/logo.png" alt="Knolect Logo" class="brand-logo">
+          <div class="brand-text">
+            <span class="brand-name">Knolect</span>
+            <span class="brand-tag">Focus Center</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#overview" class="nav-item active" data-tab="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Focus Center</span>
+        </a>
+        <a href="#channels" class="nav-item" data-tab="channels">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span>Learning Channels</span>
+        </a>
+        <a href="#analytics" class="nav-item" data-tab="analytics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Focus Analytics</span>
+        </a>
+        <a href="#sessions" class="nav-item" data-tab="sessions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Session Log</span>
+        </a>
+        <a href="#settings" class="nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar">SK</div>
+          <div class="user-info">
+            <span class="user-name">Learner</span>
+            <span class="user-role">Focus OS v1.4</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="page-title-group">
+          <h1 id="pageTitle">Focus Center</h1>
+          <p id="pageSubtitle">Good morning · Ready to focus?</p>
+        </div>
+        <div class="top-bar-actions">
+          <div class="focus-status-indicator">
+            <span class="focus-pulse-dot"></span>
+            <span>FOCUS ACTIVE</span>
+          </div>
+          <a href="https://www.youtube.com" target="_blank" class="btn btn-secondary btn-sm">Open YouTube</a>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- 1. Overview / Focus Center Tab -->
+        <section id="tab-overview" class="tab-panel active">
+          <!-- Top Focus Hero Card with Circular Visualization -->
+          <div class="dashboard-card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(8, 12, 20, 0.95)); border-color: rgba(56, 189, 248, 0.2);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+              <div style="flex: 1; min-width: 280px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <span class="badge badge-strict">● ACTIVE</span>
+                  <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">STRICT MODE</span>
+                </div>
+                <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px;">Ready to focus?</h2>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; max-width: 460px;">
+                  Your YouTube session is protected. Endless recommendations, Shorts reels, and entertainment traps are removed.
+                </p>
+                <div style="margin-top: 18px; display: flex; gap: 12px; align-items: center;">
+                  <button id="btnEndSession" class="btn btn-danger">End Session</button>
+                  <span style="font-size: 0.78rem; color: var(--text-sub); font-family: var(--font-mono);">Focus session remaining</span>
+                </div>
+              </div>
+
+              <!-- Recognizable Circular Focus Timer Component -->
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <div style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid rgba(56, 189, 248, 0.15); border-top-color: #10b981; border-right-color: #38bdf8; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; box-shadow: 0 0 24px rgba(56, 189, 248, 0.1);">
+                  <span style="font-size: 1.85rem; font-weight: 800; font-family: var(--font-mono); color: #fff;">42:18</span>
+                  <span style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; color: #38bdf8; letter-spacing: 0.1em;">FOCUS</span>
+                </div>
+                <span style="font-size: 0.78rem; color: var(--text-sub); margin-top: 10px; font-weight: 500;">Deep learning session</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Editorial Today's Stats Row -->
+          <div>
+            <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">TODAY'S COGNITIVE PERFORMANCE</div>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-header">Focus Time</div>
+                <div class="metric-value" id="metricFocusTime" style="color: var(--accent-cyan);">2h 18m</div>
+                <div class="metric-sub positive">↑ +35m vs yesterday</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Sessions Completed</div>
+                <div class="metric-value">5</div>
+                <div class="metric-sub">Avg 27m duration</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Distractions Blocked</div>
+                <div class="metric-value" id="metricBlockedDistractions" style="color: var(--accent-emerald);">42</div>
+                <div class="metric-sub">Shorts, feeds & traps</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Learning Channels</div>
+                <div class="metric-value" id="metricAllowedChannels">8</div>
+                <div class="metric-sub">Verified educators</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Focus Sessions -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Recent Study Sessions</span>
+                <p class="card-subtitle">Chronological ledger of completed focus blocks</p>
+              </div>
+            </div>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Session Topic / Context</th>
+                    <th>Mode</th>
+                    <th>Duration</th>
+                    <th>Intercepted</th>
+                    <th>Completed At</th>
+                  </tr>
+                </thead>
+                <tbody id="recentSessionsTableBody">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading session history...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Learning Channels Tab -->
+        <section id="tab-channels" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Learning Channels Allowlist</span>
+                <p class="card-subtitle">Only verified educational channels are permitted during Strict Focus Mode</p>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="newChannelInput" placeholder="Enter channel name or @handle..." style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); color: #fff; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 0.82rem; width: 240px;">
+                <button id="addChannelBtn" class="btn btn-primary btn-sm">+ Add Learning Channel</button>
+              </div>
+            </div>
+
+            <div class="channel-grid" id="learningChannelsGrid">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Focus Analytics Tab -->
+        <section id="tab-analytics" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Weekly Focus Distribution</span>
+                <p class="card-subtitle">Preserved study hours across past 7 days</p>
+              </div>
+            </div>
+            <div class="chart-bar-container">
+              <div class="chart-bar-group"><div class="chart-bar" style="height: 50%;"></div><span class="chart-label">MON</span></div>
+              <div class="chart-bar-group"><div class="chart-bar" style="height: 75%;"></div><span class="chart-label">TUE</span></div>
+              <div class="chart-bar-group"><div class="chart-bar" style="height: 40%;"></div><span class="chart-label">WED</span></div>
+              <div class="chart-bar-group"><div class="chart-bar" style="height: 90%;"></div><span class="chart-label">THU</span></div>
+              <div class="chart-bar-group"><div class="chart-bar" style="height: 65%;"></div><span class="chart-label">FRI</span></div>
+              <div class="chart-bar-group"><div class="chart-bar" style="height: 85%;"></div><span class="chart-label">SAT</span></div>
+              <div class="chart-bar-group"><div class="chart-bar today" style="height: 95%;"></div><span class="chart-label">TODAY</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Sessions History Tab -->
+        <section id="tab-sessions" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <span class="card-title">All Completed Sessions</span>
+            </div>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Session Name</th>
+                    <th>Mode</th>
+                    <th>Duration</th>
+                    <th>Distractions Blocked</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody id="fullSessionsTableBody">
+                  <tr>
+                    <td><strong style="color:#fff;">Algorithms & Data Structures in C++</strong></td>
+                    <td><span class="badge badge-strict">STRICT</span></td>
+                    <td>45m</td>
+                    <td>18 blocked</td>
+                    <td>Today, 09:30 AM</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color:#fff;">Calculus III Multi-variable Derivatives</strong></td>
+                    <td><span class="badge badge-strict">STRICT</span></td>
+                    <td>30m</td>
+                    <td>11 blocked</td>
+                    <td>Today, 08:15 AM</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color:#fff;">System Design & Microservices</strong></td>
+                    <td><span class="badge badge-verified">FOCUS</span></td>
+                    <td>25m</td>
+                    <td>8 blocked</td>
+                    <td>Yesterday</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Settings Tab -->
+        <section id="tab-settings" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Focus Rules & Policies</span>
+                <p class="card-subtitle">Fine-tune your YouTube focus rules and local data storage</p>
+              </div>
+              <button id="saveSettingsBtn" class="btn btn-primary btn-sm">Save Settings</button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="form-toggle">
+                <div>
+                  <strong style="color: #fff; font-size: 0.9rem;">Strict Focus Mode</strong>
+                  <p style="font-size: 0.78rem; color: var(--text-muted);">Default to BLOCK for all non-verified channels.</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settingStrictFocus" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="form-toggle">
+                <div>
+                  <strong style="color: #fff; font-size: 0.9rem;">Remove Shorts Shelves & Reels</strong>
+                  <p style="font-size: 0.78rem; color: var(--text-muted);">Suppress short-form video temptations across all YouTube pages.</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settingHideShorts" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="form-toggle">
+                <div>
+                  <strong style="color: #fff; font-size: 0.9rem;">Hide Algorithmic Home Feed</strong>
+                  <p style="font-size: 0.78rem; color: var(--text-muted);">Show an inspiring focus quote instead of YouTube home recommendations.</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settingHideFeed" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

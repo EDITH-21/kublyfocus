@@ -47,6 +47,8 @@ const server = http.createServer((req, res) => {
       pathname = '/support.html';
     } else if (pathname === '/admin' || pathname === '/admin/') {
       pathname = '/admin.html';
+    } else if (pathname === '/dashboard' || pathname === '/dashboard/') {
+      pathname = '/dashboard.html';
     } else if (!path.extname(pathname)) {
       const potentialHtml = path.join(WEBSITE_DIR, `${pathname}.html`);
       if (fs.existsSync(potentialHtml)) {

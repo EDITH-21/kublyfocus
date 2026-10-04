@@ -436,10 +436,10 @@ class KnolectFocusEngine {
     screen.innerHTML = `
       <div class="knolect-block-modal">
         <div class="knolect-block-badge">
-          <span>🛡️</span> KNOLECT STRICT FOCUS
+          <span>🛡️</span> FOCUS PROTECTED
         </div>
-        <h2 class="knolect-block-title">${title || 'Stay Focused'}</h2>
-        <p class="knolect-block-desc">${message}</p>
+        <h2 class="knolect-block-title">${title || 'Focus Protected'}</h2>
+        <p class="knolect-block-desc">${message || 'Strict Focus is currently active. This content isn\'t available during your current learning session.'}</p>
 
         <div class="knolect-block-actions">
           <button type="button" class="knolect-btn-primary" id="knolect-btn-block-action">
@@ -559,7 +559,7 @@ class KnolectFocusEngine {
   }
 
   /**
-   * Render discrete floating focus badge
+   * Render discrete floating focus layer badge
    */
   renderFloatingBar() {
     let bar = document.getElementById('knolect-floating-bar');
@@ -571,15 +571,16 @@ class KnolectFocusEngine {
     if (!bar) {
       bar = document.createElement('div');
       bar.id = 'knolect-floating-bar';
-      bar.className = 'knolect-float-indicator';
+      bar.className = 'knolect-floating-bar';
       document.body.appendChild(bar);
     }
 
     bar.innerHTML = `
       <div class="knolect-float-pill" title="Knolect Focus Active">
         <span class="knolect-dot ${this.strictFocus ? 'knolect-dot-strict' : 'knolect-dot-on'}"></span>
-        <span class="knolect-float-text">KNOLECT ${this.strictFocus ? 'STRICT' : 'FOCUS'}</span>
+        <span class="knolect-float-text">◉ KNOLECT FOCUS &bull; ACTIVE</span>
       </div>
+      <span class="knolect-float-blocked" title="Distractions prevented">🛡️ 42 Blocked</span>
     `;
   }
 }
