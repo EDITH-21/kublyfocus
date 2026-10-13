@@ -34,10 +34,11 @@ const websiteDir = path.join(__dirname, 'website');
 const aboutContent = fs.readFileSync(path.join(websiteDir, 'about.html'), 'utf8');
 assert(aboutContent.includes('Learning deserves your attention.'), 'about.html contains Section A headline');
 assert(aboutContent.includes('Less distraction.'), 'about.html contains Section B headline');
-assert(aboutContent.includes('The Team Behind Knolect'), 'about.html contains The Team Behind Knolect headline');
-assert(aboutContent.includes('Knolect is being built by a team focused on making digital learning more intentional and less distracting.'), 'about.html contains verified team supporting copy');
-assert(aboutContent.includes('Aadrut') && aboutContent.includes('Project Lead & Product Architecture'), 'about.html contains verified Aadrut profile');
-assert(aboutContent.includes('Shivam') && aboutContent.includes('Core Software Engineering'), 'about.html contains verified Shivam profile');
+assert(aboutContent.includes('Meet the Team Behind Knolect'), 'about.html contains Meet the Team Behind Knolect headline');
+assert(aboutContent.includes('Three founders. One mission: make learning more focused.'), 'about.html contains founding team subtitle');
+assert(aboutContent.includes('Shivam Tiwari') && aboutContent.includes('CEO & Founder'), 'about.html contains Shivam Tiwari (CEO & Founder)');
+assert(aboutContent.includes('Durvaa Bhatt') && aboutContent.includes('CTO & Co-founder'), 'about.html contains Durvaa Bhatt (CTO & Co-founder)');
+assert(aboutContent.includes('Kajal Pal') && aboutContent.includes('COO & Co-founder'), 'about.html contains Kajal Pal (COO & Co-founder)');
 
 // 1.2 Verify Exactly ONE Project Credit in Footer across primary pages (no duplicates)
 ['index.html', 'about.html', 'install.html', 'support.html'].forEach(file => {

@@ -1522,6 +1522,9 @@ p {
     grid-column: span 3;
     margin-bottom: 12px;
   }
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -1807,9 +1810,9 @@ p {
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-  max-width: 900px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1140px;
   margin: 44px auto 0;
 }
 
@@ -1817,40 +1820,50 @@ p {
   background: var(--color-ivory-card);
   border: 1px solid rgba(16, 47, 39, 0.12);
   border-radius: var(--radius-lg);
-  padding: 32px 28px;
+  padding: 32px 24px;
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 16px;
   align-items: flex-start;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .team-card:hover {
   border-color: var(--color-gold);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-md);
 }
 
+.team-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
 .team-avatar-monogram {
-  width: 54px;
-  height: 54px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: var(--color-forest);
   border: 1.5px solid var(--color-gold-border);
-  color: var(--color-gold);
+  color: var(--color-gold-light);
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 600;
+  letter-spacing: 0.05em;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(16, 47, 39, 0.12);
 }
 
-.team-info {
+.team-meta {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .team-role-tag {
