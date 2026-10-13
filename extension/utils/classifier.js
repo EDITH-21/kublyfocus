@@ -233,11 +233,14 @@ function resolveChannelIdentity(input) {
   let handle = '';
   let name = '';
 
+  let avatarUrl = '';
+
   if (typeof input === 'object') {
     raw = input.url || input.handle || input.identifier || input.name || '';
     channelId = (input.channelId || '').trim();
     handle = (input.handle || '').trim();
     name = (input.name || '').trim();
+    avatarUrl = (input.avatarUrl || input.avatar || '').trim();
   } else {
     raw = String(input).trim();
   }
@@ -289,6 +292,7 @@ function resolveChannelIdentity(input) {
     handle: handle || (normalizedHandle ? `@${normalizedHandle}` : ''),
     normalizedHandle,
     channelId: channelId || '',
+    avatarUrl: avatarUrl || '',
     url: handle ? `https://www.youtube.com/${handle}` : (channelId ? `https://www.youtube.com/channel/${channelId}` : '')
   };
 }
@@ -454,6 +458,7 @@ function classifyChannel(channelData) {
   // 1. Education score must be >= 50 (or verified)
   // 2. Education score must significantly exceed entertainment score
   // 3. Entertainment score must not be overwhelming
+  let unverified = false;
   if (educationScore >= 50 && educationScore >= entertainmentScore * 1.8 && entertainmentScore < 40) {
     category = 'education';
     eligible = true;
@@ -471,9 +476,10 @@ function classifyChannel(channelData) {
     reasons.unshift('Channel contains mixed entertainment & educational content. Not eligible for Strict Focus allowlist.');
   } else {
     category = 'unknown';
+    unverified = true;
     eligible = false;
     confidence = 30;
-    reasons.unshift('Could not confidently establish strong learning signals. Strict Focus defaults to BLOCK.');
+    reasons.unshift('Couldn’t verify this channel automatically.');
   }
 
   return {
@@ -481,6 +487,7 @@ function classifyChannel(channelData) {
     confidence,
     reasons,
     eligible,
+    unverified,
     educationScore,
     entertainmentScore,
     identity
@@ -489,17 +496,21 @@ function classifyChannel(channelData) {
 
 /**
  * Validate that a stored learning channel entry is still eligible
+ * Note: Explicit user-approved channels are always honored so user allowlisting
+ * takes strict precedence over heuristic classifier re-evaluation.
  * @param {object} channelItem 
  * @returns {boolean}
  */
 function isStillEligible(channelItem) {
   if (!channelItem) return false;
   if (channelItem.source === 'system_verified' || channelItem.verified) return true;
+  if (channelItem.source === 'user_approved' || channelItem.explicit || channelItem.source === 'migrated_verified') return true;
+  if (channelItem.category === 'entertainment' && channelItem.eligible === false) return false;
   if (channelItem.category === 'education' && channelItem.confidence >= 50 && channelItem.eligible !== false) {
     return true;
   }
   
-  // Re-classify to verify
+  // Re-classify as fallback check
   const result = classifyChannel(channelItem);
   return result.eligible;
 }

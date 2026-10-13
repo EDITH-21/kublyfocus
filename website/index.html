@@ -13,7 +13,7 @@
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Knolect — Turn YouTube Into Your Learning Space">
-  <meta property="og:description" content="Learn what you came for. Block what pulls you away. Knolect removes YouTube distractions with Strict Focus Mode, channel whitelisting, and session timing.">
+  <meta property="og:description" content="Learn what you came for. Block what pulls you away. Knolect removes YouTube distractions with Strict Focus Mode, channel allowlisting, and session timing.">
   <meta property="og:image" content="assets/logo.svg">
   
   <!-- Twitter -->
@@ -22,7 +22,8 @@
   <meta name="twitter:description" content="Learn what you came for. Block what pulls you away. Eliminate YouTube distractions and focus on intentional learning.">
   
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="assets/logo.png">
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/styles.css">
@@ -36,18 +37,19 @@
   <header class="navbar" role="banner">
     <div class="container nav-container">
       <a href="index.html" class="brand-logo" aria-label="Knolect Home">
-        <img src="assets/logo.png" alt="Knolect Logo" class="brand-logo-img" width="32" height="32">
+        <img src="assets/logo.svg" alt="Knolect Logo" class="brand-logo-img" width="32" height="32">
         <span>Knolect</span>
       </a>
 
       <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
         <a href="#problem" class="nav-link">Problem</a>
         <a href="#focus-mode" class="nav-link">Focus Mode</a>
-        <a href="#features" class="nav-link">Features</a>
+        <a href="#features" class="nav-link">Capabilities</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="about.html" class="nav-link">About</a>
         <a href="#privacy" class="nav-link">Privacy</a>
         <a href="#faq" class="nav-link">FAQ</a>
-        <a href="dashboard.html" class="nav-link" style="color: var(--accent-cyan, #38bdf8);">Dashboard</a>
+        <a href="dashboard.html" class="nav-link" style="color: var(--color-gold);">Dashboard</a>
         <a href="support.html" class="nav-link">Support</a>
       </nav>
 
@@ -70,7 +72,7 @@
     <!-- ========================================================================
          2. HERO SECTION
          ======================================================================== -->
-    <section class="section hero-section">
+    <section class="section hero-section" id="home">
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="container">
         <div class="hero-content">
@@ -84,7 +86,7 @@
           </h1>
 
           <p class="hero-subtitle">
-            Learn what you came for. Block what pulls you away. Knolect transforms YouTube into an intentional learning environment with Strict Focus Mode, channel whitelisting, and study sessions.
+            Learn what you came for. Block what pulls you away. Knolect transforms YouTube into an intentional study environment with Strict Focus Mode, channel allowlisting, and session timing.
           </p>
 
           <div class="hero-actions">
@@ -96,22 +98,22 @@
               </svg>
             </a>
             <a href="#focus-mode" class="btn btn-secondary btn-lg">
-              See How It Works
+              See Interactive Preview
             </a>
           </div>
 
           <div class="hero-meta">
             <span class="hero-meta-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-accent" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
               Manifest V3 Architecture
             </span>
             <span class="hero-meta-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-accent" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
               Strict Allowlist Security
             </span>
             <span class="hero-meta-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-accent" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-              100% Local Privacy
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              100% Local Device Privacy
             </span>
           </div>
         </div>
@@ -132,11 +134,11 @@
                   </li>
                   <li>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    High-stimulus Shorts shelves & tabs
+                    High-stimulus Shorts shelves & reels
                   </li>
                   <li>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    Distracting sidebar video recommendations
+                    Distracting sidebar video suggestions
                   </li>
                   <li>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -149,19 +151,19 @@
               <div class="split-side focused">
                 <span class="split-badge badge-success">Knolect Focus</span>
                 <h2 class="split-side-title">Intentional Learning</h2>
-                <p class="split-side-desc">Transforms the platform into a quiet, purposeful learning environment.</p>
+                <p class="split-side-desc">Transforms the platform into a quiet, purposeful study environment.</p>
                 <ul class="split-list success-list">
                   <li>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    Strict Focus allowlist-first access control
+                    Strict Focus allowlist-first access defense
                   </li>
                   <li>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    Channel whitelist for trusted educators
+                    Channel allowlist for verified educators & personal study
                   </li>
                   <li>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    Built-in session timer with focus presets
+                    Built-in Pomodoro session timer with focus presets
                   </li>
                   <li>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -176,9 +178,9 @@
     </section>
 
     <!-- ========================================================================
-         3. PROBLEM SECTION
+         3. PROBLEM SECTION (Warm Ivory Editorial Paper)
          ======================================================================== -->
-    <section class="section section-alt" id="problem">
+    <section class="section" id="problem">
       <div class="container">
         <div class="section-header">
           <span class="section-tag">The Problem</span>
@@ -189,11 +191,11 @@
         <div class="problem-loop">
           <!-- The Distraction Loop -->
           <div class="loop-box danger-box">
-            <h3 class="loop-box-title text-danger">Default YouTube Path</h3>
+            <h3 class="loop-box-title text-danger">Default YouTube Loop</h3>
             <div class="loop-steps">
               <div class="loop-step">
                 <div class="loop-step-icon">🔍</div>
-                <div class="loop-step-title">YouTube</div>
+                <div class="loop-step-title">Lecture Search</div>
               </div>
               <div class="loop-arrow">→</div>
               <div class="loop-step">
@@ -203,17 +205,17 @@
               <div class="loop-arrow">→</div>
               <div class="loop-step">
                 <div class="loop-step-icon">⚡</div>
-                <div class="loop-step-title">Shorts</div>
+                <div class="loop-step-title">Shorts Reel</div>
               </div>
               <div class="loop-arrow">→</div>
               <div class="loop-step">
                 <div class="loop-step-icon">🍿</div>
-                <div class="loop-step-title">Entertainment</div>
+                <div class="loop-step-title">Viral Distraction</div>
               </div>
               <div class="loop-arrow">→</div>
               <div class="loop-step highlight-danger">
                 <div class="loop-step-icon">⏳</div>
-                <div class="loop-step-title">Lost Time</div>
+                <div class="loop-step-title">Lost Hours</div>
               </div>
             </div>
           </div>
@@ -224,17 +226,17 @@
             <div class="loop-steps">
               <div class="loop-step">
                 <div class="loop-step-icon">🛡️</div>
-                <div class="loop-step-title">Knolect</div>
+                <div class="loop-step-title">Knolect Active</div>
               </div>
               <div class="loop-arrow">→</div>
               <div class="loop-step">
                 <div class="loop-step-icon">🎯</div>
-                <div class="loop-step-title">Focus Mode</div>
+                <div class="loop-step-title">Strict Focus</div>
               </div>
               <div class="loop-arrow">→</div>
               <div class="loop-step">
                 <div class="loop-step-icon">📚</div>
-                <div class="loop-step-title">Whitelisted Creator</div>
+                <div class="loop-step-title">Approved Creator</div>
               </div>
               <div class="loop-arrow">→</div>
               <div class="loop-step">
@@ -244,7 +246,7 @@
               <div class="loop-arrow">→</div>
               <div class="loop-step highlight-success">
                 <div class="loop-step-icon">✅</div>
-                <div class="loop-step-title">Completion</div>
+                <div class="loop-step-title">Goal Completed</div>
               </div>
             </div>
           </div>
@@ -267,7 +269,7 @@
           <div class="demo-header-bar">
             <div class="demo-status-indicator">
               <span>Status:</span>
-              <span id="sim-status-pill" class="text-accent">Default YouTube</span>
+              <span id="sim-status-pill" style="color: var(--color-emerald-light);">Knolect Strict Focus ON (Clean Workspace)</span>
             </div>
             <span class="demo-badge-sim">Live Interactive Simulation</span>
           </div>
@@ -300,7 +302,7 @@
               <!-- Main Content -->
               <div class="sim-main">
                 <!-- Distracting Home Feed Elements -->
-                <div class="sim-distraction-feed" id="sim-distractions">
+                <div class="sim-distraction-feed hidden" id="sim-distractions">
                   <div class="sim-chips">
                     <span class="sim-chip active">All</span>
                     <span class="sim-chip">Gaming</span>
@@ -332,7 +334,7 @@
                 </div>
 
                 <!-- Clean Knolect Learning Space (shown when Focus Mode is ON) -->
-                <div class="sim-focus-overlay hidden" id="sim-focus-overlay">
+                <div class="sim-focus-overlay" id="sim-focus-overlay">
                   <div class="sim-knolect-card">
                     <div class="sim-knolect-badge">
                       <span>🎯</span> KNOLECT STRICT FOCUS ACTIVE
@@ -361,12 +363,12 @@
           <div class="demo-controls-bar">
             <div class="demo-toggle-group">
               <label class="demo-switch">
-                <input type="checkbox" id="sim-toggle-focus">
+                <input type="checkbox" id="sim-toggle-focus" checked>
                 <span class="demo-slider"></span>
               </label>
               <div class="demo-toggle-label">
                 <span class="demo-label-title">Knolect Focus Mode</span>
-                <span class="demo-label-sub" id="sim-toggle-desc">Toggle to eliminate algorithmic noise</span>
+                <span class="demo-label-sub" id="sim-toggle-desc">Distractions, Shorts, and algorithmic feeds are blocked</span>
               </div>
             </div>
           </div>
@@ -375,58 +377,109 @@
     </section>
 
     <!-- ========================================================================
-         5. FEATURES SECTION
+         5. CORE CAPABILITIES (Varied Editorial Layout on Warm Ivory)
          ======================================================================== -->
     <section class="section" id="features">
       <div class="container">
         <div class="section-header">
           <span class="section-tag">Core Capabilities</span>
           <h2 class="section-title">Built for Intentional Study</h2>
-          <p class="section-desc">Every feature in Knolect is engineered to keep your attention on what matters.</p>
+          <p class="section-desc">Every feature in Knolect is engineered to keep your attention anchored on what matters.</p>
         </div>
 
-        <div class="features-grid">
-          <!-- Feature 1 -->
-          <div class="feature-card">
-            <div class="feature-icon">🛡️</div>
-            <h3 class="feature-title">Strict Focus Mode</h3>
-            <p class="feature-desc">An allowlist-first security model. Blocks non-whitelisted videos, search rabbit holes, and direct entertainment URL entry during active sessions.</p>
+        <!-- Asymmetrical Editorial Capabilities Layout -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          
+          <!-- Lead Feature Banner: Strict Focus Architecture -->
+          <div class="lead-feature-banner">
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">
+                PRIMARY DEFENSE MODEL
+              </div>
+              <h3 style="font-size: 1.85rem; font-weight: 600; color: var(--color-forest); margin-bottom: 12px;">
+                Strict Focus Mode
+              </h3>
+              <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                Most blockers try to maintain endless blocklists of distracting videos. Knolect inverts the paradigm: during Strict Focus, non-whitelisted videos, search rabbit holes, and direct entertainment URL entries are blocked by default.
+              </p>
+              <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: var(--color-forest);">
+                  <span style="color: var(--color-gold);">✓</span> Allowlist-First Control
+                </span>
+                <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: var(--color-forest);">
+                  <span style="color: var(--color-gold);">✓</span> Clean Block Overlays
+                </span>
+                <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: var(--color-forest);">
+                  <span style="color: var(--color-gold);">✓</span> 1-Click Study Overrides
+                </span>
+              </div>
+            </div>
+            <div class="eval-order-card">
+              <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-gold-light); margin-bottom: 10px;">
+                DETERMINISTIC EVALUATION ORDER
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px; font-family: var(--font-mono); font-size: 0.82rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 4px;">
+                  <span>1. System Verified Educators</span>
+                  <span style="color: var(--color-gold); font-weight: 700;">PASSED</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 4px;">
+                  <span>2. Personal Study Allowlist</span>
+                  <span style="color: var(--color-gold); font-weight: 700;">APPROVED</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(217,107,107,0.12); border-radius: 4px;">
+                  <span>3. Unverified Distractions</span>
+                  <span style="color: #FCA5A5; font-weight: 700;">BLOCKED</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Feature 2 -->
-          <div class="feature-card">
-            <div class="feature-icon">⭐</div>
-            <h3 class="feature-title">Channel Whitelist</h3>
-            <p class="feature-desc">Store your favorite educational creators (e.g. MIT OCW, 3Blue1Brown, freeCodeCamp). Whitelisted creators bypass blocking for seamless study.</p>
+          <!-- Supporting Capabilities Grid (Varied Cards) -->
+          <div class="features-grid">
+            <!-- Feature 2 -->
+            <div class="feature-card">
+              <div class="feature-icon">⭐</div>
+              <h3 class="feature-title">Channel Allowlisting</h3>
+              <p class="feature-desc">Curate trusted creators (MIT OCW, 3Blue1Brown, freeCodeCamp) or save custom study channels directly from any active video. Allowlisted creators bypass blocking seamlessly.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-card">
+              <div class="feature-icon">🚫</div>
+              <h3 class="feature-title">Search & Shorts Blocking</h3>
+              <p class="feature-desc">Eliminates high-stimulus Shorts shelves, navigation buttons, and infinite vertical reels. Prevents entertainment searches from dragging you into rabbit holes.</p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="feature-card">
+              <div class="feature-icon">⏱️</div>
+              <h3 class="feature-title">Pomodoro Session Timer</h3>
+              <p class="feature-desc">Timestamp-based focus timer (15m, 25m, 45m, 60m). Operates via background alarms, survives popup closing, and renders live countdown badges in your browser toolbar.</p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3 class="feature-title">SPA Transition Defense</h3>
+              <p class="feature-desc">Intercepts YouTube's single-page application router events and dynamic element mutations so focus enforcement cannot be circumvented by clicking around.</p>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="feature-card">
+              <div class="feature-icon">🔒</div>
+              <h3 class="feature-title">100% Local Privacy</h3>
+              <p class="feature-desc">Zero video history harvesting, zero search logging, and no external tracking. All focus preferences and allowed channels reside safely in your browser storage.</p>
+            </div>
+
+            <!-- Feature 7 -->
+            <div class="feature-card">
+              <div class="feature-icon">📊</div>
+              <h3 class="feature-title">Focus Analytics Dashboard</h3>
+              <p class="feature-desc">Inspect completed study sessions, distractions filtered, and focus streaks through the Knolect user dashboard with complete privacy and zero telemetry leaks.</p>
+            </div>
           </div>
 
-          <!-- Feature 3 -->
-          <div class="feature-card">
-            <div class="feature-icon">🚫</div>
-            <h3 class="feature-title">Search & Shorts Blocking</h3>
-            <p class="feature-desc">Prevents entertainment searches and completely eliminates Shorts shelves, navigation buttons, and addictive vertical video feeds.</p>
-          </div>
-
-          <!-- Feature 4 -->
-          <div class="feature-card">
-            <div class="feature-icon">⏱️</div>
-            <h3 class="feature-title">Session Timer</h3>
-            <p class="feature-desc">Timestamp-based Pomodoro focus timer (15m, 25m, 45m, 60m). Runs via background alarms and survives popup closing with toolbar badge updates.</p>
-          </div>
-
-          <!-- Feature 5 -->
-          <div class="feature-card">
-            <div class="feature-icon">⚡</div>
-            <h3 class="feature-title">YouTube SPA Protection</h3>
-            <p class="feature-desc">Intercepts YouTube's single-page app transitions and dynamic navigation events so focus enforcement cannot be bypassed by clicking around.</p>
-          </div>
-
-          <!-- Feature 6 -->
-          <div class="feature-card">
-            <div class="feature-icon">🔒</div>
-            <h3 class="feature-title">100% Local Privacy</h3>
-            <p class="feature-desc">Zero video logging, zero search tracking, and no external history harvesting. All focus settings and whitelists remain securely on your device.</p>
-          </div>
         </div>
       </div>
     </section>
@@ -434,7 +487,7 @@
     <!-- ========================================================================
          6. HOW IT WORKS
          ======================================================================== -->
-    <section class="section section-alt" id="how-it-works">
+    <section class="section" id="how-it-works">
       <div class="container">
         <div class="section-header">
           <span class="section-tag">Simple Workflow</span>
@@ -444,33 +497,33 @@
 
         <div class="steps-grid">
           <div class="step-card">
-            <div class="step-num">1</div>
+            <div class="step-num">01</div>
             <h3 class="step-title">Install Knolect</h3>
             <p class="step-desc">Add the extension to Chrome, Edge, Brave, or Opera in one click.</p>
           </div>
 
           <div class="step-card">
-            <div class="step-num">2</div>
+            <div class="step-num">02</div>
             <h3 class="step-title">Enable Focus Mode</h3>
             <p class="step-desc">Toggle Focus Mode or Strict Focus ON to eliminate feed distractions.</p>
           </div>
 
           <div class="step-card">
-            <div class="step-num">3</div>
-            <h3 class="step-title">Choose Learning Channels</h3>
-            <p class="step-desc">Add your preferred educators or quick-whitelist any active video.</p>
+            <div class="step-num">03</div>
+            <h3 class="step-title">Allow Study Channels</h3>
+            <p class="step-desc">Pick from curated learning suggestions or click "+ Allow this channel" on any video.</p>
           </div>
 
           <div class="step-card">
-            <div class="step-num">4</div>
+            <div class="step-num">04</div>
             <h3 class="step-title">Start Session Timer</h3>
             <p class="step-desc">Pick your session duration (25m Pomodoro) and begin deep study.</p>
           </div>
 
           <div class="step-card">
-            <div class="step-num">5</div>
+            <div class="step-num">05</div>
             <h3 class="step-title">Learn Without Distraction</h3>
-            <p class="step-desc">Watch what you came for and finish your learning goals.</p>
+            <p class="step-desc">Watch what you came for, take notes, and finish your learning goals.</p>
           </div>
         </div>
       </div>
@@ -515,7 +568,7 @@
     <!-- ========================================================================
          8. PRIVACY GUARANTEE
          ======================================================================== -->
-    <section class="section section-alt" id="privacy">
+    <section class="section" id="privacy">
       <div class="container">
         <div class="section-header">
           <span class="section-tag">Privacy Architecture</span>
@@ -527,19 +580,19 @@
           <div class="privacy-card">
             <h3 class="privacy-card-title text-accent">What Stays on Your Device</h3>
             <ul class="privacy-list">
-              <li>✓ Your custom whitelisted YouTube channels</li>
-              <li>✓ Your focus preferences & distraction toggles</li>
-              <li>✓ Session timer countdowns & durations</li>
-              <li>✓ Extension active state</li>
+              <li><span style="color: var(--color-gold);">✓</span> Your custom allowed YouTube study channels</li>
+              <li><span style="color: var(--color-gold);">✓</span> Your focus preferences & distraction toggles</li>
+              <li><span style="color: var(--color-gold);">✓</span> Session timer countdowns & durations</li>
+              <li><span style="color: var(--color-gold);">✓</span> Extension active state</li>
             </ul>
           </div>
           <div class="privacy-card">
             <h3 class="privacy-card-title text-danger">What We Never Collect</h3>
             <ul class="privacy-list">
-              <li>✗ Your YouTube browsing or watch history</li>
-              <li>✗ Video titles, search queries, or comments</li>
-              <li>✗ Personal account credentials or cookies</li>
-              <li>✗ Keystrokes or third-party web activity</li>
+              <li><span style="color: var(--danger-subtle);">✗</span> Your YouTube browsing or watch history</li>
+              <li><span style="color: var(--danger-subtle);">✗</span> Video titles, search queries, or comments</li>
+              <li><span style="color: var(--danger-subtle);">✗</span> Personal account credentials or cookies</li>
+              <li><span style="color: var(--danger-subtle);">✗</span> Keystrokes or third-party web activity</li>
             </ul>
           </div>
         </div>
@@ -547,7 +600,7 @@
     </section>
 
     <!-- ========================================================================
-         9. FAQ SECTION
+         9. FAQ SECTION (Warm Ivory)
          ======================================================================== -->
     <section class="section" id="faq">
       <div class="container">
@@ -559,7 +612,7 @@
 
         <div class="faq-accordion">
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question faq-question-btn">
               <span>What is Knolect?</span>
               <span class="faq-icon">+</span>
             </button>
@@ -569,17 +622,17 @@
           </div>
 
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question faq-question-btn">
               <span>Does it block YouTube Shorts?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <p>Yes. Knolect completely eliminates Shorts navigation links, sidebar buttons, feed shelves, and direct `/shorts/*` video URLs.</p>
+              <p>Yes. Knolect completely eliminates Shorts navigation links, sidebar buttons, feed shelves, and direct <code>/shorts/*</code> video URLs.</p>
             </div>
           </div>
 
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question faq-question-btn">
               <span>Can I search YouTube while Focus Mode is active?</span>
               <span class="faq-icon">+</span>
             </button>
@@ -589,17 +642,17 @@
           </div>
 
           <div class="faq-item">
-            <button type="button" class="faq-question">
-              <span>Can I whitelist channels?</span>
+            <button type="button" class="faq-question faq-question-btn">
+              <span>Can I allow my own study channels?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <p>Yes! You can add any channel by name, `@handle`, or YouTube URL in the popup. You can also click "+ Whitelist" on any active video.</p>
+              <p>Yes! You can add any channel by name, <code>@handle</code>, or YouTube URL in the popup. You can also click "+ Allow this channel" directly on any active video.</p>
             </div>
           </div>
 
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question faq-question-btn">
               <span>Does Knolect collect browsing history?</span>
               <span class="faq-icon">+</span>
             </button>
@@ -609,18 +662,18 @@
           </div>
 
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question faq-question-btn">
               <span>Does it work after refreshing YouTube?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <p>Yes. All settings are persistently stored via `chrome.storage.local`. When you refresh or navigate inside YouTube, Knolect immediately re-applies focus rules.</p>
+              <p>Yes. All settings are persistently stored via <code>chrome.storage.local</code>. When you refresh or navigate inside YouTube, Knolect immediately re-applies focus rules.</p>
             </div>
           </div>
 
           <div class="faq-item">
-            <button type="button" class="faq-question">
-              <span>Can I disable Focus Mode?</span>
+            <button type="button" class="faq-question faq-question-btn">
+              <span>Can I disable Focus Mode when I want?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
@@ -629,7 +682,7 @@
           </div>
 
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question faq-question-btn">
               <span>Which browsers are supported?</span>
               <span class="faq-icon">+</span>
             </button>
@@ -644,7 +697,7 @@
     <!-- ========================================================================
          9.5 DISTINCTIVE FOCUS OS SHOWCASE
          ======================================================================== -->
-    <section class="section" style="padding-top: 0;">
+    <section class="section focus-os-section" id="focus-os">
       <div class="container">
         <div class="section-header text-center">
           <span class="section-tag">Focus OS Architecture</span>
@@ -660,7 +713,7 @@
                 <span class="focus-state-dot"></span>
                 FOCUS ACTIVE
               </span>
-              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:#38bdf8;">DEEP SESSION</span>
+              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--color-gold-light);">DEEP SESSION</span>
             </div>
 
             <div class="focus-ring-container">
@@ -677,8 +730,8 @@
           <!-- 2. Distraction -> Blocked & Learning Signal -->
           <div class="knolect-visual-box">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--text-muted);">LEARNING SIGNAL</span>
-              <span class="badge badge-success" style="font-size:0.72rem;">QUALIFIED</span>
+              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--color-sage-light);">LEARNING SIGNAL</span>
+              <span class="focus-state-badge" style="font-size:0.72rem;">QUALIFIED</span>
             </div>
 
             <div style="display:flex; flex-direction:column; gap:12px; margin: 12px 0;">
@@ -693,13 +746,13 @@
                 <span class="blocked-text">REMOVED</span>
               </div>
               <div class="transformation-card">
-                <span style="color:#f8fafc; font-weight:600;">Physics Wallah</span>
+                <span style="color:var(--color-ivory); font-weight:600;">Physics Wallah</span>
                 <span class="transform-arrow">→</span>
-                <span style="color:#38bdf8; font-weight:700;">ALLOWED</span>
+                <span style="color:var(--color-gold); font-weight:700;">ALLOWED</span>
               </div>
             </div>
 
-            <p style="font-size:0.8rem; color:var(--text-muted); line-height:1.5;">
+            <p style="font-size:0.82rem; color:var(--color-sage-light); line-height:1.5;">
               Deterministic multi-signal classifier allows qualified educational channels and intercepts endless loops.
             </p>
           </div>
@@ -755,7 +808,7 @@
         <!-- Brand Statement Column -->
         <div class="footer-brand-hero">
           <a href="index.html" class="footer-brand-lockup" aria-label="Knolect Home">
-            <img src="assets/logo.png" alt="Knolect Logo">
+            <img src="assets/logo.svg" alt="Knolect Logo">
             <span class="footer-brand-title">Knolect</span>
           </a>
           <div class="footer-brand-tagline">Turn YouTube into your learning space.</div>
@@ -771,7 +824,7 @@
         <div class="footer-col-nav">
           <div class="footer-col-header">Product</div>
           <div class="footer-col-links">
-            <a href="index.html#features">Features</a>
+            <a href="index.html#features">Capabilities</a>
             <a href="index.html#how-it-works">How It Works</a>
             <a href="install.html">Installation</a>
             <a href="index.html#focus-mode">Focus Mode</a>
@@ -805,7 +858,8 @@
         <div class="footer-col-nav">
           <div class="footer-col-header">Knolect</div>
           <div class="footer-col-links">
-            <a href="index.html#problem">About</a>
+            <a href="about.html">About</a>
+            <a href="index.html#problem">The Problem</a>
             <a href="install.html">Changelog</a>
             <a href="index.html#focus-mode">Status</a>
           </div>
@@ -825,7 +879,7 @@
           <span>© 2026 Knolect · All rights reserved.</span>
         </div>
         <div class="footer-founder-credit">
-          A project by Shivam & Team
+          Project by Aadrut
         </div>
         <div>
           <span class="footer-status-pill">
@@ -833,6 +887,11 @@
             All systems operational
           </span>
         </div>
+      </div>
+
+      <!-- Project Credit at the very bottom -->
+      <div class="footer-sub-credit">
+        Project by Aadrut
       </div>
     </div>
   </footer>

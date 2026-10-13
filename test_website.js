@@ -23,11 +23,25 @@ function assert(condition, message) {
 const websiteDir = path.join(__dirname, 'website');
 
 // 1. Check HTML Pages
-['index.html', 'install.html', 'support.html', 'admin.html'].forEach(file => {
+['index.html', 'about.html', 'install.html', 'support.html', 'admin.html'].forEach(file => {
   const filePath = path.join(websiteDir, file);
   assert(fs.existsSync(filePath), `Website file exists: ${file}`);
   const content = fs.readFileSync(filePath, 'utf8');
   assert(content.includes('Knolect'), `${file} contains Knolect branding`);
+});
+
+// 1.1 Verify About Page Required Content & Structure
+const aboutContent = fs.readFileSync(path.join(websiteDir, 'about.html'), 'utf8');
+assert(aboutContent.includes('Learning deserves your attention.'), 'about.html contains Section A headline');
+assert(aboutContent.includes('Less distraction.'), 'about.html contains Section B headline');
+assert(aboutContent.includes('A learning-focused project by Aadrut.'), 'about.html contains Section E project credit');
+assert(aboutContent.includes('Project by Aadrut'), 'about.html contains footer project credit');
+
+// 1.2 Verify Project Credit in Footer across primary pages
+['index.html', 'about.html', 'install.html', 'support.html'].forEach(file => {
+  const content = fs.readFileSync(path.join(websiteDir, file), 'utf8');
+  assert(content.includes('Project by Aadrut'), `${file} contains Project by Aadrut footer credit`);
+  assert(content.includes('about.html'), `${file} contains navigation link to About page`);
 });
 
 // 2. Check CSS Stylesheets

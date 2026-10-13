@@ -194,7 +194,182 @@ assert(classifier.isStillEligible(legacyEntertainment) === false, 'Test N: Legac
 // Test P: Offline deterministic behavior
 assert(typeof classifier.classifyChannel === 'function', 'Test P: Classifier executes locally with zero external API calls');
 
-console.log(`\n=== Verification Complete: ${passed} passed, ${failed} failed ===`);
-if (failed > 0) {
-  process.exit(1);
-}
+// =========================================================================
+// BUG 1 & BUG 2 REGRESSION & ENHANCEMENT TESTS
+// =========================================================================
+
+// Test Q: Canonical matching (Channel ID primary, handle fallback)
+const chA = {
+  channelId: 'UC_x5XG1OV2P6uZZ5FSM9Ttw',
+  name: 'MIT Different Display Name',
+  handle: '@differenthandle'
+};
+const chB = {
+  channelId: 'UC_x5XG1OV2P6uZZ5FSM9Ttw',
+  name: 'MIT OpenCourseWare',
+  handle: '@mitocw'
+};
+assert(helpers.matchesChannelIdentity(chA, chB) === true, 'Test Q1: Matches canonically by YouTube Channel ID despite different display names');
+
+const chHandleA = { handle: '@MyStudyChannel', name: 'My Study' };
+const chHandleB = { handle: '@mystudychannel', name: 'Study Channel' };
+assert(helpers.matchesChannelIdentity(chHandleA, chHandleB) === true, 'Test Q2: Matches canonically by normalized handle case-insensitively');
+
+// Test R: Avatar extraction & preservation
+const chWithAvatar = helpers.normalizeChannelInfo({
+  name: 'Organic Chemistry Tutor',
+  handle: '@TheOrganicChemistryTutor',
+  avatarUrl: 'https://yt3.ggpht.com/avatar123.jpg'
+});
+assert(chWithAvatar.avatarUrl === 'https://yt3.ggpht.com/avatar123.jpg', 'Test R: Avatar URL is properly extracted and preserved');
+
+// Test S: Dashboard URL dynamic resolution (Bug 2)
+const constants = require('./extension/utils/constants.js');
+assert(constants.DEFAULT_PRODUCTION_DASHBOARD_URL === 'https://kublyfocus.vercel.app/dashboard', 'Test S1: Default production dashboard URL is https://kublyfocus.vercel.app/dashboard');
+assert(helpers.resolveDashboardUrl() === 'https://kublyfocus.vercel.app/dashboard', 'Test S2: resolveDashboardUrl defaults to production dashboard URL');
+assert(helpers.resolveDashboardUrl(null, 'http://localhost:3000') === 'http://localhost:3000/dashboard', 'Test S3: resolveDashboardUrl detects localhost context');
+assert(helpers.resolveDashboardUrl({ dashboardUrl: 'https://custom.knolect.com/dashboard' }) === 'https://custom.knolect.com/dashboard', 'Test S4: resolveDashboardUrl respects custom user settings');
+
+// Test T: Popup HTML dashboard elements and avatar UI
+const popupHtmlContent = fs.readFileSync(popupHtml, 'utf8');
+assert(popupHtmlContent.includes('id="btn-open-dashboard"'), 'Test T1: popup.html contains #btn-open-dashboard');
+assert(popupHtmlContent.includes('id="btn-open-dashboard-settings"'), 'Test T2: popup.html contains #btn-open-dashboard-settings');
+assert(popupHtmlContent.includes('id="current-channel-avatar"'), 'Test T3: popup.html contains #current-channel-avatar for channel thumbnail');
+assert(!popupHtmlContent.includes('href="http://localhost:3000/dashboard"'), 'Test T4: popup.html has eliminated broken hardcoded localhost hrefs');
+
+// Test U: Explicit allowlisting precedence in Storage Layer
+// Mock chrome.storage.local for unit testing storage functions in Node environment
+const mockStorage = {
+  focusMode: true,
+  strictFocus: true,
+  learningChannels: [
+    {
+      channelId: 'UC_x5XG1OV2P6uZZ5FSM9Ttw',
+      name: 'MIT OpenCourseWare',
+      handle: '@mitocw',
+      normalizedHandle: 'mitocw',
+      source: 'system_verified',
+      category: 'education'
+    }
+  ]
+};
+
+global.chrome = {
+  storage: {
+    local: {
+      get: (keys, cb) => {
+        if (typeof keys === 'string') cb({ [keys]: mockStorage[keys] });
+        else if (Array.isArray(keys)) {
+          const res = {};
+          keys.forEach(k => { res[k] = mockStorage[k]; });
+          cb(res);
+        } else if (keys === null) cb({ ...mockStorage });
+        else cb({});
+      },
+      set: (obj, cb) => {
+        Object.assign(mockStorage, obj);
+        if (cb) cb();
+      }
+    }
+  },
+  runtime: { lastError: null }
+};
+
+const storage = require('./extension/storage/storage.js');
+
+(async () => {
+  // Test U1: Allowlisting a study channel with explicit flag succeeds
+  const addRes = await storage.addLearningChannel({
+    channelId: 'UCstudy1234567890123456',
+    name: 'Advanced Pathology Lectures',
+    handle: '@pathologylectures',
+    explicit: true
+  });
+  assert(addRes.success === true, 'Test U1: Explicit study channel allowlisting succeeds');
+
+  // Test U2: isChannelLearningApproved returns true for allowlisted channel
+  const isApproved = await storage.isChannelLearningApproved({
+    channelId: 'UCstudy1234567890123456'
+  });
+  assert(isApproved === true, 'Test U2: isChannelLearningApproved gives precedence to allowlisted channel');
+
+  // Test U3: Removing channel succeeds
+  const removeRes = await storage.removeLearningChannel('UCstudy1234567890123456');
+  assert(removeRes.success === true, 'Test U3: Removing channel succeeds');
+
+  const isApprovedAfterRemove = await storage.isChannelLearningApproved({
+    channelId: 'UCstudy1234567890123456'
+  });
+  assert(isApprovedAfterRemove === false, 'Test U4: Channel is no longer approved after removal');
+
+  // =========================================================================
+  // Test Suite V: Input Validation (isValidChannelInput)
+  // =========================================================================
+  assert(helpers.isValidChannelInput('@gautamvarde') === true, 'Test V1: Valid handle @gautamvarde accepted');
+  assert(helpers.isValidChannelInput('https://www.youtube.com/@gautamvarde') === true, 'Test V2: Valid YouTube URL accepted');
+  assert(helpers.isValidChannelInput('UC1234567890123456789012') === true, 'Test V3: Valid 24-char UC channel ID accepted');
+  assert(helpers.isValidChannelInput('@@@') === false, 'Test V4: Invalid symbol string @@@ rejected');
+  assert(helpers.isValidChannelInput('') === false && helpers.isValidChannelInput('<script>alert(1)</script>') === false, 'Test V5: Empty and malicious inputs rejected');
+
+  // =========================================================================
+  // Test Suite W: Strict Focus False Positives & "Allow for My Study" flow
+  // =========================================================================
+  const gautamClassification = classifier.classifyChannel({
+    name: 'Gautam Varde',
+    handle: '@gautamvarde'
+  });
+  assert(
+    gautamClassification.eligible === false &&
+    gautamClassification.unverified === true &&
+    gautamClassification.category !== 'entertainment',
+    'Test W1: Channel @gautamvarde without keyword signals is unverified, not entertainment'
+  );
+  assert(
+    gautamClassification.reasons.some(r => r.includes('Couldn’t verify this channel automatically')),
+    'Test W2: Unverified channel reason explains automatic verification was uncertain'
+  );
+
+  // User clicks "Allow for My Study" (explicit personal allowlist addition)
+  const gautamAddRes = await storage.addLearningChannel({
+    name: 'Gautam Varde',
+    handle: '@gautamvarde',
+    channelId: 'UCgautamvarde12345678901'
+  }, { explicit: true, isPersonal: true });
+  assert(gautamAddRes.success === true, 'Test W3: Allowing @gautamvarde for My Study succeeds');
+
+  // Verify that once allowed, it bypasses Strict Focus blocking
+  const gautamApproved = await storage.isChannelLearningApproved({
+    handle: '@gautamvarde',
+    channelId: 'UCgautamvarde12345678901'
+  });
+  assert(gautamApproved === true, 'Test W4: @gautamvarde is approved for learning in Strict Focus');
+
+  // Verify stored item source is 'user_approved'
+  const storedChannels = await storage.getLearningChannels();
+  const storedGautam = storedChannels.find(c => c.handle === '@gautamvarde');
+  assert(storedGautam && storedGautam.source === 'user_approved', 'Test W5: Stored channel is classified as user_approved');
+
+  // Remove channel from allowlist
+  const gautamRemoveRes = await storage.removeLearningChannel('@gautamvarde');
+  assert(gautamRemoveRes.success === true, 'Test W6: Removing @gautamvarde from allowlist succeeds');
+
+  const gautamApprovedAfter = await storage.isChannelLearningApproved({ handle: '@gautamvarde' });
+  assert(gautamApprovedAfter === false, 'Test W7: @gautamvarde is blocked again after removal');
+
+  // =========================================================================
+  // Test Suite X: UI Integration Verification
+  // =========================================================================
+  const popupJsContent = fs.readFileSync(path.join(__dirname, 'extension/popup/popup.js'), 'utf8');
+  assert(popupJsContent.includes('isValidChannelInput'), 'Test X1: popup.js validates channel inputs');
+  assert(popupJsContent.includes('btn-allow-my-study'), 'Test X2: popup.js provides Allow for My Study button');
+  assert(popupJsContent.includes('My Study Channels'), 'Test X3: popup.js separates My Study Channels from verified channels');
+
+  const popupCssContent = fs.readFileSync(path.join(__dirname, 'extension/popup/popup.css'), 'utf8');
+  assert(popupCssContent.includes('.classification-card.unverified'), 'Test X4: popup.css contains unverified card styles');
+  assert(popupCssContent.includes('.personal-badge-mini'), 'Test X5: popup.css contains personal study badge styles');
+
+  console.log(`\n=== Verification Complete: ${passed} passed, ${failed} failed ===`);
+  if (failed > 0) {
+    process.exit(1);
+  }
+})();

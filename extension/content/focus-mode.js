@@ -122,6 +122,7 @@ class KnolectFocusEngine {
     let handle = '';
     let channelId = '';
     let videoTitle = '';
+    let avatarUrl = '';
 
     const pathname = window.location.pathname;
 
@@ -138,6 +139,11 @@ class KnolectFocusEngine {
       const headerElem = document.querySelector('ytd-channel-name#channel-header-name, ytd-c4-tabbed-header-renderer #channel-name, #channel-header yt-formatted-string, ytd-tabbed-page-header ytd-channel-name');
       if (headerElem && headerElem.textContent) {
         name = headerElem.textContent.trim();
+      }
+
+      const avatarEl = document.querySelector('ytd-channel-name #avatar img, #channel-header #avatar img, ytd-c4-tabbed-header-renderer #avatar img, #avatar-editor img, yt-img-shadow#avatar img');
+      if (avatarEl && (avatarEl.src || avatarEl.getAttribute('src'))) {
+        avatarUrl = avatarEl.src || avatarEl.getAttribute('src');
       }
     }
 
@@ -165,6 +171,20 @@ class KnolectFocusEngine {
         if (metaAuthor) name = metaAuthor.getAttribute('content') || '';
       }
 
+      // Check flexy attribute or canonical link for channelId
+      if (!channelId) {
+        const flexy = document.querySelector('ytd-watch-flexy');
+        if (flexy && flexy.getAttribute('channel-id')) {
+          channelId = flexy.getAttribute('channel-id');
+        }
+      }
+
+      // Owner avatar
+      const avatarEl = document.querySelector('#owner #avatar img, ytd-video-owner-renderer #avatar img, ytd-watch-metadata #avatar img, #upload-info #avatar img');
+      if (avatarEl && (avatarEl.src || avatarEl.getAttribute('src'))) {
+        avatarUrl = avatarEl.src || avatarEl.getAttribute('src');
+      }
+
       // Video title
       const titleEl = document.querySelector('ytd-watch-metadata #title h1, h1.title, #container > h1 > yt-formatted-string');
       if (titleEl) {
@@ -172,9 +192,11 @@ class KnolectFocusEngine {
       }
     }
 
-    const resolved = (typeof globalThis.resolveChannelIdentity === 'function')
-      ? globalThis.resolveChannelIdentity({ name, handle, channelId })
-      : { name, handle, channelId, normalizedHandle: (handle || '').replace(/^@/, '').toLowerCase() };
+    const resolved = (typeof globalThis.normalizeChannelInfo === 'function')
+      ? globalThis.normalizeChannelInfo({ name, handle, channelId, avatarUrl })
+      : ((typeof globalThis.resolveChannelIdentity === 'function')
+        ? globalThis.resolveChannelIdentity({ name, handle, channelId, avatarUrl })
+        : { name, handle, channelId, normalizedHandle: (handle || '').replace(/^@/, '').toLowerCase(), avatarUrl });
 
     return {
       ...resolved,
@@ -184,6 +206,10 @@ class KnolectFocusEngine {
 
   /**
    * Evaluate whether the active channel is approved for learning
+   * Priority decision order:
+   * 1. Check system-verified registry
+   * 2. Check user allowlist (canonical channelId or handle match)
+   * If allowlisted, bypass classification heuristics completely!
    */
   async evaluateChannelLearningApproval() {
     this.currentChannel = this.detectCurrentChannel();
@@ -191,7 +217,7 @@ class KnolectFocusEngine {
 
     // If channel metadata is not yet populated on watch page, schedule a quick retry
     if (window.location.pathname.includes('/watch') && !this.currentChannel.name && !this.currentChannel.handle && !this.currentChannel.channelId) {
-      if (this.detectionRetryCount < 5) {
+      if (this.detectionRetryCount < 6) {
         this.detectionRetryCount++;
         clearTimeout(this.detectionTimer);
         this.detectionTimer = setTimeout(async () => {
@@ -222,36 +248,34 @@ class KnolectFocusEngine {
       }
     }
 
-    // 2. Check User-Approved Stored Learning Channels
-    if (!isApproved) {
-      const targetHandle = (this.currentChannel.normalizedHandle || (this.currentChannel.handle || '')).replace(/^@/, '').toLowerCase().trim();
-      const targetId = (this.currentChannel.channelId || '').toLowerCase().trim();
-      const targetName = (this.currentChannel.name || '').toLowerCase().trim();
+    // 2. Check User-Approved Stored Learning Channels (Allowlist Precedence)
+    if (!isApproved && Array.isArray(this.learningChannels)) {
+      const matched = this.learningChannels.some(item => {
+        if (typeof globalThis.matchesChannelIdentity === 'function') {
+          return globalThis.matchesChannelIdentity(this.currentChannel, item);
+        }
+        const targetHandle = (this.currentChannel.normalizedHandle || (this.currentChannel.handle || '')).replace(/^@/, '').toLowerCase().trim();
+        const targetId = (this.currentChannel.channelId || '').toLowerCase().trim();
+        const targetName = (this.currentChannel.name || '').toLowerCase().trim();
 
-      const matched = this.learningChannels.find(item => {
         const itemHandle = (item.normalizedHandle || (item.handle || item.identifier || '')).replace(/^@/, '').toLowerCase().trim();
         const itemId = (item.channelId || item.identifier || '').toLowerCase().trim();
         const itemName = (item.name || '').toLowerCase().trim();
 
-        if (targetHandle && itemHandle && targetHandle === itemHandle) return true;
         if (targetId && itemId && targetId === itemId) return true;
+        if (targetHandle && itemHandle && targetHandle === itemHandle) return true;
         if (targetName && itemName && targetName === itemName) return true;
         return false;
       });
 
       if (matched) {
-        // Validate that stored entry is still eligible
-        if (typeof globalThis.isStillEligible === 'function') {
-          isApproved = globalThis.isStillEligible(matched);
-        } else {
-          isApproved = matched.category === 'education' && matched.eligible !== false;
-        }
+        isApproved = true;
       }
     }
 
     this.isCurrentLearningApproved = isApproved;
 
-    // Run local classifier for context
+    // Run local classifier for context & display
     if (typeof globalThis.classifyChannel === 'function') {
       this.currentClassification = globalThis.classifyChannel(this.currentChannel);
     }
@@ -417,20 +441,17 @@ class KnolectFocusEngine {
     if (allowApprovalEvaluation && currentChannel && (currentChannel.name || currentChannel.handle)) {
       const isEligible = classification && classification.eligible;
       const chName = (typeof globalThis.escapeHtml === 'function') ? globalThis.escapeHtml(currentChannel.name || currentChannel.handle) : (currentChannel.name || currentChannel.handle);
+      const chAvatar = currentChannel.avatarUrl ? `<img src="${(typeof globalThis.escapeHtml === 'function') ? globalThis.escapeHtml(currentChannel.avatarUrl) : currentChannel.avatarUrl}" alt="${chName}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;">` : '';
 
-      if (isEligible) {
-        approvalActionHtml = `
-          <button type="button" class="knolect-btn-secondary" id="knolect-btn-approve-channel">
-            <span>✓</span> Add "${chName}" to Learning Channels (${classification.confidence}% Match)
+      const matchLabel = (classification && classification.confidence) ? ` (${classification.confidence}% Match)` : '';
+
+      approvalActionHtml = `
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+          <button type="button" class="knolect-btn-secondary" id="knolect-btn-approve-channel" style="width:100%;">
+            ${chAvatar}<span>✓</span> Allow "${chName}" for Learning${isEligible ? matchLabel : ''}
           </button>
-        `;
-      } else {
-        approvalActionHtml = `
-          <div class="knolect-ineligible-notice">
-            <span>🚫</span> "${chName}" is classified as entertainment/non-learning and cannot bypass Strict Focus.
-          </div>
-        `;
-      }
+        </div>
+      `;
     }
 
     screen.innerHTML = `
@@ -463,8 +484,10 @@ class KnolectFocusEngine {
     const approveBtn = screen.querySelector('#knolect-btn-approve-channel');
     if (approveBtn && currentChannel) {
       approveBtn.addEventListener('click', async () => {
+        approveBtn.disabled = true;
+        approveBtn.textContent = 'Allowing channel...';
         if (typeof globalThis.addLearningChannel === 'function') {
-          const res = await globalThis.addLearningChannel(currentChannel);
+          const res = await globalThis.addLearningChannel(currentChannel, { explicit: true });
           if (res.success) {
             this.removeBlockScreen();
             window.location.reload();

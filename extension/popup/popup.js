@@ -32,14 +32,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   const strictToggle = document.getElementById('strict-toggle');
   const activeTabCard = document.getElementById('active-tab-context');
   const currentChannelName = document.getElementById('current-channel-name');
+  const currentChannelHandle = document.getElementById('current-channel-handle');
+  const currentChannelAvatar = document.getElementById('current-channel-avatar');
+  const currentChannelAvatarFallback = document.getElementById('current-channel-avatar-fallback');
   const currentChannelClassification = document.getElementById('current-channel-classification');
   const btnQuickWhitelist = document.getElementById('btn-quick-whitelist');
   const nonYtBanner = document.getElementById('non-yt-banner');
 
-  // DOM Elements - Performance Metrics
+  // DOM Elements - Performance Metrics & Dashboard
   const statFocusTime = document.getElementById('stat-focus-time');
   const statSessions = document.getElementById('stat-sessions');
   const statBlocked = document.getElementById('stat-blocked');
+  const btnOpenDashboard = document.getElementById('btn-open-dashboard');
+  const btnOpenDashboardSettings = document.getElementById('btn-open-dashboard-settings');
 
   // DOM Elements - Timer
   const timerDisplay = document.getElementById('timer-display');
@@ -184,42 +189,77 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Query content script for live status
       const response = await sendTabMessage(currentTab.id, { type: MESSAGE_TYPES.QUERY_PAGE_STATUS });
 
-      if (response && response.channel && (response.channel.name || response.channel.handle)) {
+      if (response && response.channel && (response.channel.name || response.channel.handle || response.channel.channelId)) {
         activeTabContext = response.channel;
-        const displayName = response.channel.name || response.channel.handle;
+        const displayName = response.channel.name || response.channel.handle || response.channel.channelId;
         currentChannelName.textContent = displayName;
 
-        const isApproved = response.isApproved || response.isWhitelisted;
+        // Render handle or channel ID badge
+        if (currentChannelHandle) {
+          if (response.channel.handle) {
+            currentChannelHandle.textContent = response.channel.handle;
+            currentChannelHandle.classList.remove('hidden');
+          } else if (response.channel.channelId) {
+            currentChannelHandle.textContent = response.channel.channelId.slice(0, 12) + '...';
+            currentChannelHandle.classList.remove('hidden');
+          } else {
+            currentChannelHandle.classList.add('hidden');
+          }
+        }
+
+        // Render avatar if available
+        if (currentChannelAvatar && currentChannelAvatarFallback) {
+          if (response.channel.avatarUrl) {
+            currentChannelAvatar.src = response.channel.avatarUrl;
+            currentChannelAvatar.classList.remove('hidden');
+            currentChannelAvatarFallback.classList.add('hidden');
+          } else {
+            currentChannelAvatar.classList.add('hidden');
+            currentChannelAvatarFallback.classList.remove('hidden');
+            currentChannelAvatarFallback.textContent = (displayName || 'Y').charAt(0).toUpperCase();
+          }
+        }
+
+        // Canonical allowlist evaluation
+        const isApproved = await isChannelLearningApproved(response.channel);
+
         if (isApproved) {
           currentChannelClassification.textContent = '✓ Approved Learning Channel';
           currentChannelClassification.style.color = '#10b981';
-          btnQuickWhitelist.textContent = '✓ Approved';
-          btnQuickWhitelist.disabled = true;
-          btnQuickWhitelist.className = 'btn-secondary btn-sm';
+          btnQuickWhitelist.textContent = '✕ Remove Channel';
+          btnQuickWhitelist.disabled = false;
+          btnQuickWhitelist.className = 'btn-ghost btn-sm';
+          btnQuickWhitelist.setAttribute('data-action', 'remove');
+          btnQuickWhitelist.classList.remove('hidden');
         } else {
-          // Classify the current channel
           const classification = (typeof globalThis.classifyChannel === 'function')
             ? globalThis.classifyChannel(response.channel)
-            : { eligible: true, category: 'education' };
+            : { eligible: true, category: 'education', confidence: 90 };
 
           if (classification.eligible) {
             currentChannelClassification.textContent = `💡 Educational Channel (${classification.confidence}% Match)`;
             currentChannelClassification.style.color = '#38bdf8';
-            btnQuickWhitelist.textContent = '+ Add Learning Channel';
-            btnQuickWhitelist.disabled = false;
-            btnQuickWhitelist.className = 'btn-primary btn-sm';
           } else {
-            currentChannelClassification.textContent = '🚫 Entertainment Channel (Blocked in Strict Focus)';
-            currentChannelClassification.style.color = '#f87171';
-            btnQuickWhitelist.textContent = 'Keep Blocked';
-            btnQuickWhitelist.disabled = true;
-            btnQuickWhitelist.className = 'btn-ghost btn-sm';
+            currentChannelClassification.textContent = 'Custom Study Channel';
+            currentChannelClassification.style.color = '#94a3b8';
           }
+
+          btnQuickWhitelist.textContent = '+ Allow this channel';
+          btnQuickWhitelist.disabled = false;
+          btnQuickWhitelist.className = 'btn-primary btn-sm';
+          btnQuickWhitelist.setAttribute('data-action', 'add');
+          btnQuickWhitelist.classList.remove('hidden');
         }
       } else {
         currentChannelName.textContent = 'YouTube Learning Space';
         currentChannelClassification.textContent = 'Strict Focus Active';
         currentChannelClassification.style.color = '#94a3b8';
+        if (currentChannelHandle) currentChannelHandle.classList.add('hidden');
+        if (currentChannelAvatar) currentChannelAvatar.classList.add('hidden');
+        if (currentChannelAvatarFallback) {
+          currentChannelAvatarFallback.classList.remove('hidden');
+          currentChannelAvatarFallback.textContent = '📺';
+        }
         btnQuickWhitelist.classList.add('hidden');
       }
     } catch (e) {
@@ -235,14 +275,36 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   btnQuickWhitelist.addEventListener('click', async () => {
     if (!activeTabContext) return;
-    const res = await addLearningChannel(activeTabContext);
-    if (res.success) {
-      showWhitelistFeedback(`Added "${activeTabContext.name || activeTabContext.handle}" to Learning Channels!`, 'success');
-      await checkActiveTab();
-      renderLearningChannels();
-      updateTodayStats();
+    const action = btnQuickWhitelist.getAttribute('data-action');
+    const displayName = activeTabContext.name || activeTabContext.handle || 'Channel';
+    const tabs = await getActiveTabs();
+    const currentTab = tabs && tabs[0];
+
+    if (action === 'remove') {
+      const res = await removeLearningChannel(activeTabContext);
+      if (res.success) {
+        showWhitelistFeedback(`Removed "${displayName}" from Learning Channels.`, 'success');
+        if (currentTab && currentTab.id) {
+          await sendTabMessage(currentTab.id, { type: MESSAGE_TYPES.FORCE_REAPPLY });
+        }
+        await checkActiveTab();
+        renderLearningChannels();
+      } else {
+        showWhitelistFeedback('Failed to remove channel.', 'error');
+      }
     } else {
-      showWhitelistFeedback(res.error || 'Channel is not eligible for Learning Allowlist.', 'error');
+      const res = await addLearningChannel(activeTabContext, { explicit: true });
+      if (res.success) {
+        showWhitelistFeedback(`Allowed "${displayName}" for Learning Sessions!`, 'success');
+        if (currentTab && currentTab.id) {
+          await sendTabMessage(currentTab.id, { type: MESSAGE_TYPES.FORCE_REAPPLY });
+        }
+        await checkActiveTab();
+        renderLearningChannels();
+        updateTodayStats();
+      } else {
+        showWhitelistFeedback(res.error || 'Failed to allow channel.', 'error');
+      }
     }
   });
 
@@ -377,9 +439,31 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    list.forEach(channel => {
+    const personalChannels = list.filter(ch => ch.source === 'user_approved' || (!ch.verified && ch.source !== 'system_verified'));
+    const verifiedChannels = list.filter(ch => ch.source === 'system_verified' || ch.verified);
+
+    function createChannelItem(channel, isPersonal = false) {
       const li = document.createElement('li');
       li.className = 'whitelist-item';
+
+      const leftDiv = document.createElement('div');
+      leftDiv.className = 'whitelist-item-left';
+
+      if (channel.avatarUrl) {
+        const avatarImg = document.createElement('img');
+        avatarImg.className = 'whitelist-avatar-mini';
+        avatarImg.src = channel.avatarUrl;
+        avatarImg.alt = channel.name || 'Avatar';
+        avatarImg.onerror = () => {
+          avatarImg.style.display = 'none';
+        };
+        leftDiv.appendChild(avatarImg);
+      } else {
+        const avatarFallback = document.createElement('div');
+        avatarFallback.className = 'whitelist-avatar-mini';
+        avatarFallback.textContent = (channel.name || 'C').charAt(0).toUpperCase();
+        leftDiv.appendChild(avatarFallback);
+      }
 
       const infoDiv = document.createElement('div');
       infoDiv.className = 'whitelist-item-info';
@@ -393,19 +477,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       nameSpan.textContent = channel.name;
       nameRow.appendChild(nameSpan);
 
-      if (channel.source === 'system_verified' || channel.confidence >= 95) {
+      if (channel.source === 'system_verified' || channel.confidence >= 95 || !isPersonal) {
         const verifiedTag = document.createElement('span');
         verifiedTag.className = 'verified-badge-mini';
         verifiedTag.innerHTML = '✓ Verified';
         nameRow.appendChild(verifiedTag);
+      } else {
+        const personalTag = document.createElement('span');
+        personalTag.className = 'personal-badge-mini';
+        personalTag.innerHTML = '👤 My Study';
+        nameRow.appendChild(personalTag);
       }
 
       const idSpan = document.createElement('span');
       idSpan.className = 'whitelist-id';
-      idSpan.textContent = channel.handle || channel.identifier;
+      idSpan.textContent = channel.handle || channel.identifier || (channel.channelId ? channel.channelId.slice(0, 14) + '...' : '');
 
       infoDiv.appendChild(nameRow);
       infoDiv.appendChild(idSpan);
+      leftDiv.appendChild(infoDiv);
 
       const removeBtn = document.createElement('button');
       removeBtn.type = 'button';
@@ -419,18 +509,41 @@ document.addEventListener('DOMContentLoaded', async () => {
       `;
 
       removeBtn.addEventListener('click', async () => {
-        const res = await removeLearningChannel(channel.id || channel.channelId || channel.identifier);
+        const res = await removeLearningChannel(channel);
         if (res.success) {
-          showWhitelistFeedback('Channel removed from allowlist.', 'success');
+          showWhitelistFeedback(`Removed "${channel.name}" from allowlist.`, 'success');
           renderLearningChannels();
           checkActiveTab();
         }
       });
 
-      li.appendChild(infoDiv);
+      li.appendChild(leftDiv);
       li.appendChild(removeBtn);
-      whitelistItems.appendChild(li);
-    });
+      return li;
+    }
+
+    if (personalChannels.length > 0) {
+      const personalHeader = document.createElement('li');
+      personalHeader.className = 'whitelist-group-header';
+      personalHeader.innerHTML = `<span>My Study Channels</span><span class="count-badge">${personalChannels.length}</span>`;
+      whitelistItems.appendChild(personalHeader);
+      personalChannels.forEach(ch => {
+        whitelistItems.appendChild(createChannelItem(ch, true));
+      });
+    }
+
+    if (verifiedChannels.length > 0) {
+      if (personalChannels.length > 0) {
+        const verifiedHeader = document.createElement('li');
+        verifiedHeader.className = 'whitelist-group-header';
+        verifiedHeader.style.marginTop = '8px';
+        verifiedHeader.innerHTML = `<span>Verified Learning Channels</span><span class="count-badge">${verifiedChannels.length}</span>`;
+        whitelistItems.appendChild(verifiedHeader);
+      }
+      verifiedChannels.forEach(ch => {
+        whitelistItems.appendChild(createChannelItem(ch, false));
+      });
+    }
   }
 
   function renderSuggestedChips() {
@@ -482,16 +595,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     const rawVal = whitelistInput.value.trim();
     if (!rawVal) return;
 
-    const normalized = normalizeChannelInfo(rawVal);
+    // Validate channel input format
+    if (typeof globalThis.isValidChannelInput === 'function' && !globalThis.isValidChannelInput(rawVal)) {
+      showWhitelistFeedback('Please enter a valid YouTube channel URL, @handle, or Channel ID.', 'error');
+      return;
+    }
+
+    const normalized = (typeof globalThis.normalizeChannelInfo === 'function')
+      ? globalThis.normalizeChannelInfo(rawVal)
+      : { name: rawVal, handle: rawVal.startsWith('@') ? rawVal : `@${rawVal}` };
+
+    if (!normalized.name && !normalized.handle && !normalized.channelId) {
+      showWhitelistFeedback('Could not resolve channel identity. Please verify the handle or URL.', 'error');
+      return;
+    }
+
     const classification = (typeof globalThis.classifyChannel === 'function')
       ? globalThis.classifyChannel(normalized)
       : { eligible: true, category: 'education', confidence: 90, reasons: [] };
 
     // Render Preview Card
     classificationPreviewCard.classList.remove('hidden');
-    classificationPreviewCard.className = `classification-card ${classification.eligible ? 'approved' : 'rejected'}`;
 
     if (classification.eligible) {
+      classificationPreviewCard.className = 'classification-card approved';
       const reasonsList = (classification.reasons || [])
         .slice(0, 3)
         .map(r => `<li>${escapeHtml(r)}</li>`)
@@ -502,7 +629,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           <span>✓</span>
           <span>Learning Channel Verified (${classification.confidence}% Match)</span>
         </div>
-        <div style="font-weight:600;color:#f8fafc;">${escapeHtml(normalized.name)} ${normalized.handle ? `<span style="color:#94a3b8;font-size:10px;">${escapeHtml(normalized.handle)}</span>` : ''}</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${normalized.avatarUrl ? `<img src="${escapeHtml(normalized.avatarUrl)}" alt="Avatar" class="whitelist-avatar-mini">` : ''}
+          <div>
+            <div style="font-weight:600;color:#f8fafc;">${escapeHtml(normalized.name)}</div>
+            ${normalized.handle ? `<div style="color:#94a3b8;font-size:10px;">${escapeHtml(normalized.handle)}</div>` : ''}
+          </div>
+        </div>
         <ul class="classification-reasons">${reasonsList}</ul>
         <div class="classification-actions">
           <button type="button" id="btn-confirm-add-channel" class="btn-primary btn-sm">Add to Learning Channels</button>
@@ -511,7 +644,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       `;
 
       document.getElementById('btn-confirm-add-channel').addEventListener('click', async () => {
-        const result = await addLearningChannel(normalized);
+        const result = await addLearningChannel(normalized, { explicit: true, source: 'system_verified' });
         if (result.success) {
           whitelistInput.value = '';
           classificationPreviewCard.classList.add('hidden');
@@ -528,25 +661,55 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
     } else {
+      const isEntertainment = classification.category === 'entertainment';
+      classificationPreviewCard.className = `classification-card ${isEntertainment ? 'rejected' : 'unverified'}`;
+
       const reasonsList = (classification.reasons || [])
         .slice(0, 2)
         .map(r => `<li>${escapeHtml(r)}</li>`)
         .join('');
 
+      const titleText = isEntertainment
+        ? '🚫 Channel Detected as Entertainment'
+        : 'ℹ️ Couldn’t verify this channel automatically';
+
+      const descText = isEntertainment
+        ? 'This channel appears to focus on entertainment content. If this is genuinely for your learning, you can allow it for your personal study list.'
+        : 'Know this is useful for your learning? You can allow it for your personal study list.';
+
       classificationPreviewCard.innerHTML = `
         <div class="classification-title">
-          <span>🚫</span>
-          <span>Channel Not Eligible for Strict Focus</span>
+          <span>${titleText}</span>
         </div>
-        <div style="font-weight:600;color:#f8fafc;">${escapeHtml(normalized.name)}</div>
-        <p style="margin:0;color:var(--text-secondary);font-size:10px;">
-          This channel does not appear to be primarily focused on educational content. Strict Focus Mode keeps non-learning channels blocked.
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${normalized.avatarUrl ? `<img src="${escapeHtml(normalized.avatarUrl)}" alt="Avatar" class="whitelist-avatar-mini">` : ''}
+          <div>
+            <div style="font-weight:600;color:#f8fafc;">${escapeHtml(normalized.name)}</div>
+            ${normalized.handle ? `<div style="color:#94a3b8;font-size:10px;">${escapeHtml(normalized.handle)}</div>` : ''}
+          </div>
+        </div>
+        <p style="margin:2px 0 0 0;color:var(--text-secondary);font-size:10px;">
+          ${descText}
         </p>
         <ul class="classification-reasons">${reasonsList}</ul>
         <div class="classification-actions">
+          <button type="button" id="btn-allow-my-study" class="btn-primary btn-sm">Allow for My Study</button>
           <button type="button" id="btn-dismiss-preview" class="btn-secondary btn-sm">Keep Blocked</button>
         </div>
       `;
+
+      document.getElementById('btn-allow-my-study').addEventListener('click', async () => {
+        const result = await addLearningChannel(normalized, { explicit: true, isPersonal: true });
+        if (result.success) {
+          whitelistInput.value = '';
+          classificationPreviewCard.classList.add('hidden');
+          showWhitelistFeedback(`Added "${normalized.name}" to My Study Channels.`, 'success');
+          renderLearningChannels();
+          checkActiveTab();
+        } else {
+          showWhitelistFeedback(result.error || 'Failed to add channel.', 'error');
+        }
+      });
 
       document.getElementById('btn-dismiss-preview').addEventListener('click', () => {
         classificationPreviewCard.classList.add('hidden');
@@ -586,7 +749,45 @@ document.addEventListener('DOMContentLoaded', async () => {
   settingDefaultTimer.addEventListener('change', () => updateSettingValue('defaultTimerDuration', parseInt(settingDefaultTimer.value, 10)));
 
   /* ==========================================================================
-     8. Initialization
+     8. Dashboard Navigation (Bug 2 Fix)
+     ========================================================================== */
+  async function openDashboardHandler(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    try {
+      const settings = await getSettings();
+      let currentTabUrl = '';
+      try {
+        const tabs = await getActiveTabs();
+        if (tabs && tabs[0]) currentTabUrl = tabs[0].url || '';
+      } catch (_) {}
+
+      const dashboardUrl = (typeof globalThis.resolveDashboardUrl === 'function')
+        ? globalThis.resolveDashboardUrl(settings, currentTabUrl)
+        : (settings && settings.dashboardUrl ? settings.dashboardUrl : 'https://kublyfocus.vercel.app/dashboard');
+
+      if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
+        await chrome.tabs.create({ url: dashboardUrl });
+      } else if (typeof window !== 'undefined') {
+        window.open(dashboardUrl, '_blank');
+      }
+    } catch (err) {
+      console.error('[Knolect Popup] Direct tabs.create failed, using background service-worker message fallback:', err);
+      await sendRuntimeMessage({ type: MESSAGE_TYPES.OPEN_DASHBOARD });
+    }
+  }
+
+  if (btnOpenDashboard) {
+    btnOpenDashboard.addEventListener('click', openDashboardHandler);
+  }
+  if (btnOpenDashboardSettings) {
+    btnOpenDashboardSettings.addEventListener('click', openDashboardHandler);
+  }
+
+  /* ==========================================================================
+     9. Initialization
      ========================================================================== */
   async function initPopup() {
     await initStorageDefaults();

@@ -43,6 +43,8 @@ const server = http.createServer((req, res) => {
       pathname = '/index.html';
     } else if (pathname === '/install' || pathname === '/install/') {
       pathname = '/install.html';
+    } else if (pathname === '/about' || pathname === '/about/') {
+      pathname = '/about.html';
     } else if (pathname === '/support' || pathname === '/support/') {
       pathname = '/support.html';
     } else if (pathname === '/admin' || pathname === '/admin/') {
@@ -70,11 +72,11 @@ const server = http.createServer((req, res) => {
             <title>404 Not Found - Knolect</title>
             <link rel="stylesheet" href="/css/styles.css">
           </head>
-          <body style="display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;background:#080c14;color:#f8fafc;font-family:sans-serif;">
+          <body style="display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;background:#F2EBDD;color:#102F27;font-family:sans-serif;">
             <div>
-              <h1 style="font-size:3rem;margin-bottom:1rem;">404</h1>
-              <p style="color:#94a3b8;margin-bottom:2rem;">Page not found</p>
-              <a href="/" style="background:#10b981;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;">Return to Knolect</a>
+              <h1 style="font-size:3.5rem;margin-bottom:1rem;color:#102F27;font-family:serif;">404</h1>
+              <p style="color:#3D584F;margin-bottom:2rem;font-size:1.1rem;">Page not found</p>
+              <a href="/" style="background:#185844;color:#F2EBDD;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;">Return to Knolect</a>
             </div>
           </body>
           </html>

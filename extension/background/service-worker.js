@@ -291,6 +291,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           break;
         }
 
+        // --- Dashboard Navigation ---
+        case MESSAGE_TYPES.OPEN_DASHBOARD: {
+          const settings = await getSettings();
+          const targetUrl = message.url || (typeof globalThis.resolveDashboardUrl === 'function'
+            ? globalThis.resolveDashboardUrl(settings)
+            : 'https://kublyfocus.vercel.app/dashboard');
+          const tab = await chrome.tabs.create({ url: targetUrl });
+          sendResponse({ success: true, url: targetUrl, tabId: tab ? tab.id : null });
+          break;
+        }
+
         default:
           sendResponse({ error: 'Unknown message type' });
       }

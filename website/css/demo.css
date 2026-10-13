@@ -1,16 +1,16 @@
 /* ==========================================================================
-   BingeBlocker - Interactive Focus Mode Simulator Stylesheet
-   Realistic, sleek, interactive YouTube viewing environment simulation.
+   KNOLECT — INTERACTIVE SIMULATOR STYLESHEET
+   Refined YouTube Simulation + Serene Forest Green & Ivory Study Space
    ========================================================================== */
 
 .sim-container {
-  background: #0f0f0f;
-  border: 1px solid #272727;
+  background: #0D1412;
+  border: 1px solid rgba(176, 138, 79, 0.25);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-  color: #f1f1f1;
+  box-shadow: 0 20px 50px -15px rgba(10, 31, 26, 0.7);
+  font-family: var(--font-sans);
+  color: var(--color-ivory);
   position: relative;
 }
 
@@ -19,39 +19,37 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  background: #0f0f0f;
-  border-bottom: 1px solid #222222;
+  padding: 12px 20px;
+  background: #09100E;
+  border-bottom: 1px solid rgba(120, 148, 127, 0.15);
   gap: 16px;
 }
 
-.sim-yt-brand {
+.sim-logo {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.9375rem;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
   font-weight: 700;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: #ffffff;
 }
 
 .sim-yt-icon {
   width: 24px;
   height: 18px;
-  background: #ff0000;
+  background: #E53935;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 10px;
+  color: #ffffff;
 }
 
-.sim-yt-play {
-  width: 0;
-  height: 0;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-left: 7px solid #ffffff;
-  margin-left: 2px;
+.sim-yt-text {
+  font-weight: 700;
 }
 
 .sim-search-bar {
@@ -59,414 +57,294 @@
   max-width: 440px;
   display: flex;
   align-items: center;
-  background: #121212;
-  border: 1px solid #303030;
+  justify-content: space-between;
+  background: #121C18;
+  border: 1px solid rgba(120, 148, 127, 0.2);
   border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 0.8125rem;
-  color: #888888;
+  padding: 7px 16px;
+  font-size: 0.82rem;
+  color: var(--color-sage-light);
 }
 
-.sim-topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.sim-search-icon {
+  font-size: 0.85rem;
+  opacity: 0.7;
 }
 
 .sim-user-avatar {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #334155;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #94a3b8;
+  background: var(--color-emerald);
+  border: 1px solid var(--color-gold-border);
 }
 
 /* Simulator Main Workspace */
 .sim-body {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 20px;
-  padding: 20px;
-  min-height: 520px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  grid-template-columns: 200px 1fr;
+  min-height: 440px;
+  background: #0D1412;
 }
 
-.sim-container.focus-active .sim-body {
-  grid-template-columns: 1fr;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Main Video Column */
-.sim-video-col {
+/* Sidebar */
+.sim-sidebar {
+  padding: 16px 12px;
+  border-right: 1px solid rgba(120, 148, 127, 0.12);
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  background: #09100E;
+}
+
+.sim-nav-item {
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-sage-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: default;
+  transition: all 0.15s;
+}
+
+.sim-nav-item.active {
+  background: rgba(24, 88, 68, 0.25);
+  color: var(--color-ivory);
+  font-weight: 600;
+}
+
+.sim-divider {
+  height: 1px;
+  background: rgba(120, 148, 127, 0.12);
+  margin: 10px 0;
+}
+
+/* Main Feed */
+.sim-main {
+  padding: 24px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Distraction State (Focus Mode OFF) */
+.sim-distraction-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sim-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.sim-chip {
+  padding: 5px 12px;
+  background: #141F1B;
+  border: 1px solid rgba(120, 148, 127, 0.15);
+  border-radius: 16px;
+  font-size: 0.76rem;
+  color: var(--color-sage-light);
+  white-space: nowrap;
+}
+
+.sim-chip.active {
+  background: var(--color-ivory);
+  color: var(--color-forest);
+  font-weight: 600;
+}
+
+.sim-video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
-.sim-player-frame {
-  width: 100%;
+.sim-video-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sim-thumb {
   aspect-ratio: 16 / 9;
-  background: #000000;
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #222222;
+  border-radius: var(--radius-md);
+  background: #182622;
+  border: 1px solid rgba(120, 148, 127, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.sim-player-content {
+  padding: 12px;
   text-align: center;
-  padding: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #F87171;
+  line-height: 1.35;
 }
 
-.sim-player-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 6px;
+.thumb-gaming {
+  background: linear-gradient(135deg, #1C2B26 0%, #172420 100%);
+  color: #FCA5A5;
 }
 
-.sim-player-sub {
-  font-size: 0.8125rem;
-  color: #10b981;
-  font-weight: 500;
+.thumb-clickbait {
+  background: linear-gradient(135deg, #2A2020 0%, #1F1717 100%);
+  color: #F87171;
 }
 
-.sim-player-play-btn {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(16, 185, 129, 0.9);
+.thumb-shorts {
+  background: linear-gradient(135deg, #24241B 0%, #1A1A14 100%);
+  color: #FBBF24;
+}
+
+.sim-video-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sim-author {
+  font-size: 0.72rem;
+  color: var(--color-sage);
+}
+
+/* Focused State: Clean Knolect Learning Space (Focus Mode ON) */
+.sim-focus-overlay {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 16px auto 0 auto;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-}
-
-.sim-player-play-btn svg {
-  margin-left: 3px;
-  fill: #ffffff;
-}
-
-/* Video Details */
-.sim-video-header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.sim-video-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.sim-channel-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #222222;
-}
-
-.sim-channel-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.sim-channel-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #2563eb;
-  color: #ffffff;
-  font-size: 0.875rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sim-channel-name {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #f1f1f1;
-}
-
-.sim-channel-sub-count {
-  font-size: 0.75rem;
-  color: #aaaaaa;
-}
-
-.sim-subscribe-btn {
-  background: #ffffff;
-  color: #0f0f0f;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 18px;
-}
-
-/* Simulated Distraction Elements */
-.sim-shorts-shelf {
-  background: #181818;
-  border-radius: 10px;
-  padding: 14px;
-  margin-top: 12px;
-  transition: all 0.3s ease;
-}
-
-.sim-container.focus-active .sim-shorts-shelf {
-  display: none !important;
-}
-
-.sim-shelf-title {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #ff4e45;
-  margin-bottom: 10px;
-}
-
-.sim-shorts-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.sim-short-card {
-  aspect-ratio: 9 / 14;
-  background: #272727;
-  border-radius: 6px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: relative;
-  overflow: hidden;
-}
-
-.sim-short-card-title {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #ffffff;
-  z-index: 1;
-}
-
-/* Simulated Comments */
-.sim-comments-box {
-  background: #121212;
-  border-radius: 10px;
-  padding: 16px;
-  margin-top: 12px;
-  transition: all 0.3s ease;
-}
-
-.sim-container.focus-active .sim-comments-box {
-  display: none !important;
-}
-
-.sim-comments-title {
-  font-size: 0.875rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.sim-comment-item {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
-  font-size: 0.75rem;
-}
-
-.sim-comment-text {
-  color: #cccccc;
-  line-height: 1.4;
-}
-
-/* Simulated Recommendations Sidebar */
-.sim-recs-col {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: all 0.3s ease;
-}
-
-.sim-container.focus-active .sim-recs-col {
-  display: none !important;
-}
-
-.sim-recs-title {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: #aaaaaa;
-  margin-bottom: 4px;
-}
-
-.sim-rec-item {
-  display: flex;
-  gap: 10px;
-  background: #181818;
-  border-radius: 8px;
-  padding: 8px;
-}
-
-.sim-rec-thumb {
-  width: 100px;
-  height: 56px;
-  background: #282828;
-  border-radius: 6px;
-  flex-shrink: 0;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.625rem;
-  color: #777777;
-}
-
-.sim-rec-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-}
-
-.sim-rec-item-title {
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #f1f1f1;
-}
-
-.sim-rec-meta {
-  font-size: 0.6875rem;
-  color: #888888;
-}
-
-/* Focus Mode State Injected Learning Card */
-.sim-focus-learning-card {
-  display: none;
-  background: #0f172a;
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  border-radius: 12px;
-  padding: 24px;
-  text-align: center;
-  margin-top: 16px;
-  animation: simFadeIn 0.3s ease-out;
-}
-
-.sim-container.focus-active .sim-focus-learning-card {
-  display: block;
+  height: 100%;
+  min-height: 360px;
+  animation: simFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes simFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.sim-focus-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  margin-bottom: 12px;
-  text-transform: uppercase;
-}
-
-.sim-focus-quote {
-  font-size: 0.9375rem;
-  font-style: italic;
-  color: #e2e8f0;
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-
-.sim-focus-timer-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #1e293b;
-  border: 1px solid #334155;
-  color: #94a3b8;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-}
-
-.sim-focus-timer-pill strong {
-  color: #10b981;
-}
-
-/* Interactive Simulator Control Bar */
-.demo-control-panel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 14px 20px;
-  margin-top: 16px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.demo-control-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.demo-state-badge {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-}
-
-.demo-state-badge.state-off {
-  background: var(--danger-surface);
-  color: var(--danger-subtle);
-}
-
-.demo-state-badge.state-on {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--accent-light);
-}
-
-.demo-disclaimer {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+.sim-knolect-card {
+  background: radial-gradient(circle at 50% 0%, #164035 0%, #102F27 100%);
+  border: 1px solid var(--color-gold-border);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px;
   text-align: center;
-  margin-top: 12px;
+  max-width: 580px;
+  width: 100%;
+  box-shadow: 0 12px 36px rgba(10, 31, 26, 0.6), 0 0 30px rgba(176, 138, 79, 0.12);
+}
+
+.sim-knolect-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(176, 138, 79, 0.14);
+  border: 1px solid var(--color-gold-border);
+  color: var(--color-gold-light);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 16px;
+}
+
+.sim-knolect-title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-ivory);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.sim-knolect-desc {
+  font-size: 0.9rem;
+  color: #C8D6CC;
+  margin-bottom: 20px;
+}
+
+.sim-knolect-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.96rem;
+  color: var(--color-ivory);
+  background: rgba(10, 31, 26, 0.4);
+  border-left: 2px solid var(--color-gold);
+  padding: 12px 18px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.sim-knolect-whitelisted {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.sim-wl-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-sage-light);
+  font-weight: 600;
+}
+
+.sim-wl-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.sim-wl-chip {
+  background: var(--color-emerald);
+  border: 1px solid var(--color-gold-border);
+  color: var(--color-ivory);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  transition: all 0.15s ease;
+}
+
+.sim-wl-chip:hover {
+  background: var(--color-emerald-hover);
+  border-color: var(--color-gold);
+  color: #ffffff;
+}
+
+.hidden {
+  display: none !important;
 }
 
 @media (max-width: 768px) {
   .sim-body {
     grid-template-columns: 1fr;
-    padding: 12px;
   }
-  .sim-recs-col {
+  .sim-sidebar {
     display: none;
+  }
+  .sim-video-grid {
+    grid-template-columns: 1fr;
+  }
+  .sim-knolect-card {
+    padding: 24px 18px;
+  }
+  .sim-knolect-title {
+    font-size: 1.4rem;
   }
 }

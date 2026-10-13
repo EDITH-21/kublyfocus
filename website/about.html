@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Knolect — Intentional Learning on YouTube</title>
+  <meta name="description" content="Knolect is a learning-focused productivity project designed to help people use YouTube more intentionally. Discover our principles, approach, and why we are building it.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. NAVIGATION BAR
+       ======================================================================== -->
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="Knolect Home">
+        <img src="assets/logo.svg" alt="Knolect Logo" class="brand-logo-img" width="32" height="32">
+        <span>Knolect</span>
+      </a>
+
+      <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
+        <a href="index.html#problem" class="nav-link">Problem</a>
+        <a href="index.html#focus-mode" class="nav-link">Focus Mode</a>
+        <a href="index.html#features" class="nav-link">Capabilities</a>
+        <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+        <a href="about.html" class="nav-link active" aria-current="page">About</a>
+        <a href="dashboard.html" class="nav-link" style="color: var(--color-gold);">Dashboard</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="install.html" class="btn btn-primary btn-sm js-install-cta">
+          <span class="js-cta-label">Install Knolect</span>
+        </a>
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main role="main">
+    <!-- ========================================================================
+         SECTION A: ABOUT KNOLECT
+         ======================================================================== -->
+    <section class="section about-hero" id="about-intro">
+      <div class="container">
+        <div class="about-hero-content">
+          <span class="section-tag">About Knolect</span>
+          <h1 class="about-hero-title">Learning deserves your attention.</h1>
+          <p class="about-lead-text">
+            Knolect is a learning-focused productivity project designed to help people use YouTube more intentionally. It aims to reduce distracting recommendation loops and create a more focused environment for educational viewing.
+          </p>
+
+          <div class="about-mission-card">
+            <div style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">
+              CLIENT-SIDE ARCHITECTURE
+            </div>
+            <p style="font-size: 1rem; color: var(--color-forest); line-height: 1.6; margin: 0;">
+              Built as a lightweight Manifest V3 browser extension for Chromium browsers (Chrome, Edge, Brave, Opera), Knolect operates entirely on your device. It does not track your watch history, harvest your personal credentials, or monetize your attention.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECTION B: WHY WE ARE BUILDING IT
+         ======================================================================== -->
+    <section class="section about-narrative-section" id="why-knolect">
+      <div class="container">
+        <div class="about-split-grid">
+          <div class="about-narrative-copy">
+            <span class="section-tag">The Motivation</span>
+            <h2>Less distraction.<br>More intention.</h2>
+            <p>
+              YouTube hosts some of the world's most valuable educational content: complete university lecture series, deep coding tutorials, mathematical walkthroughs, and scientific seminars.
+            </p>
+            <p>
+              Yet the platform's default interface is optimized to maximize watch time through autoplay, algorithmic sidebars, Shorts reels, and sensational recommendations. Learners routinely open YouTube for a single 20-minute lecture, only to be pulled into hours of unrelated video loops.
+            </p>
+            <p>
+              Knolect was created to restore learner agency. By establishing an intentional boundary between educational study and endless browsing, it helps you finish the lesson you set out to learn.
+            </p>
+          </div>
+
+          <div class="about-visual-panel">
+            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-gold-light); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;">
+              THE REALITY OF DIGITAL STUDY
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px; font-size: 0.95rem; line-height: 1.55;">
+              <div style="padding: 14px 16px; background: rgba(255, 255, 255, 0.06); border-radius: 8px; border-left: 3px solid #E27B7B;">
+                <strong style="color: #FCA5A5;">The Algorithmic Pull:</strong> Default feeds pull learners toward high-arousal entertainment, disrupting active recall and cognitive retention.
+              </div>
+              <div style="padding: 14px 16px; background: rgba(255, 255, 255, 0.06); border-radius: 8px; border-left: 3px solid var(--color-gold);">
+                <strong style="color: var(--color-gold-light);">The Knolect Standard:</strong> Study videos are protected. Entertainment rabbit holes are cleanly intercepted before they derail your session.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECTION C: OUR APPROACH (PRODUCT PRINCIPLES)
+         ======================================================================== -->
+    <section class="section" id="our-approach">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Product Principles</span>
+          <h2 class="section-title">Our Approach to Focus</h2>
+          <p class="section-desc">Four clear design decisions guide how Knolect protects your learning time.</p>
+        </div>
+
+        <div class="principles-grid">
+          <!-- Principle 1 -->
+          <div class="principle-card">
+            <span class="principle-num">01</span>
+            <h3 class="principle-title">Intentional learning over endless browsing</h3>
+            <p class="principle-desc">
+              We invert the traditional blocker model. Instead of maintaining endless, fragile blocklists, Knolect lets you define your study objective and intercepts unapproved recommendations by default during deep sessions.
+            </p>
+          </div>
+
+          <!-- Principle 2 -->
+          <div class="principle-card">
+            <span class="principle-num">02</span>
+            <h3 class="principle-title">User control over personal study channels</h3>
+            <p class="principle-desc">
+              You maintain final authority over your learning environment. You can explicitly allow study channels with one click, while our system handles channel ID resolution so your whitelist stays durable.
+            </p>
+          </div>
+
+          <!-- Principle 3 -->
+          <div class="principle-card">
+            <span class="principle-num">03</span>
+            <h3 class="principle-title">Focus tools that support deliberate sessions</h3>
+            <p class="principle-desc">
+              Unbounded study sessions lead to fatigue and drift. Knolect integrates session timers—such as 25-minute Pomodoro cycles—to help pace your effort and create clear starting and ending boundaries.
+            </p>
+          </div>
+
+          <!-- Principle 4 -->
+          <div class="principle-card">
+            <span class="principle-num">04</span>
+            <h3 class="principle-title">Clear, transparent controls over blocking</h3>
+            <p class="principle-desc">
+              You decide exactly what is filtered. Granular toggles allow you to silence comments, hide recommendation sidebars, remove Shorts, or clear the home feed entirely, without hidden algorithms.
+            </p>
+          </div>
+        </div>
+
+        <!-- Transparent Implementation State -->
+        <div class="feature-status-banner">
+          <div>
+            <div class="status-col-title">
+              <span class="status-badge-live">●</span>
+              <span>Implemented & Available Features</span>
+            </div>
+            <ul class="status-list">
+              <li><span>✓</span> Strict Focus Mode client interception</li>
+              <li><span>✓</span> Personal Study allowlist with YouTube Channel ID matching</li>
+              <li><span>✓</span> Distraction toggles (Shorts, comments, suggestions, home feed)</li>
+              <li><span>✓</span> Pomodoro and custom deep study session countdown timer</li>
+              <li><span>✓</span> Local, privacy-first execution with zero watch-history tracking</li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="status-col-title">
+              <span class="status-badge-planned">○</span>
+              <span>Planned Roadmap Goals</span>
+            </div>
+            <ul class="status-list">
+              <li><span>•</span> Cross-browser personal allowlist preference export/import</li>
+              <li><span>•</span> Extended study milestone reflection and distraction logging</li>
+              <li><span>•</span> Native keyboard shortcuts for rapid study overrides</li>
+              <li><span>•</span> Enhanced course playlist and chapter navigation support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECTION D: EXPLORE KNOLECT (CLEAR CALL TO ACTION)
+         ======================================================================== -->
+    <section class="section cta-section" id="explore-knolect">
+      <div class="container text-center">
+        <span class="section-tag" style="background: rgba(176,138,79,0.2); border-color: var(--color-gold-border); color: var(--color-gold-light);">Get Started</span>
+        <h2 class="cta-title">Explore Knolect</h2>
+        <p class="cta-subtitle">
+          Start turning YouTube into an intentional study space. Install the extension in under two minutes.
+        </p>
+        <div class="cta-actions" style="gap: 16px; flex-wrap: wrap;">
+          <a href="install.html" class="btn btn-primary btn-lg js-install-cta">
+            <span class="js-cta-label">Install Knolect — It's Free</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+          <a href="index.html#focus-mode" class="btn btn-secondary btn-lg" style="background: transparent; color: var(--color-ivory); border-color: rgba(242,235,221,0.3);">
+            View Interactive Preview
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECTION E: PROJECT CREDIT
+         ======================================================================== -->
+    <div class="about-credit-wrapper">
+      <div class="container">
+        <div class="about-credit-box">
+          <span class="credit-badge">PROJECT</span>
+          <span>A learning-focused project by Aadrut.</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <footer class="footer-master" role="contentinfo">
+    <div class="container">
+      <div class="footer-master-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand-hero">
+          <a href="index.html" class="footer-brand-lockup" aria-label="Knolect Home">
+            <img src="assets/logo.svg" alt="Knolect Logo">
+            <span class="footer-brand-title">Knolect</span>
+          </a>
+          <div class="footer-brand-tagline">Turn YouTube into your learning space.</div>
+          <p class="footer-brand-desc">
+            A focused learning environment designed to help you use YouTube intentionally — without the endless distractions.
+          </p>
+          <a href="install.html" class="footer-brand-cta">
+            Start Focusing <span>→</span>
+          </a>
+        </div>
+
+        <!-- Col 1: Product -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Product</div>
+          <div class="footer-col-links">
+            <a href="index.html#features">Capabilities</a>
+            <a href="index.html#how-it-works">How It Works</a>
+            <a href="install.html">Installation</a>
+            <a href="index.html#focus-mode">Focus Mode</a>
+            <a href="dashboard.html">User Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Col 2: Resources -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Resources</div>
+          <div class="footer-col-links">
+            <a href="about.html">About</a>
+            <a href="support.html">Help Center</a>
+            <a href="index.html#faq">FAQ</a>
+            <a href="index.html#privacy">Privacy</a>
+            <a href="support.html#send-feedback">Feedback</a>
+          </div>
+        </div>
+
+        <!-- Col 3: Support -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Support</div>
+          <div class="footer-col-links">
+            <a href="support.html#report-bug">Report a Bug</a>
+            <a href="support.html#send-feedback">Send Feedback</a>
+            <a href="support.html">Contact</a>
+            <a href="admin.html">Admin Command</a>
+          </div>
+        </div>
+
+        <!-- Col 4: Knolect -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Knolect</div>
+          <div class="footer-col-links">
+            <a href="about.html">About</a>
+            <a href="index.html#problem">The Problem</a>
+            <a href="install.html">Changelog</a>
+            <a href="index.html#focus-mode">Status</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distinctive Visual Focus Line -->
+      <div class="footer-focus-divider">
+        <span class="footer-focus-line"></span>
+        <span>LEARN ───── FOCUS ───── BUILD</span>
+        <span class="footer-focus-line"></span>
+      </div>
+
+      <!-- Bottom Bar with Legal & Operational Status -->
+      <div class="footer-bottom-bar">
+        <div>
+          <span>© 2026 Knolect · All rights reserved.</span>
+        </div>
+        <div class="footer-founder-credit">
+          Project by Aadrut
+        </div>
+        <div>
+          <span class="footer-status-pill">
+            <span class="footer-status-dot"></span>
+            All systems operational
+          </span>
+        </div>
+      </div>
+
+      <!-- Section 3: Project by Aadrut at the very bottom -->
+      <div class="footer-sub-credit">
+        Project by Aadrut
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -102,28 +102,31 @@ async function initStorageDefaults() {
   // Check learningChannels or run migration from legacy whitelist
   if (!Array.isArray(current.learningChannels)) {
     if (Array.isArray(current.whitelist) && current.whitelist.length > 0) {
-      // Migrate legacy whitelist items safely
+      // Migrate legacy whitelist items safely without dropping user data
       const migrated = [];
       for (const item of current.whitelist) {
-        const classified = (typeof globalThis.classifyChannel === 'function')
-          ? globalThis.classifyChannel(item)
-          : { eligible: true, category: 'education', confidence: 80, reasons: [] };
+        const norm = (typeof globalThis.normalizeChannelInfo === 'function')
+          ? globalThis.normalizeChannelInfo(item)
+          : (typeof globalThis.resolveChannelIdentity === 'function' ? globalThis.resolveChannelIdentity(item) : item);
 
-        if (classified.eligible) {
-          migrated.push({
-            id: item.id || ('ch_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6)),
-            channelId: item.channelId || '',
-            name: item.name || item.identifier,
-            handle: item.handle || (item.identifier && item.identifier.startsWith('@') ? item.identifier : ''),
-            normalizedHandle: (item.handle || item.identifier || '').replace(/^@/, '').toLowerCase(),
-            identifier: item.identifier || (item.handle ? item.handle.toLowerCase() : ''),
-            category: classified.category || 'education',
-            confidence: classified.confidence || 85,
-            reasons: classified.reasons || ['Migrated learning channel'],
-            source: 'migrated_verified',
-            addedAt: item.addedAt || Date.now()
-          });
-        }
+        const classified = (typeof globalThis.classifyChannel === 'function')
+          ? globalThis.classifyChannel(norm)
+          : { eligible: true, category: 'education', confidence: 85, reasons: [] };
+
+        migrated.push({
+          id: item.id || ('ch_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6)),
+          channelId: norm.channelId || item.channelId || '',
+          name: norm.name || item.name || item.identifier,
+          handle: norm.handle || item.handle || (item.identifier && item.identifier.startsWith('@') ? item.identifier : ''),
+          normalizedHandle: norm.normalizedHandle || (item.handle || item.identifier || '').replace(/^@/, '').toLowerCase(),
+          avatarUrl: norm.avatarUrl || item.avatarUrl || '',
+          identifier: norm.identifier || item.identifier || (norm.handle ? norm.handle.toLowerCase() : ''),
+          category: item.category || classified.category || 'education',
+          confidence: item.confidence || classified.confidence || 90,
+          reasons: item.reasons || classified.reasons || ['Migrated learning channel'],
+          source: item.source || (classified.verified ? 'system_verified' : 'user_approved'),
+          addedAt: item.addedAt || Date.now()
+        });
       }
       updates.learningChannels = migrated.length > 0 ? migrated : _DEFAULTS.learningChannels;
       updates.whitelist = updates.learningChannels;
@@ -290,66 +293,79 @@ async function saveWhitelist(whitelist) {
  * @param {Object|string} channelInput
  * @returns {Promise<{ success: boolean, channel?: Object, learningChannels?: Array, error?: string, reasons?: string[] }>}
  */
-async function addLearningChannel(channelInput) {
+/**
+ * Add a Channel to Learning Channels Allowlist
+ * Canonical channel identity (Channel ID UC... primary, normalized handle secondary).
+ * Explicit user allowlisting takes strict precedence.
+ * @param {Object|string} channelInput
+ * @param {Object} [options] - { force, explicit }
+ * @returns {Promise<{ success: boolean, channel?: Object, learningChannels?: Array, error?: string, reasons?: string[] }>}
+ */
+async function addLearningChannel(channelInput, options = {}) {
   if (!channelInput) {
     return { success: false, error: 'Channel details are required.' };
   }
 
-  // 1. Resolve Identity
-  const identity = (typeof globalThis.resolveChannelIdentity === 'function')
-    ? globalThis.resolveChannelIdentity(channelInput)
-    : { name: channelInput.name || '', handle: channelInput.handle || '', normalizedHandle: '', channelId: channelInput.channelId || '' };
+  // 1. Resolve Canonical Identity
+  const identity = (typeof globalThis.normalizeChannelInfo === 'function')
+    ? globalThis.normalizeChannelInfo(channelInput)
+    : ((typeof globalThis.resolveChannelIdentity === 'function')
+      ? globalThis.resolveChannelIdentity(channelInput)
+      : { name: channelInput.name || '', handle: channelInput.handle || '', normalizedHandle: '', channelId: channelInput.channelId || '', avatarUrl: '' });
 
   if (!identity.name && !identity.handle && !identity.channelId) {
     return { success: false, error: 'Please enter a valid channel name, @handle, or YouTube URL.' };
   }
 
-  // 2. Classify Channel
+  const list = await getLearningChannels();
+
+  // 2. Check if already allowlisted using canonical matching
+  const existing = list.find(item => {
+    if (typeof globalThis.matchesChannelIdentity === 'function') {
+      return globalThis.matchesChannelIdentity(identity, item);
+    }
+    const itemHandle = (item.normalizedHandle || (item.handle || '')).replace(/^@/, '').toLowerCase();
+    const itemId = (item.channelId || item.identifier || '').toLowerCase();
+    const itemName = (item.name || '').toLowerCase().trim();
+    if (identity.channelId && itemId && identity.channelId.toLowerCase() === itemId) return true;
+    if (identity.normalizedHandle && itemHandle && identity.normalizedHandle === itemHandle) return true;
+    if (identity.name && itemName && identity.name.toLowerCase().trim() === itemName) return true;
+    return false;
+  });
+
+  if (existing) {
+    return { success: true, alreadyExists: true, channel: existing, learningChannels: list };
+  }
+
+  // 3. Classify Channel for metadata & insights
   const classification = (typeof globalThis.classifyChannel === 'function')
     ? globalThis.classifyChannel({ ...channelInput, ...identity })
     : { eligible: true, category: 'education', confidence: 90, reasons: [] };
 
-  if (!classification.eligible) {
+  // Explicit user addition (from popup 1-click or block screen) always succeeds
+  const isExplicit = options.force || options.explicit || (channelInput && channelInput.explicit !== false);
+
+  if (!classification.eligible && !isExplicit && classification.category === 'entertainment') {
     return {
       success: false,
-      error: `Cannot add "${identity.name || identity.handle}": Channel does not meet educational criteria for Strict Focus Mode.`,
+      error: `Cannot add "${identity.name || identity.handle}": Channel appears to be entertainment-focused.`,
       category: classification.category,
       reasons: classification.reasons,
       confidence: classification.confidence
     };
   }
 
-  const list = await getLearningChannels();
-  const normalizedHandle = identity.normalizedHandle || (identity.handle || '').replace(/^@/, '').toLowerCase();
-  const normalizedId = (identity.channelId || '').toLowerCase();
-  const normalizedName = (identity.name || '').toLowerCase().trim();
-
-  // Check duplicate
-  const exists = list.some(item => {
-    const itemHandle = (item.normalizedHandle || (item.handle || '')).replace(/^@/, '').toLowerCase();
-    const itemId = (item.channelId || item.identifier || '').toLowerCase();
-    const itemName = (item.name || '').toLowerCase().trim();
-
-    if (normalizedHandle && itemHandle && normalizedHandle === itemHandle) return true;
-    if (normalizedId && itemId && normalizedId === itemId) return true;
-    if (normalizedName && itemName && normalizedName === itemName) return true;
-    return false;
-  });
-
-  if (exists) {
-    return { success: false, error: 'This channel is already in your Learning Channels list.', learningChannels: list };
-  }
-
   const newItem = {
     id: 'ch_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
     channelId: identity.channelId || '',
     name: identity.name || (identity.handle ? identity.handle.slice(1) : 'Learning Channel'),
-    handle: identity.handle || (normalizedHandle ? `@${normalizedHandle}` : ''),
-    normalizedHandle,
-    identifier: identity.handle || identity.channelId || `@${normalizedHandle}`,
+    handle: identity.handle || (identity.normalizedHandle ? `@${identity.normalizedHandle}` : ''),
+    normalizedHandle: identity.normalizedHandle || (identity.handle || '').replace(/^@/, '').toLowerCase(),
+    avatarUrl: identity.avatarUrl || channelInput.avatarUrl || '',
+    identifier: identity.channelId || identity.handle || (identity.normalizedHandle ? `@${identity.normalizedHandle}` : (identity.name || '').toLowerCase().replace(/\s+/g, '')),
     category: classification.category || 'education',
-    confidence: classification.confidence || 90,
-    reasons: classification.reasons || ['Verified learning content'],
+    confidence: classification.confidence || (isExplicit ? 95 : 90),
+    reasons: classification.reasons && classification.reasons.length > 0 ? classification.reasons : ['User approved learning channel'],
     source: classification.verified ? 'system_verified' : 'user_approved',
     addedAt: Date.now()
   };
@@ -362,28 +378,37 @@ async function addLearningChannel(channelInput) {
 /**
  * Legacy alias for addLearningChannel
  */
-async function addWhitelistChannel(channel) {
-  return await addLearningChannel(channel);
+async function addWhitelistChannel(channel, options) {
+  return await addLearningChannel(channel, options);
 }
 
 /**
  * Remove a Channel from Learning Channels
- * @param {string} idOrIdentifier
+ * Matches by ID, channelId (UC...), handle, or name
+ * @param {string|Object} idOrIdentifier
  * @returns {Promise<{ success: boolean, learningChannels: Array }>}
  */
 async function removeLearningChannel(idOrIdentifier) {
   if (!idOrIdentifier) return { success: false, learningChannels: await getLearningChannels() };
 
   const list = await getLearningChannels();
-  const target = String(idOrIdentifier).toLowerCase().trim().replace(/^@/, '');
+  const target = (typeof idOrIdentifier === 'object') ? idOrIdentifier : String(idOrIdentifier).trim();
 
   const filtered = list.filter(item => {
-    const itemId = String(item.id || '').toLowerCase().trim();
-    const itemChId = String(item.channelId || '').toLowerCase().trim();
-    const itemHandle = String(item.handle || item.identifier || '').toLowerCase().trim().replace(/^@/, '');
-    const itemNorm = String(item.normalizedHandle || '').toLowerCase().trim();
+    if (typeof globalThis.matchesChannelIdentity === 'function') {
+      if (globalThis.matchesChannelIdentity(item, target)) return false;
+    }
+    const targetStr = (typeof target === 'string') ? target.toLowerCase().replace(/^@/, '') : '';
+    const itemId = String(item.id || '').toLowerCase();
+    const itemChId = String(item.channelId || '').toLowerCase();
+    const itemHandle = String(item.handle || '').toLowerCase().replace(/^@/, '');
+    const itemNorm = String(item.normalizedHandle || '').toLowerCase();
+    const itemName = String(item.name || '').toLowerCase();
 
-    return itemId !== target && itemChId !== target && itemHandle !== target && itemNorm !== target;
+    if (targetStr && (itemId === targetStr || itemChId === targetStr || itemHandle === targetStr || itemNorm === targetStr || itemName === targetStr)) {
+      return false;
+    }
+    return true;
   });
 
   await saveLearningChannels(filtered);
@@ -399,19 +424,25 @@ async function removeWhitelistChannel(idOrIdentifier) {
 
 /**
  * Check if a channel is approved for learning in Strict Focus Mode
- * Follows strict evaluation order:
+ * Follows strict evaluation order with canonical identity precedence:
  * 1. System-verified channels
- * 2. User-approved channels
- * 3. Eligibility validation
+ * 2. User-approved channels (canonical Channel ID or handle match)
+ * If allowlisted, do not block the video solely because content-classification rules consider it distracting!
  * @param {Object|string} channelInfo
  * @returns {Promise<boolean>}
  */
 async function isChannelLearningApproved(channelInfo) {
   if (!channelInfo) return false;
 
-  const identity = (typeof globalThis.resolveChannelIdentity === 'function')
-    ? globalThis.resolveChannelIdentity(channelInfo)
-    : { name: channelInfo.name || '', handle: channelInfo.handle || '', normalizedHandle: '', channelId: channelInfo.channelId || '' };
+  const identity = (typeof globalThis.normalizeChannelInfo === 'function')
+    ? globalThis.normalizeChannelInfo(channelInfo)
+    : ((typeof globalThis.resolveChannelIdentity === 'function')
+      ? globalThis.resolveChannelIdentity(channelInfo)
+      : { name: channelInfo.name || '', handle: channelInfo.handle || '', normalizedHandle: '', channelId: channelInfo.channelId || '' });
+
+  if (!identity.name && !identity.handle && !identity.channelId) {
+    return false;
+  }
 
   // 1. Check System Verified Learning Channels Registry
   if (typeof globalThis.isSystemVerifiedLearningChannel === 'function') {
@@ -419,31 +450,33 @@ async function isChannelLearningApproved(channelInfo) {
     if (verified) return true;
   }
 
-  // 2. Check User-Approved Stored Learning Channels
+  // 2. Check User-Approved Stored Learning Channels (Allowlist Precedence)
   const list = await getLearningChannels();
-  const targetHandle = (identity.normalizedHandle || (identity.handle || '')).replace(/^@/, '').toLowerCase().trim();
-  const targetId = (identity.channelId || '').toLowerCase().trim();
-  const targetName = (identity.name || '').toLowerCase().trim();
+  if (Array.isArray(list) && list.length > 0) {
+    const matched = list.some(item => {
+      if (typeof globalThis.matchesChannelIdentity === 'function') {
+        return globalThis.matchesChannelIdentity(identity, item);
+      }
+      const itemHandle = (item.normalizedHandle || (item.handle || item.identifier || '')).replace(/^@/, '').toLowerCase().trim();
+      const itemId = (item.channelId || item.identifier || '').toLowerCase().trim();
+      const itemName = (item.name || '').toLowerCase().trim();
+      const targetHandle = (identity.normalizedHandle || (identity.handle || '')).replace(/^@/, '').toLowerCase().trim();
+      const targetId = (identity.channelId || '').toLowerCase().trim();
+      const targetName = (identity.name || '').toLowerCase().trim();
 
-  const matched = list.find(item => {
-    const itemHandle = (item.normalizedHandle || (item.handle || item.identifier || '')).replace(/^@/, '').toLowerCase().trim();
-    const itemId = (item.channelId || item.identifier || '').toLowerCase().trim();
-    const itemName = (item.name || '').toLowerCase().trim();
+      if (targetId && itemId && targetId === itemId) return true;
+      if (targetHandle && itemHandle && targetHandle === itemHandle) return true;
+      if (targetName && itemName && targetName === itemName) return true;
+      return false;
+    });
 
-    if (targetHandle && itemHandle && targetHandle === itemHandle) return true;
-    if (targetId && itemId && targetId === itemId) return true;
-    if (targetName && itemName && targetName === itemName) return true;
-    return false;
-  });
-
-  if (!matched) return false;
-
-  // 3. Validate that stored entry is still eligible
-  if (typeof globalThis.isStillEligible === 'function') {
-    return globalThis.isStillEligible(matched);
+    // If channel is explicitly allowlisted by user, honor it immediately!
+    if (matched) {
+      return true;
+    }
   }
 
-  return matched.category === 'education' && matched.eligible !== false;
+  return false;
 }
 
 /**

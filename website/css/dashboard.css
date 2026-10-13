@@ -1,25 +1,25 @@
 /* Knolect User Dashboard - YouTube + Focus OS Design System */
 :root {
-  --bg-primary: #0b0f17;
-  --bg-secondary: #0f172a;
-  --bg-card: rgba(15, 23, 42, 0.85);
-  --bg-card-hover: rgba(30, 41, 59, 0.7);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(56, 189, 248, 0.4);
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-sub: #64748b;
-  --accent-cyan: #38bdf8;
-  --accent-cyan-glow: rgba(56, 189, 248, 0.2);
-  --accent-emerald: #10b981;
-  --accent-emerald-glow: rgba(16, 185, 129, 0.2);
-  --accent-rose: #f43f5e;
-  --accent-amber: #f59e0b;
+  --bg-primary: #0A1F1A;
+  --bg-secondary: #102F27;
+  --bg-card: rgba(20, 56, 47, 0.85);
+  --bg-card-hover: rgba(27, 69, 58, 0.9);
+  --border-subtle: rgba(176, 138, 79, 0.2);
+  --border-active: rgba(176, 138, 79, 0.5);
+  --text-main: #F2EBDD;
+  --text-muted: #C8D6CC;
+  --text-sub: #78947F;
+  --accent-cyan: #B08A4F;
+  --accent-cyan-glow: rgba(176, 138, 79, 0.25);
+  --accent-emerald: #185844;
+  --accent-emerald-glow: rgba(24, 88, 68, 0.25);
+  --accent-rose: #D96B6B;
+  --accent-amber: #B08A4F;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

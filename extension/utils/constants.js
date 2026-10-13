@@ -50,9 +50,16 @@ const MESSAGE_TYPES = {
   PAGE_STATUS_RESPONSE: 'KNOLECT_PAGE_STATUS_RESPONSE',
   FORCE_REAPPLY: 'KNOLECT_FORCE_REAPPLY',
 
+  // Navigation & Dashboard
+  OPEN_DASHBOARD: 'KNOLECT_OPEN_DASHBOARD',
+
   // Analytics (Privacy-Safe)
   LOG_ANALYTICS_EVENT: 'KNOLECT_LOG_ANALYTICS_EVENT'
 };
+
+// Dashboard URL Configuration
+const DEFAULT_PRODUCTION_DASHBOARD_URL = 'https://kublyfocus.vercel.app/dashboard';
+const DEFAULT_LOCAL_DASHBOARD_URL = 'http://localhost:3000/dashboard';
 
 // Storage Keys
 const STORAGE_KEYS = {
@@ -147,7 +154,8 @@ const DEFAULT_STORAGE = {
     hideHomeFeed: true,
     hideEndScreen: true,
     blockSearch: true, // In Strict Focus, blocks non-educational search distraction
-    defaultTimerDuration: 1500 // 25 minutes in seconds
+    defaultTimerDuration: 1500, // 25 minutes in seconds
+    dashboardUrl: DEFAULT_PRODUCTION_DASHBOARD_URL
   },
   timer: {
     duration: 1500,
@@ -196,6 +204,8 @@ const YT_SELECTORS = {
 if (typeof globalThis !== 'undefined') {
   globalThis.MESSAGE_TYPES = MESSAGE_TYPES;
   globalThis.STORAGE_KEYS = STORAGE_KEYS;
+  globalThis.DEFAULT_PRODUCTION_DASHBOARD_URL = DEFAULT_PRODUCTION_DASHBOARD_URL;
+  globalThis.DEFAULT_LOCAL_DASHBOARD_URL = DEFAULT_LOCAL_DASHBOARD_URL;
   globalThis.INITIAL_LEARNING_CHANNELS = INITIAL_LEARNING_CHANNELS;
   globalThis.DEFAULT_STORAGE = DEFAULT_STORAGE;
   globalThis.YT_SELECTORS = YT_SELECTORS;
@@ -205,6 +215,8 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     MESSAGE_TYPES,
     STORAGE_KEYS,
+    DEFAULT_PRODUCTION_DASHBOARD_URL,
+    DEFAULT_LOCAL_DASHBOARD_URL,
     INITIAL_LEARNING_CHANNELS,
     DEFAULT_STORAGE,
     YT_SELECTORS
