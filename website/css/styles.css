@@ -1600,6 +1600,15 @@ p {
   .feature-status-banner {
     grid-template-columns: 1fr;
   }
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .team-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -1788,57 +1797,113 @@ p {
   line-height: 1.5;
 }
 
-/* Tasteful Project Credit Box (Section E) */
-.about-credit-wrapper {
-  padding: 60px 0 20px;
-  text-align: center;
+/* --------------------------------------------------------------------------
+   The Team Behind Knolect (Editorial Layout on Warm Ivory)
+   -------------------------------------------------------------------------- */
+.team-section {
+  padding: 84px 0;
+  background-color: var(--color-ivory);
 }
 
-.about-credit-box {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 28px;
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  max-width: 900px;
+  margin: 44px auto 0;
+}
+
+.team-card {
   background: var(--color-ivory-card);
-  border: 1px solid rgba(176, 138, 79, 0.35);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  color: var(--color-forest);
-  font-weight: 500;
+  border: 1px solid rgba(16, 47, 39, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
   box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.about-credit-box .credit-badge {
+.team-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.team-avatar-monogram {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--color-forest);
+  border: 1.5px solid var(--color-gold-border);
+  color: var(--color-gold);
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.team-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.team-role-tag {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--color-gold);
   letter-spacing: 0.08em;
-  padding: 3px 10px;
-  background: rgba(176, 138, 79, 0.14);
-  border-radius: 4px;
 }
 
-/* Footer bottom project credit */
-.footer-project-credit {
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--color-sage-light);
-  letter-spacing: 0.03em;
+.team-name {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-forest);
+  margin: 0;
+  line-height: 1.25;
 }
 
-.footer-sub-credit {
+.team-role {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-emerald);
+}
+
+.team-bio {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 4px;
+}
+
+/* Maintainable configuration notice */
+.team-config-note {
+  max-width: 680px;
+  margin: 36px auto 0;
+  padding: 16px 20px;
+  background: rgba(16, 47, 39, 0.04);
+  border: 1px dashed rgba(120, 148, 127, 0.4);
+  border-radius: var(--radius-md);
   text-align: center;
-  padding-top: 18px;
-  margin-top: 24px;
-  border-top: 1px solid rgba(120, 148, 127, 0.15);
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  color: var(--color-sage-light);
-  letter-spacing: 0.04em;
+  font-size: 0.82rem;
+  color: var(--color-sage-muted);
+  line-height: 1.5;
+}
+
+/* Global Footer Project Credit (Single, Distinct Instance) */
+.footer-founder-credit {
+  color: var(--color-ivory);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
 }
 
 /* --------------------------------------------------------------------------

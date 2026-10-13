@@ -34,13 +34,16 @@ const websiteDir = path.join(__dirname, 'website');
 const aboutContent = fs.readFileSync(path.join(websiteDir, 'about.html'), 'utf8');
 assert(aboutContent.includes('Learning deserves your attention.'), 'about.html contains Section A headline');
 assert(aboutContent.includes('Less distraction.'), 'about.html contains Section B headline');
-assert(aboutContent.includes('A learning-focused project by Aadrut.'), 'about.html contains Section E project credit');
-assert(aboutContent.includes('Project by Aadrut'), 'about.html contains footer project credit');
+assert(aboutContent.includes('The Team Behind Knolect'), 'about.html contains The Team Behind Knolect headline');
+assert(aboutContent.includes('Knolect is being built by a team focused on making digital learning more intentional and less distracting.'), 'about.html contains verified team supporting copy');
+assert(aboutContent.includes('Aadrut') && aboutContent.includes('Project Lead & Product Architecture'), 'about.html contains verified Aadrut profile');
+assert(aboutContent.includes('Shivam') && aboutContent.includes('Core Software Engineering'), 'about.html contains verified Shivam profile');
 
-// 1.2 Verify Project Credit in Footer across primary pages
+// 1.2 Verify Exactly ONE Project Credit in Footer across primary pages (no duplicates)
 ['index.html', 'about.html', 'install.html', 'support.html'].forEach(file => {
   const content = fs.readFileSync(path.join(websiteDir, file), 'utf8');
-  assert(content.includes('Project by Aadrut'), `${file} contains Project by Aadrut footer credit`);
+  const count = (content.match(/Project by Aadrut/g) || []).length;
+  assert(count === 1, `${file} contains exactly ONE Project by Aadrut footer credit (found: ${count})`);
   assert(content.includes('about.html'), `${file} contains navigation link to About page`);
 });
 
