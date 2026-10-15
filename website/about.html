@@ -15,14 +15,14 @@
        1. NAVIGATION BAR
        ======================================================================== -->
   <header class="navbar" role="banner">
-    <div class="container nav-container">
+    <div class="nav-container">
       <a href="index.html" class="brand-logo" aria-label="Knolect Home">
         <img src="assets/logo.svg" alt="Knolect Logo" class="brand-logo-img" width="32" height="32">
         <span>Knolect</span>
       </a>
 
+      <!-- Desktop Navigation Links -->
       <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
-        <a href="index.html#problem" class="nav-link">Problem</a>
         <a href="index.html#focus-mode" class="nav-link">Focus Mode</a>
         <a href="index.html#features" class="nav-link">Capabilities</a>
         <a href="index.html#how-it-works" class="nav-link">How It Works</a>
@@ -31,20 +31,51 @@
         <a href="support.html" class="nav-link">Support</a>
       </nav>
 
+      <!-- Action & Accessible Mobile Toggle -->
       <div class="nav-cta">
         <a href="install.html" class="btn btn-primary btn-sm js-install-cta">
-          <span class="js-cta-label">Install Knolect</span>
+          <span class="btn-text-full js-cta-label">Install Knolect</span>
+          <span class="btn-text-short">Install</span>
         </a>
-        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
+          <svg class="icon-hamburger" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
             <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
       </div>
     </div>
   </header>
+
+  <!-- Accessible Mobile Navigation Drawer & Backdrop -->
+  <div class="mobile-menu-backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
+  <nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile Navigation" aria-hidden="true">
+    <ul class="mobile-nav-list">
+      <li><a href="index.html#focus-mode" class="mobile-nav-link"><span>Focus Mode Simulator</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="index.html#features" class="mobile-nav-link"><span>Product Capabilities</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="index.html#how-it-works" class="mobile-nav-link"><span>How It Works</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="about.html" class="mobile-nav-link active"><span>About Knolect</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="dashboard.html" class="mobile-nav-link" style="color: var(--color-gold);"><span>Focus Center Dashboard</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="support.html" class="mobile-nav-link"><span>Help & Support</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="index.html#problem" class="mobile-nav-link"><span>The Distraction Problem</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="index.html#privacy" class="mobile-nav-link"><span>Privacy Architecture</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="index.html#faq" class="mobile-nav-link"><span>FAQ</span><span class="nav-arrow">→</span></a></li>
+    </ul>
+    <div class="mobile-nav-drawer-footer">
+      <a href="install.html" class="btn btn-primary mobile-nav-cta-btn js-install-cta">
+        <span>Install Knolect — It's Free</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </nav>
 
   <main role="main">
     <!-- ========================================================================

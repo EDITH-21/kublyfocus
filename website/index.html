@@ -35,38 +35,67 @@
        1. NAVBAR
        ======================================================================== -->
   <header class="navbar" role="banner">
-    <div class="container nav-container">
+    <div class="nav-container">
       <a href="index.html" class="brand-logo" aria-label="Knolect Home">
         <img src="assets/logo.svg" alt="Knolect Logo" class="brand-logo-img" width="32" height="32">
         <span>Knolect</span>
       </a>
 
+      <!-- Desktop Navigation Links (Clean 6-item set) -->
       <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
-        <a href="#problem" class="nav-link">Problem</a>
         <a href="#focus-mode" class="nav-link">Focus Mode</a>
         <a href="#features" class="nav-link">Capabilities</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
         <a href="about.html" class="nav-link">About</a>
-        <a href="#privacy" class="nav-link">Privacy</a>
-        <a href="#faq" class="nav-link">FAQ</a>
         <a href="dashboard.html" class="nav-link" style="color: var(--color-gold);">Dashboard</a>
         <a href="support.html" class="nav-link">Support</a>
       </nav>
 
+      <!-- Action & Accessible Mobile Toggle -->
       <div class="nav-cta">
         <a href="install.html" class="btn btn-primary btn-sm js-install-cta">
-          <span class="js-cta-label">Install Knolect</span>
+          <span class="btn-text-full js-cta-label">Install Knolect</span>
+          <span class="btn-text-short">Install</span>
         </a>
-        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
+          <svg class="icon-hamburger" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
             <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
       </div>
     </div>
   </header>
+
+  <!-- Accessible Mobile Navigation Drawer & Backdrop -->
+  <div class="mobile-menu-backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
+  <nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile Navigation" aria-hidden="true">
+    <ul class="mobile-nav-list">
+      <li><a href="#focus-mode" class="mobile-nav-link"><span>Focus Mode Simulator</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="#features" class="mobile-nav-link"><span>Product Capabilities</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="#how-it-works" class="mobile-nav-link"><span>How It Works</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="about.html" class="mobile-nav-link"><span>About Knolect</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="dashboard.html" class="mobile-nav-link" style="color: var(--color-gold);"><span>Focus Center Dashboard</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="support.html" class="mobile-nav-link"><span>Help & Support</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="#problem" class="mobile-nav-link"><span>The Distraction Problem</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="#privacy" class="mobile-nav-link"><span>Privacy Architecture</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="#faq" class="mobile-nav-link"><span>FAQ</span><span class="nav-arrow">→</span></a></li>
+    </ul>
+    <div class="mobile-nav-drawer-footer">
+      <a href="install.html" class="btn btn-primary mobile-nav-cta-btn js-install-cta">
+        <span>Install Knolect — It's Free</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </nav>
 
   <main role="main">
     <!-- ========================================================================
@@ -178,77 +207,69 @@
     </section>
 
     <!-- ========================================================================
-         3. PROBLEM SECTION (Warm Ivory Editorial Paper)
+         3. PROBLEM SECTION (Editorial Architecture on Warm Ivory)
          ======================================================================== -->
     <section class="section" id="problem">
       <div class="container">
         <div class="section-header">
-          <span class="section-tag">The Problem</span>
+          <span class="section-tag">The Distraction Problem</span>
           <h2 class="section-title">The Recommendation Trap</h2>
-          <p class="section-desc">You open YouTube for one lecture or coding tutorial. Then the recommendation algorithm takes over.</p>
+          <p class="section-desc">YouTube holds the world's greatest educational lectures. Yet the default interface is engineered to pull learners away from coursework.</p>
         </div>
 
-        <div class="problem-loop">
-          <!-- The Distraction Loop -->
-          <div class="loop-box danger-box">
-            <h3 class="loop-box-title text-danger">Default YouTube Loop</h3>
-            <div class="loop-steps">
-              <div class="loop-step">
-                <div class="loop-step-icon">🔍</div>
-                <div class="loop-step-title">Lecture Search</div>
-              </div>
-              <div class="loop-arrow">→</div>
-              <div class="loop-step">
-                <div class="loop-step-icon">🎯</div>
-                <div class="loop-step-title">Recommendation</div>
-              </div>
-              <div class="loop-arrow">→</div>
-              <div class="loop-step">
-                <div class="loop-step-icon">⚡</div>
-                <div class="loop-step-title">Shorts Reel</div>
-              </div>
-              <div class="loop-arrow">→</div>
-              <div class="loop-step">
-                <div class="loop-step-icon">🍿</div>
-                <div class="loop-step-title">Viral Distraction</div>
-              </div>
-              <div class="loop-arrow">→</div>
-              <div class="loop-step highlight-danger">
-                <div class="loop-step-icon">⏳</div>
-                <div class="loop-step-title">Lost Hours</div>
-              </div>
+        <div class="problem-editorial-grid">
+          <!-- Card 1: Default YouTube Loop -->
+          <div class="problem-card card-danger">
+            <div class="problem-card-header">
+              <span class="problem-card-tag">Default YouTube</span>
+              <h3 class="problem-card-title">The Algorithmic Pull</h3>
+              <p class="problem-card-desc">Every screen element is optimized for watch time, converting focused study sessions into fragmented attention.</p>
             </div>
+            <ul class="problem-points-list">
+              <li>
+                <span class="problem-point-bullet">✕</span>
+                <span><strong>Infinite Home Shelves:</strong> Sensational recommendations hijack your initial intention before you even begin studying.</span>
+              </li>
+              <li>
+                <span class="problem-point-bullet">✕</span>
+                <span><strong>Shorts & Rapid Dopamine:</strong> Endless vertical reels disrupt deep concentration and break memory retention.</span>
+              </li>
+              <li>
+                <span class="problem-point-bullet">✕</span>
+                <span><strong>Related Sidebar Traps:</strong> Watch page sidebars suggest unrelated viral videos while you are trying to understand a lecture.</span>
+              </li>
+              <li>
+                <span class="problem-point-bullet">✕</span>
+                <span><strong>Search Traps:</strong> Typing a topic exposes you to clickbait thumbnails instead of structured curriculum.</span>
+              </li>
+            </ul>
           </div>
 
-          <!-- The Knolect Path -->
-          <div class="loop-box success-box">
-            <h3 class="loop-box-title text-accent">The Knolect Path</h3>
-            <div class="loop-steps">
-              <div class="loop-step">
-                <div class="loop-step-icon">🛡️</div>
-                <div class="loop-step-title">Knolect Active</div>
-              </div>
-              <div class="loop-arrow">→</div>
-              <div class="loop-step">
-                <div class="loop-step-icon">🎯</div>
-                <div class="loop-step-title">Strict Focus</div>
-              </div>
-              <div class="loop-arrow">→</div>
-              <div class="loop-step">
-                <div class="loop-step-icon">📚</div>
-                <div class="loop-step-title">Approved Creator</div>
-              </div>
-              <div class="loop-arrow">→</div>
-              <div class="loop-step">
-                <div class="loop-step-icon">🧠</div>
-                <div class="loop-step-title">Deep Learning</div>
-              </div>
-              <div class="loop-arrow">→</div>
-              <div class="loop-step highlight-success">
-                <div class="loop-step-icon">✅</div>
-                <div class="loop-step-title">Goal Completed</div>
-              </div>
+          <!-- Card 2: The Knolect Standard -->
+          <div class="problem-card card-success">
+            <div class="problem-card-header">
+              <span class="problem-card-tag">With Knolect</span>
+              <h3 class="problem-card-title">The Allowlist Defense</h3>
+              <p class="problem-card-desc">Inverts the access model. Non-coursework recommendations are intercepted, leaving only intentional study.</p>
             </div>
+            <ul class="problem-points-list">
+              <li>
+                <span class="problem-point-bullet">✓</span>
+                <span><strong>Strict Focus Perimeter:</strong> Unapproved videos and distraction feeds are cleanly blocked by default during active focus.</span>
+              </li>
+              <li>
+                <span class="problem-point-bullet">✓</span>
+                <span><strong>Curated Study Allowlist:</strong> Verified educators (MIT OCW, 3Blue1Brown, freeCodeCamp) and your personal study channels play seamlessly.</span>
+              </li>
+              <li>
+                <span class="problem-point-bullet">✓</span>
+                <span><strong>Pomodoro Session Pacing:</strong> Built-in 15m, 25m, 45m, and 60m timers create clear boundaries and protect mental stamina.</span>
+              </li>
+              <li>
+                <span class="problem-point-bullet">✓</span>
+                <span><strong>Client-Side Interception:</strong> Operates locally inside your browser with zero browsing history or watch telemetry harvested.</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -695,43 +716,46 @@
     </section>
 
     <!-- ========================================================================
-         9.5 DISTINCTIVE FOCUS OS SHOWCASE
+         9.5 FOCUS OS ARCHITECTURE
          ======================================================================== -->
     <section class="section focus-os-section" id="focus-os">
       <div class="container">
         <div class="section-header text-center">
-          <span class="section-tag">Focus OS Architecture</span>
+          <span class="section-tag">Extension Architecture</span>
           <h2 class="section-title">Engineered For Cognitive Flow</h2>
-          <p class="section-desc">Realtime visual indicators designed to protect your attention without intrusion.</p>
+          <p class="section-desc">Three client-side subsystems built into Manifest V3 to protect your study time without breaking YouTube.</p>
         </div>
 
         <div class="knolect-focus-showcase">
-          <!-- 1. Circular Focus Ring -->
+          <!-- 1. Background Session Timer -->
           <div class="knolect-visual-box">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span class="focus-state-badge">
                 <span class="focus-state-dot"></span>
-                FOCUS ACTIVE
+                ACTIVE TIMER
               </span>
-              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--color-gold-light);">DEEP SESSION</span>
+              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--color-gold-light);">POMODORO ENGINE</span>
             </div>
 
             <div class="focus-ring-container">
               <div class="focus-ring-circle">
                 <div class="focus-ring-inner">
-                  <span class="focus-ring-time">42:18</span>
-                  <span class="focus-ring-label">FOCUS</span>
+                  <span class="focus-ring-time">25:00</span>
+                  <span class="focus-ring-label">FOCUS PRESET</span>
                 </div>
               </div>
-              <span class="focus-ring-subtext">Deep learning session in progress</span>
+              <span class="focus-ring-subtext">Survives popup closure via background alarms</span>
             </div>
+            <p style="font-size:0.84rem; color:var(--color-sage-light); line-height:1.5; margin:0;">
+              Timestamp-based countdown prevents drift and displays remaining minutes directly on your browser toolbar badge.
+            </p>
           </div>
 
-          <!-- 2. Distraction -> Blocked & Learning Signal -->
+          <!-- 2. Allowlist Channel ID Resolver -->
           <div class="knolect-visual-box">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--color-sage-light);">LEARNING SIGNAL</span>
-              <span class="focus-state-badge" style="font-size:0.72rem;">QUALIFIED</span>
+              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--color-sage-light);">EVALUATION ENGINE</span>
+              <span class="focus-state-badge" style="font-size:0.72rem;">STRICT FOCUS</span>
             </div>
 
             <div style="display:flex; flex-direction:column; gap:12px; margin: 12px 0;">
@@ -741,43 +765,50 @@
                 <span class="blocked-text">BLOCKED</span>
               </div>
               <div class="transformation-card">
-                <span class="distraction-text">Shorts Carousel</span>
+                <span class="distraction-text">Shorts Reel</span>
                 <span class="transform-arrow">→</span>
-                <span class="blocked-text">REMOVED</span>
+                <span class="blocked-text">SUPPRESSED</span>
               </div>
               <div class="transformation-card">
-                <span style="color:var(--color-ivory); font-weight:600;">Physics Wallah</span>
+                <span style="color:var(--color-ivory); font-weight:600;">@freecodecamp</span>
                 <span class="transform-arrow">→</span>
-                <span style="color:var(--color-gold); font-weight:700;">ALLOWED</span>
+                <span style="color:var(--color-gold); font-weight:700;">APPROVED</span>
               </div>
             </div>
 
-            <p style="font-size:0.82rem; color:var(--color-sage-light); line-height:1.5;">
-              Deterministic multi-signal classifier allows qualified educational channels and intercepts endless loops.
+            <p style="font-size:0.84rem; color:var(--color-sage-light); line-height:1.5; margin:0;">
+              Resolves channel handles, URLs, and canonical 24-character Channel IDs for durable allowlisting.
             </p>
           </div>
-        </div>
 
-        <!-- Focus Timeline -->
-        <div class="focus-timeline-strip">
-          <div class="timeline-step completed">
-            <span>●</span>
-            <span>START</span>
-          </div>
-          <div class="timeline-connector"></div>
-          <div class="timeline-step completed">
-            <span>●</span>
-            <span>LEARNING</span>
-          </div>
-          <div class="timeline-connector"></div>
-          <div class="timeline-step active">
-            <span>◉</span>
-            <span>FOCUS MODE</span>
-          </div>
-          <div class="timeline-connector"></div>
-          <div class="timeline-step">
-            <span>○</span>
-            <span>COMPLETED</span>
+          <!-- 3. SPA Transition Interceptor -->
+          <div class="knolect-visual-box">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-family:var(--font-mono, monospace); font-size:0.75rem; color:var(--color-sage-light);">LIFECYCLE HOOKS</span>
+              <span class="focus-state-badge" style="font-size:0.72rem;">MUTATION OBSERVER</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px; margin: 12px 0;">
+              <div class="transformation-card">
+                <span style="color:var(--color-ivory);">yt-navigate-finish</span>
+                <span class="transform-arrow">→</span>
+                <span style="color:var(--color-gold); font-weight:700;">RE-ENFORCE</span>
+              </div>
+              <div class="transformation-card">
+                <span style="color:var(--color-ivory);">DOM Mutation</span>
+                <span class="transform-arrow">→</span>
+                <span style="color:var(--color-gold); font-weight:700;">CLEAN OVERLAY</span>
+              </div>
+              <div class="transformation-card">
+                <span style="color:var(--color-ivory);">Local Storage</span>
+                <span class="transform-arrow">→</span>
+                <span style="color:var(--color-emerald-light); font-weight:700;">100% OFFLINE</span>
+              </div>
+            </div>
+
+            <p style="font-size:0.84rem; color:var(--color-sage-light); line-height:1.5; margin:0;">
+              Deep integration with YouTube's Single Page Application lifecycle prevents recommendation leaks on internal navigation.
+            </p>
           </div>
         </div>
       </div>
@@ -788,8 +819,8 @@
          ======================================================================== -->
     <section class="section cta-section">
       <div class="container text-center">
-        <h2 class="cta-title">Ready to make YouTube work for you?</h2>
-        <p class="cta-subtitle">Join thousands of students and self-learners reclaiming their study hours.</p>
+        <h2 class="cta-title">Ready to make YouTube work for your learning?</h2>
+        <p class="cta-subtitle">Install Knolect free for Chromium browsers. Block algorithmic loops, curate your study channels, and finish what you came to learn.</p>
         <div class="cta-actions">
           <a href="install.html" class="btn btn-primary btn-lg js-install-cta">
             <span class="js-cta-label">Get Knolect — Free</span>

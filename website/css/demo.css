@@ -348,3 +348,34 @@
     font-size: 1.4rem;
   }
 }
+
+@media (max-width: 480px) {
+  .sim-topbar {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .sim-search-bar {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+  .sim-logo {
+    font-size: 0.85rem;
+    gap: 6px;
+  }
+  .sim-yt-icon {
+    width: 20px;
+    height: 15px;
+    font-size: 8px;
+  }
+  .sim-knolect-card {
+    padding: 20px 14px;
+  }
+  .sim-knolect-title {
+    font-size: 1.25rem;
+  }
+  .sim-knolect-quote {
+    padding: 10px 14px;
+    font-size: 0.82rem;
+  }
+}
+
