@@ -215,4 +215,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initSmoothScroll();
+
+  /* ==========================================================================
+     5. Navbar Appearance on Scroll (Subtle Elevation Transition)
+     ========================================================================== */
+  function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    let ticking = false;
+    function updateNavbarElevation() {
+      if (window.pageYOffset > 10) {
+        navbar.classList.add('navbar-scrolled');
+      } else {
+        navbar.classList.remove('navbar-scrolled');
+      }
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateNavbarElevation);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial check in case page is reloaded when scrolled
+    updateNavbarElevation();
+  }
+
+  initNavbarScroll();
 });
