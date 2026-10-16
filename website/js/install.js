@@ -4,32 +4,32 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const browserTabs = document.querySelectorAll('.browser-tab-btn');
+  const browserTabs = document.querySelectorAll('.browser-tab, .browser-tab-btn');
   const browserNameSpans = document.querySelectorAll('.browser-name-insert');
-  const extensionUrlText = document.getElementById('extension-url-text');
+  const extensionUrlText = document.getElementById('extension-url-code') || document.getElementById('extension-url-text');
   const btnCopyExtUrl = document.getElementById('btn-copy-ext-url');
   const storeCtaBtn = document.getElementById('install-store-cta');
 
   const browserConfigs = {
     chrome: {
       name: 'Google Chrome',
-      extUrl: 'chrome://extensions',
+      extUrl: 'chrome://extensions/',
       storeName: 'Chrome Web Store'
     },
     edge: {
       name: 'Microsoft Edge',
-      extUrl: 'edge://extensions',
+      extUrl: 'edge://extensions/',
       storeName: 'Edge Add-ons & Chrome Store'
     },
     brave: {
       name: 'Brave Browser',
-      extUrl: 'brave://extensions',
+      extUrl: 'brave://extensions/',
       storeName: 'Chrome Web Store'
     },
     opera: {
       name: 'Opera',
-      extUrl: 'opera://extensions',
-      storeName: 'Chrome Web Store'
+      extUrl: 'opera://extensions/',
+      storeName: 'Opera Add-ons'
     }
   };
 

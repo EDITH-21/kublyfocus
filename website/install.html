@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>How to Install Knolect — Setup Guide</title>
   <meta name="description" content="Step-by-step installation instructions for Knolect on Chrome, Edge, Brave, and Opera.">
+  <link rel="canonical" href="https://kublyfocus.vercel.app/install">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kublyfocus.vercel.app/install">
+  <meta property="og:title" content="How to Install Knolect — Setup Guide">
+  <meta property="og:description" content="Step-by-step installation instructions for Knolect on Chromium browsers (Chrome, Edge, Brave, Opera).">
+  <!-- TODO(owner): provide 1200x630 PNG for social share cards -->
+  <meta property="og:image" content="https://kublyfocus.vercel.app/assets/logo.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How to Install Knolect — Setup Guide">
+  <meta name="twitter:description" content="Step-by-step setup guide for Knolect Chromium browser extension.">
+  <meta name="twitter:image" content="https://kublyfocus.vercel.app/assets/logo.png">
+
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/logo.png">
   <link rel="stylesheet" href="css/styles.css">
@@ -15,23 +31,23 @@
   <!-- Navbar -->
   <header class="navbar" role="banner">
     <div class="nav-container">
-      <a href="index.html" class="brand-logo" aria-label="Knolect Home">
+      <a href="/" class="brand-logo" aria-label="Knolect Home">
         <img src="assets/logo.svg" alt="Knolect Logo" width="32" height="32">
         <span>Knolect</span>
       </a>
 
       <!-- Desktop Navigation Links -->
       <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
-        <a href="index.html#focus-mode" class="nav-link">Focus Mode</a>
-        <a href="index.html#features" class="nav-link">Capabilities</a>
-        <a href="index.html#how-it-works" class="nav-link">How It Works</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="support.html" class="nav-link">Support</a>
+        <a href="/#focus-mode" class="nav-link">Focus Mode</a>
+        <a href="/#features" class="nav-link">Capabilities</a>
+        <a href="/#how-it-works" class="nav-link">How It Works</a>
+        <a href="/about" class="nav-link" data-page="about.html">About</a>
+        <a href="/support" class="nav-link">Support</a>
       </nav>
 
-      <!-- Action & Accessible Mobile Toggle -->
+      <!-- Action: Single Clean Back Link & Accessible Mobile Toggle -->
       <div class="nav-cta">
-        <a href="index.html" class="btn btn-secondary btn-sm">
+        <a href="/" class="btn btn-secondary btn-sm" aria-label="Return to Overview">
           <span class="btn-text-full">← Back to Overview</span>
           <span class="btn-text-short">← Home</span>
         </a>
@@ -54,47 +70,40 @@
   <div class="mobile-menu-backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
   <nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile Navigation" aria-hidden="true">
     <ul class="mobile-nav-list">
-      <li><a href="index.html#focus-mode" class="mobile-nav-link"><span>Focus Mode Simulator</span><span class="nav-arrow">→</span></a></li>
-      <li><a href="index.html#features" class="mobile-nav-link"><span>Product Capabilities</span><span class="nav-arrow">→</span></a></li>
-      <li><a href="index.html#how-it-works" class="mobile-nav-link"><span>How It Works</span><span class="nav-arrow">→</span></a></li>
-      <li><a href="about.html" class="mobile-nav-link"><span>About Knolect</span><span class="nav-arrow">→</span></a></li>
-      <li><a href="support.html" class="mobile-nav-link"><span>Help & Support</span><span class="nav-arrow">→</span></a></li>
-      <li><a href="index.html#problem" class="mobile-nav-link"><span>The Distraction Problem</span><span class="nav-arrow">→</span></a></li>
-      <li><a href="index.html#privacy" class="mobile-nav-link"><span>Privacy Architecture</span><span class="nav-arrow">→</span></a></li>
-      <li><a href="index.html#faq" class="mobile-nav-link"><span>FAQ</span><span class="nav-arrow">→</span></a></li>
+      <li><a href="/#focus-mode" class="mobile-nav-link"><span>Focus Mode Simulator</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/#features" class="mobile-nav-link"><span>Product Capabilities</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/#how-it-works" class="mobile-nav-link"><span>How It Works</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/about" class="mobile-nav-link" data-page="about.html"><span>About Knolect</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/support" class="mobile-nav-link"><span>Help & Support</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/privacy" class="mobile-nav-link"><span>Privacy Policy</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
     </ul>
-    <div class="mobile-nav-drawer-footer">
-      <a href="index.html" class="btn btn-secondary mobile-nav-cta-btn">
-        <span>← Return to Knolect Home</span>
-      </a>
-    </div>
   </nav>
 
   <main role="main">
     <section class="section install-hero-section">
       <div class="container install-container">
         <div class="install-header">
-          <span class="section-tag">Quick Setup</span>
+          <span class="section-tag">Unpacked Setup</span>
           <h1 class="install-title">Install Knolect</h1>
-          <p class="install-subtitle">Follow these quick steps to load Knolect into your Chromium browser.</p>
+          <p class="install-subtitle">Follow these quick steps to load the Knolect extension into your Chromium browser.</p>
         </div>
 
         <!-- Browser Selector Tabs -->
-        <div class="browser-tabs" role="tablist">
-          <button type="button" class="browser-tab active" data-browser="chrome">
-            <img src="assets/icons/chrome.svg" alt="" width="20" height="20">
+        <div class="browser-tabs" role="tablist" aria-label="Browser Selection">
+          <button type="button" class="browser-tab active" data-browser="chrome" role="tab" aria-selected="true">
+            <img src="assets/icons/chrome.svg" alt="" width="20" height="20" aria-hidden="true">
             <span>Chrome</span>
           </button>
-          <button type="button" class="browser-tab" data-browser="edge">
-            <img src="assets/icons/edge.svg" alt="" width="20" height="20">
+          <button type="button" class="browser-tab" data-browser="edge" role="tab" aria-selected="false">
+            <img src="assets/icons/edge.svg" alt="" width="20" height="20" aria-hidden="true">
             <span>Edge</span>
           </button>
-          <button type="button" class="browser-tab" data-browser="brave">
-            <img src="assets/icons/brave.svg" alt="" width="20" height="20">
+          <button type="button" class="browser-tab" data-browser="brave" role="tab" aria-selected="false">
+            <img src="assets/icons/brave.svg" alt="" width="20" height="20" aria-hidden="true">
             <span>Brave</span>
           </button>
-          <button type="button" class="browser-tab" data-browser="opera">
-            <img src="assets/icons/opera.svg" alt="" width="20" height="20">
+          <button type="button" class="browser-tab" data-browser="opera" role="tab" aria-selected="false">
+            <img src="assets/icons/opera.svg" alt="" width="20" height="20" aria-hidden="true">
             <span>Opera</span>
           </button>
         </div>
@@ -121,30 +130,109 @@
           <!-- Step 3 -->
           <div class="install-step-card">
             <div class="step-badge">Step 3</div>
-            <h2 class="install-step-title">Load Unpacked Extension</h2>
-            <p class="install-step-desc">Click the <strong>"Load unpacked"</strong> button in the top-left corner and select the <code>extension</code> folder inside your Knolect project directory on your computer.</p>
+            <h2 class="install-step-title">Download & Load Unpacked Extension</h2>
+            <p class="install-step-desc">
+              <!-- TODO(owner): provide this zip file at website/assets/knolect-extension.zip -->
+              1. Download the <a href="assets/knolect-extension.zip" download style="color: var(--color-gold); font-weight: 600; text-decoration: underline;">knolect-extension.zip</a> package.<br>
+              2. Extract the ZIP archive into a folder on your computer.<br>
+              3. Click the <strong>"Load unpacked"</strong> button in the top-left corner and select that extracted <code>extension</code> folder.
+            </p>
           </div>
 
           <!-- Step 4 -->
           <div class="install-step-card">
             <div class="step-badge">Step 4</div>
             <h2 class="install-step-title">Pin Knolect & Start Learning</h2>
-            <p class="install-step-desc">Click the puzzle icon (🧩) in your browser toolbar and pin <strong>Knolect</strong>. Then visit <a href="https://www.youtube.com" target="_blank" style="color: var(--color-gold); font-weight: 600;">YouTube</a> to enjoy a distraction-free learning environment!</p>
+            <p class="install-step-desc">Click the puzzle icon (🧩) in your browser toolbar and pin <strong>Knolect</strong>. Then visit <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" style="color: var(--color-gold); font-weight: 600;">YouTube</a> to enjoy a distraction-free learning environment!</p>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer-master" role="contentinfo" style="padding: 48px 0 24px;">
-    <div class="container text-center">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: var(--color-sage);">
-        <a href="index.html" class="brand-logo" style="font-size: 1.15rem;">
-          <img src="assets/logo.svg" alt="Knolect" width="24" height="24">
-          <span>Knolect</span>
-        </a>
-        <span class="footer-founder-credit">Project by Aadrut</span>
-        <span>© 2026 Knolect · Turn YouTube Into Your Learning Space</span>
+  <!-- Master Footer -->
+  <footer class="footer-master" role="contentinfo">
+    <div class="container">
+      <div class="footer-master-grid">
+        <!-- Brand Statement Column -->
+        <div class="footer-brand-hero">
+          <a href="/" class="footer-brand-lockup" aria-label="Knolect Home">
+            <img src="assets/logo.svg" alt="Knolect Logo">
+            <span class="footer-brand-title">Knolect</span>
+          </a>
+          <div class="footer-brand-tagline">Turn YouTube into your learning space.</div>
+          <p class="footer-brand-desc">
+            A focused learning environment designed to help you use YouTube intentionally — without the endless distractions.
+          </p>
+          <a href="/install" class="footer-brand-cta">
+            Setup Guide <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <!-- Col 1: Product -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Product</div>
+          <div class="footer-col-links">
+            <a href="/#features">Capabilities</a>
+            <a href="/#how-it-works">How It Works</a>
+            <a href="/install">Installation</a>
+            <a href="/#focus-mode">Focus Mode</a>
+          </div>
+        </div>
+
+        <!-- Col 2: Resources -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Resources</div>
+          <div class="footer-col-links">
+            <a href="/about">About</a>
+            <a href="/support">Help Center</a>
+            <a href="/#faq">FAQ</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/support#send-feedback">Feedback</a>
+          </div>
+        </div>
+
+        <!-- Col 3: Support -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Support</div>
+          <div class="footer-col-links">
+            <a href="/support#report-bug">Report a Bug</a>
+            <a href="/support#send-feedback">Send Feedback</a>
+            <a href="/support">Contact</a>
+          </div>
+        </div>
+
+        <!-- Col 4: Knolect -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Knolect</div>
+          <div class="footer-col-links">
+            <a href="/about">About</a>
+            <a href="/#problem">The Problem</a>
+            <a href="/about#team">Team</a>
+            <a href="/privacy">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distinctive Visual Focus Line -->
+      <div class="footer-focus-divider" aria-hidden="true">
+        <span class="footer-focus-line"></span>
+        <span>LEARN ───── FOCUS ───── BUILD</span>
+        <span class="footer-focus-line"></span>
+      </div>
+
+      <!-- Bottom Bar with Team Credit -->
+      <div class="footer-bottom-bar">
+        <div>
+          <span>© 2026 Knolect · All rights reserved.</span>
+        </div>
+        <!-- TODO(owner): clarify founding team (Shivam Tiwari, Durvaa Bhatt, Kajal Pal) vs Aadrut creator credit -->
+        <div class="footer-founder-credit">
+          Project by Aadrut
+        </div>
+        <div>
+          <a href="/privacy" style="color: var(--color-sage-light); font-size: 0.82rem; text-decoration: underline;">Privacy Policy</a>
+        </div>
       </div>
     </div>
   </footer>

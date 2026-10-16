@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Knolect</title>
+  <meta name="description" content="Knolect Privacy Policy. Learn how our local-first architecture protects your YouTube learning experience without tracking or telemetry SDKs.">
+  <link rel="canonical" href="https://kublyfocus.vercel.app/privacy">
+  
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kublyfocus.vercel.app/privacy">
+  <meta property="og:title" content="Privacy Policy — Knolect">
+  <meta property="og:description" content="Local-first productivity for intentional YouTube learning. Learn what data stays on your device.">
+  <!-- TODO(owner): provide 1200x630 PNG for social share cards -->
+  <meta property="og:image" content="https://kublyfocus.vercel.app/assets/logo.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Privacy Policy — Knolect">
+  <meta name="twitter:description" content="Local-first productivity for intentional YouTube learning. Zero tracking SDKs.">
+  <meta name="twitter:image" content="https://kublyfocus.vercel.app/assets/logo.png">
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar" role="banner">
+    <div class="nav-container">
+      <a href="/" class="brand-logo" aria-label="Knolect Home">
+        <img src="assets/logo.svg" alt="Knolect Logo" width="32" height="32">
+        <span>Knolect</span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
+        <a href="/#focus-mode" class="nav-link">Focus Mode</a>
+        <a href="/#features" class="nav-link">Capabilities</a>
+        <a href="/#how-it-works" class="nav-link">How It Works</a>
+        <a href="/about" class="nav-link">About</a>
+        <a href="/support" class="nav-link">Support</a>
+      </nav>
+
+      <!-- Action & Accessible Mobile Toggle -->
+      <div class="nav-cta">
+        <a href="/install" class="btn btn-primary btn-sm js-install-cta">
+          <span class="btn-text-full js-cta-label">Get Early Access</span>
+          <span class="btn-text-short">Get Access</span>
+        </a>
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
+          <svg class="icon-hamburger" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Accessible Mobile Navigation Drawer & Backdrop -->
+  <div class="mobile-menu-backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
+  <nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile Navigation" aria-hidden="true">
+    <ul class="mobile-nav-list">
+      <li><a href="/#focus-mode" class="mobile-nav-link"><span>Focus Mode Simulator</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/#features" class="mobile-nav-link"><span>Product Capabilities</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/#how-it-works" class="mobile-nav-link"><span>How It Works</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/about" class="mobile-nav-link"><span>About Knolect</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/support" class="mobile-nav-link"><span>Help & Support</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/privacy" class="mobile-nav-link active"><span>Privacy Policy</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+    </ul>
+    <div class="mobile-nav-drawer-footer">
+      <a href="/install" class="btn btn-primary mobile-nav-cta-btn js-install-cta">
+        <span>Get Early Access</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <main role="main">
+    <!-- TODO(owner): legal review — This draft is grounded strictly on the actual data storage and network behaviors of the Knolect extension and website codebase. -->
+
+    <section class="section about-hero" style="padding-top: 110px; padding-bottom: 40px;">
+      <div class="container">
+        <div class="about-hero-content">
+          <span class="section-tag">Transparency & Architecture</span>
+          <h1 class="about-hero-title">Knolect Privacy Policy</h1>
+          <p class="about-lead-text">
+            We believe productivity software should respect your attention and your data. This policy clearly describes how Knolect operates, what data is stored on your device, and when network communication occurs.
+          </p>
+          <div style="font-size: 0.85rem; color: var(--color-sage-light); font-family: var(--font-mono); margin-top: 8px;">
+            Last Updated: October 2026 · Effective Immediately
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 20px; padding-bottom: 80px;">
+      <div class="container" style="max-width: 860px;">
+        
+        <!-- Policy Container -->
+        <div style="display: flex; flex-direction: column; gap: 36px; color: var(--color-forest-dark); line-height: 1.7; font-size: 1rem;">
+          
+          <!-- 1. Core Principles -->
+          <div class="knolect-visual-box" style="background: var(--color-forest-dark); color: var(--color-ivory); border-radius: var(--radius-lg); padding: 32px;">
+            <h2 style="font-size: 1.35rem; color: var(--color-gold-light); margin-top: 0; margin-bottom: 12px; font-family: var(--font-editorial);">1. Core Architectural Principles</h2>
+            <p style="margin: 0 0 14px 0; color: var(--color-ivory);">
+              Knolect is built on a <strong>local-first</strong> foundation:
+            </p>
+            <ul style="padding-left: 20px; margin: 0; display: flex; flex-direction: column; gap: 8px; color: var(--color-sage-light);">
+              <li><strong style="color: var(--color-ivory);">Zero Telemetry SDKs:</strong> Knolect does not embed Google Analytics, PostHog, Mixpanel, third-party trackers, or advertising pixels.</li>
+              <li><strong style="color: var(--color-ivory);">Zero Watch History Harvesting:</strong> We do not collect, monitor, log, or sell your YouTube video watch history or search queries.</li>
+              <li><strong style="color: var(--color-ivory);">On-Device DOM Filtering:</strong> YouTube feed suppression and allowlist enforcement occur entirely inside your browser tab.</li>
+            </ul>
+          </div>
+
+          <!-- 2. On-Device Storage -->
+          <div>
+            <h2 style="font-size: 1.35rem; color: var(--color-forest); margin-top: 0; margin-bottom: 12px; font-family: var(--font-editorial);">2. Data Stored Locally on Your Device</h2>
+            <p>
+              When you configure Knolect, preferences are saved directly to your browser's local sandbox storage (<code>chrome.storage.local</code>). This data stays on your machine and includes:
+            </p>
+            <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Focus Configuration:</strong> Whether Focus Mode and Strict Focus are switched ON or OFF.</li>
+              <li><strong>UI Filter Settings:</strong> Your choices to suppress Shorts, recommendations, comments, home feed, or thumbnails.</li>
+              <li><strong>Study Allowlist:</strong> Channels you explicitly add to your study list (channel handle, channel name, YouTube channel ID, and channel avatar URL).</li>
+              <li><strong>Session Timer State:</strong> Pomodoro countdown values (duration, remaining seconds, start time, and background alarm timestamps).</li>
+              <li><strong>Local Session Statistics:</strong> On-device counts of focus minutes completed, sessions finished, and distractions filtered today, along with recent session timestamps.</li>
+            </ul>
+          </div>
+
+          <!-- 3. Network Communication -->
+          <div>
+            <h2 style="font-size: 1.35rem; color: var(--color-forest); margin-top: 0; margin-bottom: 12px; font-family: var(--font-editorial);">3. When Does Knolect Access the Network?</h2>
+            <p>
+              Under standard operation, the Knolect extension makes <strong>no unsolicited background network calls</strong> to external tracking or telemetry servers:
+            </p>
+            <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Direct YouTube Video Streaming:</strong> Video playback, comments, and channels continue to load directly between your browser and YouTube (Google LLC) under their terms of service. Knolect does not proxy, intercept, or reroute video traffic.</li>
+              <li><strong>Optional Account Synchronization:</strong> If you explicitly link an account and receive an authentication token, the extension dashboard requests your synced stats from <code>/api/user/dashboard</code> using an authorized bearer token. If you use Knolect without an account, this request is never initiated.</li>
+              <li><strong>Marketing & Documentation Website:</strong> Visiting our website (<code>knolect.app</code> / <code>kublyfocus.vercel.app</code>) requests static assets (HTML, CSS, JS, SVG icons, fonts) from our hosting infrastructure (Vercel).</li>
+            </ul>
+          </div>
+
+          <!-- 4. Support Forms & Feedback -->
+          <div>
+            <h2 style="font-size: 1.35rem; color: var(--color-forest); margin-top: 0; margin-bottom: 12px; font-family: var(--font-editorial);">4. Information Submitted via Support Forms</h2>
+            <p>
+              If you choose to use our support and contact forms on <a href="/support" style="color: var(--color-gold); font-weight: 600;">the Support page</a>, you voluntarily transmit information to our backend:
+            </p>
+            <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Feedback Form:</strong> Submits your selected feedback type (General, Feature Request, Praise) and your written message to <code>/api/feedback</code>.</li>
+              <li><strong>Bug Report Form:</strong> Submits your bug title, description, selected browser (Chrome, Edge, Brave, Opera), and extension version identifier to <code>/api/bugs</code> to help us reproduce and fix issues.</li>
+            </ul>
+            <p>
+              These submissions are used solely for debugging, customer assistance, and product development.
+            </p>
+          </div>
+
+          <!-- 5. Data Deletion & Retention -->
+          <div>
+            <h2 style="font-size: 1.35rem; color: var(--color-forest); margin-top: 0; margin-bottom: 12px; font-family: var(--font-editorial);">5. How to Delete Your Data</h2>
+            <p>
+              Because your channels, timer logs, and settings live locally in your browser:
+            </p>
+            <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Reset Settings:</strong> You can remove individual channels or clear settings directly from the Knolect popup and dashboard.</li>
+              <li><strong>Complete Removal:</strong> Right-clicking the Knolect icon in your browser toolbar and selecting <em>"Remove from Browser"</em> immediately and permanently purges all local extension storage from your machine.</li>
+            </ul>
+          </div>
+
+          <!-- 6. Legal Notice & Contact -->
+          <div style="border-top: 1px solid var(--color-gold-border); padding-top: 24px;">
+            <h2 style="font-size: 1.35rem; color: var(--color-forest); margin-top: 0; margin-bottom: 12px; font-family: var(--font-editorial);">6. Questions & Contact</h2>
+            <p>
+              If you have any questions or feedback regarding this policy or Knolect's technical architecture, please contact our team through our <a href="/support#send-feedback" style="color: var(--color-gold); font-weight: 600;">Feedback & Support Form</a>.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Master Footer -->
+  <footer class="footer-master" role="contentinfo">
+    <div class="container">
+      <div class="footer-master-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand-hero">
+          <a href="/" class="footer-brand-lockup" aria-label="Knolect Home">
+            <img src="assets/logo.svg" alt="Knolect Logo">
+            <span class="footer-brand-title">Knolect</span>
+          </a>
+          <div class="footer-brand-tagline">Turn YouTube into your learning space.</div>
+          <p class="footer-brand-desc">
+            A focused learning environment designed to help you use YouTube intentionally — without the endless distractions.
+          </p>
+          <a href="/install" class="footer-brand-cta">
+            Get Early Access <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <!-- Col 1: Product -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Product</div>
+          <div class="footer-col-links">
+            <a href="/#features">Capabilities</a>
+            <a href="/#how-it-works">How It Works</a>
+            <a href="/install">Installation</a>
+            <a href="/#focus-mode">Focus Mode</a>
+          </div>
+        </div>
+
+        <!-- Col 2: Resources -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Resources</div>
+          <div class="footer-col-links">
+            <a href="/about">About</a>
+            <a href="/support">Help Center</a>
+            <a href="/#faq">FAQ</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/support#send-feedback">Feedback</a>
+          </div>
+        </div>
+
+        <!-- Col 3: Support -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Support</div>
+          <div class="footer-col-links">
+            <a href="/support#report-bug">Report a Bug</a>
+            <a href="/support#send-feedback">Send Feedback</a>
+            <a href="/support">Contact</a>
+          </div>
+        </div>
+
+        <!-- Col 4: Knolect -->
+        <div class="footer-col-nav">
+          <div class="footer-col-header">Knolect</div>
+          <div class="footer-col-links">
+            <a href="/about">About</a>
+            <a href="/#problem">The Problem</a>
+            <a href="/about#team">Team</a>
+            <a href="/privacy">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distinctive Visual Focus Line -->
+      <div class="footer-focus-divider" aria-hidden="true">
+        <span class="footer-focus-line"></span>
+        <span>LEARN ───── FOCUS ───── BUILD</span>
+        <span class="footer-focus-line"></span>
+      </div>
+
+      <!-- Bottom Bar with Team Credit -->
+      <div class="footer-bottom-bar">
+        <div>
+          <span>© 2026 Knolect · All rights reserved.</span>
+        </div>
+        <!-- TODO(owner): clarify founding team (Shivam Tiwari, Durvaa Bhatt, Kajal Pal) vs Aadrut creator credit -->
+        <div class="footer-founder-credit">
+          Project by Aadrut
+        </div>
+        <div>
+          <a href="/privacy" style="color: var(--color-sage-light); font-size: 0.82rem; text-decoration: underline;">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

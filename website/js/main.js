@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target.isDirectStore) {
           labelSpan.textContent = `Add to ${browser.label}`;
         } else {
-          labelSpan.textContent = 'Add to Chrome — It’s Free';
+          labelSpan.textContent = 'Get Early Access';
         }
       }
     });
@@ -53,7 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawer = document.getElementById('mobile-nav-drawer');
     const backdrop = document.getElementById('mobile-menu-backdrop');
 
-    if (!menuToggle) return;
+    // Initialize drawer as non-focusable when closed
+    if (drawer) {
+      drawer.setAttribute('aria-hidden', 'true');
+      drawer.setAttribute('inert', '');
+    }
 
     function openDrawer() {
       menuToggle.setAttribute('aria-expanded', 'true');
@@ -61,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (drawer) {
         drawer.classList.add('active');
         drawer.setAttribute('aria-hidden', 'false');
+        drawer.removeAttribute('inert');
       }
       if (backdrop) {
         backdrop.classList.add('active');
@@ -75,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (drawer) {
         drawer.classList.remove('active');
         drawer.setAttribute('aria-hidden', 'true');
+        drawer.setAttribute('inert', '');
       }
       if (backdrop) {
         backdrop.classList.remove('active');
@@ -127,11 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileNavigation();
 
   /* ==========================================================================
-     3. FAQ Accordion
+     3. FAQ Accordion (Semantic Details Progressive Enhancement)
      ========================================================================== */
   function initFAQ() {
-    const faqItems = document.querySelectorAll('.faq-item');
+    const faqDetails = document.querySelectorAll('details.faq-item');
+    if (faqDetails.length > 0) {
+      faqDetails.forEach(detail => {
+        detail.addEventListener('toggle', () => {
+          if (detail.open) {
+            faqDetails.forEach(other => {
+              if (other !== detail && other.open) {
+                other.removeAttribute('open');
+              }
+            });
+          }
+        });
+      });
+      return;
+    }
 
+    const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
       const questionBtn = item.querySelector('.faq-question-btn');
       if (questionBtn) {

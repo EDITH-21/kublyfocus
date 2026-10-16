@@ -12,10 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!toggle || !distractions || !overlay) return;
 
+  toggle.setAttribute('role', 'switch');
+
   function updateSimulator(isFocused) {
+    toggle.setAttribute('aria-checked', isFocused ? 'true' : 'false');
+
     if (isFocused) {
       distractions.classList.add('hidden');
+      distractions.setAttribute('aria-hidden', 'true');
+      distractions.setAttribute('inert', '');
+
       overlay.classList.remove('hidden');
+      overlay.setAttribute('aria-hidden', 'false');
+      overlay.removeAttribute('inert');
+
       if (shortsItem) shortsItem.style.display = 'none';
 
       if (statusPill) {
@@ -27,7 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       distractions.classList.remove('hidden');
+      distractions.setAttribute('aria-hidden', 'false');
+      distractions.removeAttribute('inert');
+
       overlay.classList.add('hidden');
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.setAttribute('inert', '');
+
       if (shortsItem) shortsItem.style.display = 'block';
 
       if (statusPill) {

@@ -75,9 +75,9 @@ function getInstallTarget(specificBrowser = null) {
   }
 
   return {
-    url: "install.html",
+    url: "/install",
     isDirectStore: false,
-    label: `Install Knolect — Free`
+    label: `Get Early Access`
   };
 }
 
