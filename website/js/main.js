@@ -200,9 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
           const offsetPosition = elementPosition - navHeight - 12;
 
+          const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
           window.scrollTo({
             top: offsetPosition,
-            behavior: 'smooth'
+            behavior: prefersReducedMotion ? 'auto' : 'smooth'
           });
 
           // Update URL hash without jump
@@ -245,4 +247,111 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initNavbarScroll();
+
+  /* ==========================================================================
+     6. Scroll-Triggered Content Reveal Animations (Progressive Enhancement)
+     ========================================================================== */
+  function initScrollReveals() {
+    // Respect user reduced motion preference
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      return; // Elements remain in their natural visible state
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      return; // Graceful fallback: all elements remain visible
+    }
+
+    // Enable CSS hidden styles only when JS and IntersectionObserver are confirmed active
+    document.documentElement.classList.add('js-reveal-enabled');
+
+    // Canonical list of elements and components to reveal across public pages
+    const revealSelectors = [
+      '.hero-content',
+      '.hero-visual-card',
+      '.section-header',
+      '.problem-editorial-grid',
+      '.problem-card',
+      '.lead-feature-banner',
+      '.features-grid',
+      '.feature-card',
+      '.steps-grid',
+      '.step-card',
+      '.browser-cards-grid',
+      '.browser-card',
+      '.privacy-grid',
+      '.privacy-card',
+      '.faq-accordion',
+      '.faq-item',
+      '.knolect-focus-showcase',
+      '.knolect-visual-box',
+      '.transformation-card',
+      '.focus-timeline-strip',
+      '.cta-section .container',
+      '.footer-brand-hero',
+      '.footer-col-nav',
+      '.about-hero-content',
+      '.about-mission-card',
+      '.about-narrative-copy',
+      '.about-visual-panel',
+      '.principles-grid',
+      '.principle-card',
+      '.feature-status-banner',
+      '.team-grid',
+      '.team-card',
+      '.install-header',
+      '.browser-tabs',
+      '.install-step-card',
+      '.support-grid > *'
+    ];
+
+    const elementsToReveal = document.querySelectorAll(revealSelectors.join(', '));
+    if (elementsToReveal.length === 0) return;
+
+    // Grid parents that stagger child reveals
+    const staggerGridSelectors = [
+      '.features-grid',
+      '.steps-grid',
+      '.browser-cards-grid',
+      '.problem-editorial-grid',
+      '.privacy-grid',
+      '.team-grid',
+      '.principles-grid',
+      '.knolect-focus-showcase',
+      '.footer-master-grid'
+    ];
+
+    elementsToReveal.forEach(el => {
+      el.classList.add('reveal-on-scroll');
+
+      // Check if inside a staggered grid
+      const parentGrid = el.closest(staggerGridSelectors.join(', '));
+      if (parentGrid && parentGrid !== el) {
+        const siblings = Array.from(parentGrid.children);
+        const index = siblings.indexOf(el);
+        if (index >= 0) {
+          // Stagger delay between 60ms and 280ms
+          const delay = Math.min((index % 6) * 70, 350);
+          el.style.transitionDelay = `${delay}ms`;
+        }
+      }
+    });
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target); // Reveal once, no repeated triggers on scroll
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.12
+    });
+
+    elementsToReveal.forEach(el => observer.observe(el));
+  }
+
+  initScrollReveals();
 });
