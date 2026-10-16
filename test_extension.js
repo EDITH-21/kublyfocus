@@ -368,6 +368,30 @@ const storage = require('./extension/storage/storage.js');
   assert(popupCssContent.includes('.classification-card.unverified'), 'Test X4: popup.css contains unverified card styles');
   assert(popupCssContent.includes('.personal-badge-mini'), 'Test X5: popup.css contains personal study badge styles');
 
+  // =========================================================================
+  // Test Suite Y: Extension Dashboard Integration
+  // =========================================================================
+  assert(manifest.options_ui && manifest.options_ui.page === 'dashboard/dashboard.html', 'Test Y1: manifest.options_ui is configured to dashboard/dashboard.html');
+  
+  const extDashHtmlPath = path.join(__dirname, 'extension/dashboard/dashboard.html');
+  assert(fs.existsSync(extDashHtmlPath), 'Test Y2: extension/dashboard/dashboard.html exists');
+  const extDashHtml = fs.readFileSync(extDashHtmlPath, 'utf8');
+  assert(extDashHtml.includes('Focus Center'), 'Test Y2b: dashboard.html contains Focus Center title');
+  assert(extDashHtml.includes('dashboard.js'), 'Test Y2c: dashboard.html loads dashboard.js');
+
+  const extDashCssPath = path.join(__dirname, 'extension/dashboard/dashboard.css');
+  assert(fs.existsSync(extDashCssPath), 'Test Y3: extension/dashboard/dashboard.css exists');
+
+  const extDashJsPath = path.join(__dirname, 'extension/dashboard/dashboard.js');
+  assert(fs.existsSync(extDashJsPath), 'Test Y4: extension/dashboard/dashboard.js exists');
+  const extDashJs = fs.readFileSync(extDashJsPath, 'utf8');
+  assert(extDashJs.includes('getStorageData'), 'Test Y4b: dashboard.js reads on-device telemetry from local storage');
+
+  assert(popupJsContent.includes('dashboard/dashboard.html'), 'Test Y5: popup.js launches extension dashboard URL');
+  
+  const swContent = fs.readFileSync(path.join(__dirname, 'extension/background/service-worker.js'), 'utf8');
+  assert(swContent.includes('dashboard/dashboard.html'), 'Test Y6: service-worker.js resolves extension dashboard URL');
+
   console.log(`\n=== Verification Complete: ${passed} passed, ${failed} failed ===`);
   if (failed > 0) {
     process.exit(1);

@@ -46,7 +46,15 @@ assert(aboutContent.includes('Kajal Pal') && aboutContent.includes('COO & Co-fou
   const count = (content.match(/Project by Aadrut/g) || []).length;
   assert(count === 1, `${file} contains exactly ONE Project by Aadrut footer credit (found: ${count})`);
   assert(content.includes('about.html'), `${file} contains navigation link to About page`);
+  // Verify personal dashboard has been removed from public website navigation
+  assert(!content.includes('class="nav-link" href="dashboard.html"') && !content.includes('href="dashboard.html" class="nav-link"'), `${file} has removed dashboard link from desktop navigation`);
+  assert(!content.includes('class="mobile-nav-link" href="dashboard.html"') && !content.includes('href="dashboard.html" class="mobile-nav-link"'), `${file} has removed dashboard link from mobile drawer`);
 });
+
+// 1.3 Verify Website Dashboard is a Private Gate
+const dashContent = fs.readFileSync(path.join(websiteDir, 'dashboard.html'), 'utf8');
+assert(dashContent.includes('Personal Dashboard is Private'), 'website/dashboard.html serves privacy gate');
+assert(dashContent.includes('exclusively inside the Knolect Browser Extension'), 'website/dashboard.html explains extension location');
 
 // 2. Check CSS Stylesheets
 ['styles.css', 'demo.css', 'install.css'].forEach(file => {

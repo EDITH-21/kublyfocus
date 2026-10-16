@@ -48,48 +48,7 @@ class InMemoryStore {
       lastLoginAt: new Date()
     });
 
-    // 2. Seed Sample Users for rich user management
-    const sampleUsers = [
-      { id: 'usr_002', name: 'Aarav Sharma', email: 'aarav.study@example.com', browser: 'Chrome 122', version: '1.0.0', sessions: 28, totalTime: 720 },
-      { id: 'usr_003', name: 'Elena Rostova', email: 'elena.code@example.com', browser: 'Brave 1.63', version: '1.0.0', sessions: 42, totalTime: 1150 },
-      { id: 'usr_004', name: 'Marcus Chen', email: 'marcus.upsc@example.com', browser: 'Edge 121', version: '1.0.0', sessions: 19, totalTime: 480 },
-      { id: 'usr_005', name: 'Priya Patel', email: 'priya.neet@example.com', browser: 'Chrome 122', version: '1.0.0', sessions: 35, totalTime: 920 },
-      { id: 'usr_006', name: 'David Miller', email: 'david.dev@example.com', browser: 'Opera 107', version: '1.0.0', sessions: 14, totalTime: 360 }
-    ];
-
-    sampleUsers.forEach(u => {
-      const salt = crypto.randomBytes(16).toString('hex');
-      const hash = crypto.pbkdf2Sync('Password123!', salt, 1000, 64, 'sha512').toString('hex');
-      this.users.set(u.id, {
-        _id: u.id,
-        email: u.email,
-        name: u.name,
-        passwordHash: hash,
-        salt,
-        role: 'user',
-        status: 'active',
-        browser: u.browser,
-        extensionVersion: u.version,
-        createdAt: new Date(Date.now() - Math.floor(Math.random() * 20 + 2) * 86400000),
-        updatedAt: new Date(),
-        lastLoginAt: new Date(Date.now() - Math.floor(Math.random() * 86400000))
-      });
-
-      // Add dummy sessions
-      for (let i = 0; i < 4; i++) {
-        const sesId = 'ses_' + u.id + '_' + i;
-        this.sessions.set(sesId, {
-          _id: sesId,
-          userId: u.id,
-          duration: 1500,
-          status: i === 3 ? 'interrupted' : 'completed',
-          startedAt: new Date(Date.now() - (i + 1) * 86400000),
-          completedAt: new Date(Date.now() - (i + 1) * 86400000 + 1500000)
-        });
-      }
-    });
-
-    // 3. Seed Feature Flags
+    // 2. Legitimate System Configuration: Feature Flags
     const defaultFlags = [
       { id: 'flag_strict_focus', name: 'Strict Focus Mode', key: 'strict_focus', enabled: true, rollout: 100, description: 'Allowlist-first YouTube access enforcement' },
       { id: 'flag_shorts_blocker', name: 'Shorts Suppression v2', key: 'shorts_blocker_v2', enabled: true, rollout: 100, description: 'Deep suppression of short-form reels on watch and home pages' },
@@ -102,39 +61,16 @@ class InMemoryStore {
       this.featureFlags.set(f.id, { ...f, createdAt: new Date(), updatedAt: new Date() });
     });
 
-    // 4. Seed Announcements
-    this.announcements.set('ann_001', {
-      _id: 'ann_001',
-      title: 'Welcome to Knolect 1.0!',
-      content: 'Turn YouTube into your learning space. Enable Strict Focus to study without algorithmic distractions.',
-      type: 'feature',
-      target: 'all',
-      active: true,
-      createdAt: new Date(Date.now() - 5 * 86400000)
-    });
-
-    // 5. Seed Releases
+    // 3. Legitimate System Configuration: Initial System Release Policy
     this.releases.set('rel_v100', {
       _id: 'rel_v100',
       version: '1.0.0',
       status: 'stable',
-      releaseDate: new Date(Date.now() - 10 * 86400000),
-      installCount: 1420,
-      activeUsers: 890,
+      releaseDate: new Date(),
+      installCount: 0,
+      activeUsers: 0,
       minSupported: true,
       notes: 'Initial production launch with Strict Focus, Learning Channels Allowlist, and Session Timer.'
-    });
-
-    // 6. Seed System Error Logs (Simulated telemetry)
-    this.systemErrors.set('err_001', {
-      _id: 'err_001',
-      errorType: 'DOM_SELECTOR_TIMEOUT',
-      message: 'YouTube watch-metadata delayed load on slow 3G connection',
-      affectedVersion: '1.0.0',
-      browser: 'Chrome 122',
-      count: 3,
-      lastSeen: new Date(Date.now() - 2 * 3600000),
-      resolved: false
     });
 
     // 7. Seed Initial Audit Logs

@@ -294,9 +294,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // --- Dashboard Navigation ---
         case MESSAGE_TYPES.OPEN_DASHBOARD: {
           const settings = await getSettings();
-          const targetUrl = message.url || (typeof globalThis.resolveDashboardUrl === 'function'
-            ? globalThis.resolveDashboardUrl(settings)
-            : 'https://kublyfocus.vercel.app/dashboard');
+          const targetUrl = message.url || (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL
+            ? chrome.runtime.getURL('dashboard/dashboard.html')
+            : ((typeof globalThis.resolveDashboardUrl === 'function')
+                ? globalThis.resolveDashboardUrl(settings)
+                : 'https://kublyfocus.vercel.app/dashboard'));
           const tab = await chrome.tabs.create({ url: targetUrl });
           sendResponse({ success: true, url: targetUrl, tabId: tab ? tab.id : null });
           break;

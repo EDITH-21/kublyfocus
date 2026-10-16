@@ -142,20 +142,44 @@ async function loadOverview() {
     if (!res.ok) return;
 
     const ov = data.overview || {};
-    document.getElementById('kpiTotalUsers').textContent = ov.totalUsers || '0';
-    document.getElementById('kpiActiveSessions').textContent = ov.totalSessions || '0';
-    document.getElementById('kpiDistractionsBlocked').textContent = ov.distractionsBlocked || '0';
+    const userStats = ov.users || {};
+    const extStats = ov.extension || {};
+    const focusStats = ov.focus || {};
+
+    const elTotalUsers = document.getElementById('kpiTotalUsers');
+    const elActiveLearners = document.getElementById('kpiActiveLearners');
+    const elRetention = document.getElementById('kpiRetentionRate');
+    const elTotalInstalls = document.getElementById('kpiTotalInstalls');
+    const elLatestVersion = document.getElementById('kpiLatestVersion');
+    const elVersionAdoption = document.getElementById('kpiVersionAdoption');
+    const elActiveSessions = document.getElementById('kpiActiveSessions');
+    const elDistractions = document.getElementById('kpiDistractionsBlocked');
+    const elAvgDuration = document.getElementById('kpiAvgDuration');
+
+    if (elTotalUsers) elTotalUsers.textContent = ov.totalUsers ?? userStats.total ?? 0;
+    if (elActiveLearners) elActiveLearners.textContent = userStats.active ?? 0;
+    if (elRetention) elRetention.textContent = userStats.retentionRate ?? '0%';
+    if (elTotalInstalls) elTotalInstalls.textContent = extStats.totalInstalls ?? 0;
+    if (elLatestVersion) elLatestVersion.textContent = extStats.currentVersion ? 'v' + extStats.currentVersion : 'v1.0.0';
+    if (elVersionAdoption) elVersionAdoption.textContent = extStats.latestAdoption ?? '0%';
+    if (elActiveSessions) elActiveSessions.textContent = focusStats.totalSessions ?? ov.totalSessions ?? 0;
+    if (elDistractions) elDistractions.textContent = focusStats.distractionsBlocked ?? ov.distractionsBlocked ?? 0;
+    if (elAvgDuration) elAvgDuration.textContent = `${focusStats.averageDurationMinutes ?? 0} mins`;
 
     const activityTable = document.getElementById('overviewActivityTable');
-    if (activityTable && data.recentActivity) {
-      activityTable.innerHTML = data.recentActivity.map(a => `
-        <tr>
-          <td><span style="font-family: var(--font-mono); font-size: 0.75rem;">${new Date(a.createdAt || Date.now()).toLocaleTimeString()}</span></td>
-          <td><strong style="color: var(--text-main);">${escapeHtml(a.action)}</strong></td>
-          <td>${escapeHtml(a.target || 'Fleet')}</td>
-          <td><span class="admin-badge admin-badge-active">Logged</span></td>
-        </tr>
-      `).join('');
+    if (activityTable) {
+      if (!data.recentActivity || data.recentActivity.length === 0) {
+        activityTable.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-sub); padding: 18px;">No recent system activity recorded.</td></tr>`;
+      } else {
+        activityTable.innerHTML = data.recentActivity.map(a => `
+          <tr>
+            <td><span style="font-family: var(--font-mono); font-size: 0.75rem;">${new Date(a.createdAt || Date.now()).toLocaleTimeString()}</span></td>
+            <td><strong style="color: var(--text-main);">${escapeHtml(a.action)}</strong></td>
+            <td>${escapeHtml(a.target || 'System')}</td>
+            <td><span class="admin-badge admin-badge-active">Logged</span></td>
+          </tr>
+        `).join('');
+      }
     }
   } catch (err) {
     console.error('Failed to load overview data:', err);

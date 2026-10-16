@@ -20,6 +20,10 @@
   "background": {
     "service_worker": "background/service-worker.js"
   },
+  "options_ui": {
+    "page": "dashboard/dashboard.html",
+    "open_in_tab": true
+  },
   "permissions": [
     "storage",
     "alarms",

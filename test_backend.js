@@ -166,6 +166,43 @@ async function runTests() {
   });
   assert(forbiddenRes.status === 403, 'Normal user blocked with 403 Forbidden from admin endpoints');
 
+  // 13. Security: Unauthenticated request to /api/user/dashboard is blocked with 401
+  const unauthDashRes = await testRequest(app, 'GET', '/api/user/dashboard');
+  assert(unauthDashRes.status === 401, 'Unauthenticated public request blocked with 401 from user dashboard API');
+
+  // 14. Personal User Dashboard Data Isolation: User A gets their own personal data
+  const userDashRes = await testRequest(app, 'GET', '/api/user/dashboard', null, {
+    authorization: `Bearer ${userToken}`
+  });
+  assert(userDashRes.status === 200 && userDashRes.body.success, 'Authenticated user can access their personal dashboard data');
+  assert(userDashRes.body.user.email === 'student@example.com', 'Dashboard data contains only the requesting user identity');
+  assert(userDashRes.body.whitelist.length === 0, 'User whitelist reflects genuine user records (after delete)');
+
+  // 15. User Isolation: Register second user B and ensure B cannot see A's data
+  const regUserB = await testRequest(app, 'POST', '/api/auth/register', {
+    email: 'user_b@example.com',
+    name: 'User B',
+    password: 'Password123!'
+  });
+  assert(regUserB.status === 201, 'User B registration succeeds');
+  const tokenB = regUserB.body.token;
+
+  const userBDashRes = await testRequest(app, 'GET', '/api/user/dashboard', null, {
+    authorization: `Bearer ${tokenB}`
+  });
+  assert(userBDashRes.status === 200 && userBDashRes.body.user.email === 'user_b@example.com', 'User B receives only their isolated personal dashboard');
+  assert(userBDashRes.body.sessions.length === 0, 'User B has zero sessions and does not inherit User A sessions');
+
+  // 16. Admin Panel Genuine Data Verification
+  assert(adminOverviewRes.body.overview.users.total === 2 || adminOverviewRes.body.overview.users.total === 3, 'Admin overview reflects genuine user count (no +840 fake user inflation)');
+  assert(adminOverviewRes.body.overview.distractionsBlocked === 0, 'Admin overview distractions blocked reflects genuine analytics (no hardcoded 14850)');
+
+  // 17. Error Telemetry Genuine State
+  const errorLogsRes = await testRequest(app, 'GET', '/api/admin/error-logs', null, {
+    authorization: `Bearer ${adminToken}`
+  });
+  assert(errorLogsRes.status === 200 && errorLogsRes.body.errors.length === 0, 'Initial error logs are genuine and empty (no fake err_001 mock logs)');
+
   console.log(`\n=== Backend Verification Complete: ${passed} passed, ${failed} failed ===`);
   if (failed > 0) {
     process.exit(1);

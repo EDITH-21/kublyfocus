@@ -769,7 +769,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         : (settings && settings.dashboardUrl ? settings.dashboardUrl : 'https://kublyfocus.vercel.app/dashboard');
 
       if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
-        await chrome.tabs.create({ url: dashboardUrl });
+        const targetUrl = (typeof chrome.runtime !== 'undefined' && chrome.runtime.getURL)
+          ? chrome.runtime.getURL('dashboard/dashboard.html')
+          : dashboardUrl;
+        await chrome.tabs.create({ url: targetUrl });
       } else if (typeof window !== 'undefined') {
         window.open(dashboardUrl, '_blank');
       }

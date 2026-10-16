@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knolect — Personal Focus Center</title>
+  <link rel="icon" type="image/png" href="../assets/icons/icon-48.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;">
+          <img src="../assets/icons/logo.png" alt="Knolect Logo" class="brand-logo">
+          <div class="brand-text">
+            <span class="brand-name">Knolect</span>
+            <span class="brand-tag">Focus Center</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a class="nav-item active" data-tab="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Focus Center</span>
+        </a>
+        <a class="nav-item" data-tab="channels">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span>Learning Channels</span>
+        </a>
+        <a class="nav-item" data-tab="analytics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Focus Analytics</span>
+        </a>
+        <a class="nav-item" data-tab="sessions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Session Log</span>
+        </a>
+        <a class="nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar" id="sidebarAvatar">KN</div>
+          <div class="user-info">
+            <span class="user-name" id="sidebarUserName">Learner</span>
+            <span class="user-role">Local Device &bull; Private</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="page-title-group">
+          <h1 id="pageTitle">Focus Center</h1>
+          <p id="pageSubtitle">Personal learning space &bull; 100% private on your device</p>
+        </div>
+        <div class="top-bar-actions">
+          <div class="focus-status-indicator active" id="focusStatusBadge">
+            <span class="focus-pulse-dot"></span>
+            <span id="focusStatusText">FOCUS ACTIVE</span>
+          </div>
+          <a href="https://www.youtube.com" target="_blank" class="btn btn-secondary btn-sm">Open YouTube ↗</a>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- 1. Overview / Focus Center Tab -->
+        <section id="tab-overview" class="tab-panel active">
+          <!-- Top Focus Hero Card with Circular Visualization -->
+          <div class="dashboard-card" style="background: linear-gradient(135deg, rgba(16, 47, 39, 0.95), rgba(10, 31, 26, 0.95)); border-color: rgba(176, 138, 79, 0.3);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+              <div style="flex: 1; min-width: 280px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <span class="badge badge-strict" id="heroBadge">● STRICT FOCUS</span>
+                  <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">ALLOWLIST ENFORCED</span>
+                </div>
+                <h2 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px;">Personal Learning Session</h2>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; max-width: 460px;">
+                  Your YouTube session is shielded. Algorithmic recommendations, Shorts reels, and clickbait traps are blocked.
+                </p>
+                <div style="margin-top: 18px; display: flex; gap: 12px; align-items: center;">
+                  <button id="btnEndSession" class="btn btn-danger btn-sm">End Active Session</button>
+                  <span style="font-size: 0.78rem; color: var(--text-sub); font-family: var(--font-mono);" id="heroTimerSub">Managed by Knolect Extension</span>
+                </div>
+              </div>
+
+              <!-- Recognizable Circular Focus Timer Component -->
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <div style="width: 140px; height: 140px; border-radius: 50%; border: 3px solid rgba(176, 138, 79, 0.2); border-top-color: var(--accent-gold); border-right-color: var(--accent-emerald); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; box-shadow: 0 0 24px rgba(176, 138, 79, 0.15);">
+                  <span id="circularTimerDisplay" style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-main);">25:00</span>
+                  <span style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-gold); letter-spacing: 0.1em;">FOCUS</span>
+                </div>
+                <span style="font-size: 0.78rem; color: var(--text-sub); margin-top: 10px; font-weight: 500;">Deep learning block</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Genuine Today's Stats Row -->
+          <div>
+            <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">TODAY'S COGNITIVE PERFORMANCE</div>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-header">Focus Time</div>
+                <div class="metric-value" id="metricFocusTime" style="color: var(--accent-gold);">0m</div>
+                <div class="metric-sub" id="metricFocusTimeSub">Completed focus blocks</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Sessions Completed</div>
+                <div class="metric-value" id="metricSessionsCompleted">0</div>
+                <div class="metric-sub" id="metricSessionsSub">Deep work sessions</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Distractions Blocked</div>
+                <div class="metric-value" id="metricBlockedDistractions" style="color: #78947F;">0</div>
+                <div class="metric-sub">Shorts, feeds & traps</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Learning Channels</div>
+                <div class="metric-value" id="metricAllowedChannels">0</div>
+                <div class="metric-sub">Approved study sources</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Focus Sessions -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Recent Study Sessions</span>
+                <p class="card-subtitle">Chronological ledger of completed focus blocks</p>
+              </div>
+            </div>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Session Context</th>
+                    <th>Focus Mode</th>
+                    <th>Duration</th>
+                    <th>Distractions Blocked</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody id="recentSessionsTableBody">
+                  <tr><td colspan="5" style="text-align:center; padding: 24px; color: var(--text-sub);">No focus sessions recorded yet today. Start learning on YouTube!</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Learning Channels Tab -->
+        <section id="tab-channels" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Study Channels Allowlist</span>
+                <p class="card-subtitle">Channels permitted during Strict Focus Mode. All other creators and algorithmic recommendations are filtered.</p>
+              </div>
+            </div>
+
+            <!-- Quick Add Bar -->
+            <div style="display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;">
+              <input type="text" id="newChannelInput" placeholder="Enter channel name, @handle, or YouTube URL..." style="flex: 1; min-width: 240px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.85rem;">
+              <button id="addChannelBtn" class="btn btn-primary btn-sm">+ Add to Learning Allowlist</button>
+            </div>
+            <div id="channelActionFeedback" style="font-size: 0.8rem; margin-bottom: 12px; display: none;"></div>
+
+            <!-- Grid of Channels -->
+            <div class="channels-grid" id="learningChannelsGrid">
+              <!-- Rendered via dashboard.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Focus Analytics Tab -->
+        <section id="tab-analytics" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Weekly Cognitive Preservation</span>
+                <p class="card-subtitle">Focus study time and attention retention across the past 7 days</p>
+              </div>
+            </div>
+            <div class="chart-container">
+              <div class="chart-column">
+                <div class="chart-bar-wrap"><div class="chart-bar" style="height: 10%;"></div></div>
+                <span class="chart-label">Mon</span>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-wrap"><div class="chart-bar" style="height: 10%;"></div></div>
+                <span class="chart-label">Tue</span>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-wrap"><div class="chart-bar" style="height: 10%;"></div></div>
+                <span class="chart-label">Wed</span>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-wrap"><div class="chart-bar" style="height: 10%;"></div></div>
+                <span class="chart-label">Thu</span>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-wrap"><div class="chart-bar" style="height: 10%;"></div></div>
+                <span class="chart-label">Fri</span>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-wrap"><div class="chart-bar" style="height: 10%;"></div></div>
+                <span class="chart-label">Sat</span>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-wrap"><div class="chart-bar" style="height: 10%;"></div></div>
+                <span class="chart-label">Sun</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Distraction Interception Breakdown</span>
+                <p class="card-subtitle">Types of digital friction removed to preserve cognitive bandwidth</p>
+              </div>
+            </div>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-header">Shorts Reels Silenced</div>
+                <div class="metric-value" id="analyticShorts" style="color: var(--accent-gold);">0</div>
+                <div class="metric-sub">Addictive micro-videos blocked</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Home Feeds Hidden</div>
+                <div class="metric-value" id="analyticFeeds">0</div>
+                <div class="metric-sub">Endless scroll feeds disabled</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Comments Filtered</div>
+                <div class="metric-value" id="analyticComments">0</div>
+                <div class="metric-sub">Distracting comment sections removed</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-header">Search Traps Filtered</div>
+                <div class="metric-value" id="analyticSearch">0</div>
+                <div class="metric-sub">Off-topic search results defended</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Session Log Tab -->
+        <section id="tab-sessions" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">Complete Session History</span>
+                <p class="card-subtitle">Historical record of all focused study blocks recorded on this device</p>
+              </div>
+            </div>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Session Context</th>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>Distractions Filtered</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="fullSessionLogTableBody">
+                  <tr><td colspan="5" style="text-align:center; padding: 24px; color: var(--text-sub);">No sessions recorded in this device history. Start a focus session to build your study ledger!</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Settings Tab -->
+        <section id="tab-settings" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <span class="card-title">YouTube Focus Preferences</span>
+                <p class="card-subtitle">Configure which algorithmic triggers and engagement traps Knolect removes from YouTube.</p>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-title">Strict Focus Mode</span>
+                <span class="setting-desc">Enforce allowlist-first access. Channels not in your learning list are blocked during focus.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingStrictFocus" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-title">Hide YouTube Shorts</span>
+                <span class="setting-desc">Remove Shorts from the sidebar, watch page recommendations, and homepage.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingHideShorts" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-title">Hide Video Recommendations</span>
+                <span class="setting-desc">Block the sidebar recommendation stream on YouTube watch pages.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingHideRecs" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-title">Hide Comments</span>
+                <span class="setting-desc">Prevent comment sections from drawing your attention away from study material.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingHideComments" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-title">Hide YouTube Home Feed</span>
+                <span class="setting-desc">Replace the algorithmic home feed with a calm study space.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingHideHomeFeed" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-title">Hide End Screen Cards</span>
+                <span class="setting-desc">Block automated next-video overlays at the end of learning lectures.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingHideEndScreen" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-title">Default Timer Block</span>
+                <span class="setting-desc">Standard duration for Pomodoro and deep study sessions.</span>
+              </div>
+              <select id="settingDefaultTimer" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); color: #fff; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 0.85rem;">
+                <option value="900">15 minutes</option>
+                <option value="1500" selected>25 minutes (Standard)</option>
+                <option value="2700">45 minutes</option>
+                <option value="3600">60 minutes</option>
+              </select>
+            </div>
+
+            <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
+              <button id="saveSettingsBtn" class="btn btn-primary">Save Focus Rules</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../utils/constants.js"></script>
+  <script src="../utils/helpers.js"></script>
+  <script src="../utils/classifier.js"></script>
+  <script src="../storage/storage.js"></script>
+  <script src="../utils/messaging.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
