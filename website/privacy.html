@@ -31,7 +31,7 @@
   <header class="navbar" role="banner">
     <div class="nav-container">
       <a href="/" class="brand-logo" aria-label="Knolect Home">
-        <img src="assets/logo.svg" alt="Knolect Logo" width="32" height="32">
+        <img src="assets/logo.svg" alt="Knolect Logo" class="brand-logo-img" width="34" height="34">
         <span>Knolect</span>
       </a>
 
@@ -40,15 +40,20 @@
         <a href="/#focus-mode" class="nav-link">Focus Mode</a>
         <a href="/#features" class="nav-link">Capabilities</a>
         <a href="/#how-it-works" class="nav-link">How It Works</a>
-        <a href="/about" class="nav-link">About</a>
+        <a href="/about#team" class="nav-link">Connect Team</a>
+        <a href="/about" class="nav-link" data-page="about.html">About</a>
         <a href="/support" class="nav-link">Support</a>
       </nav>
 
       <!-- Action & Accessible Mobile Toggle -->
       <div class="nav-cta">
-        <a href="/install" class="btn btn-primary btn-sm js-install-cta">
+        <a href="/install" class="btn btn-secondary btn-sm js-install-cta" aria-label="Get Early Access to Knolect">
           <span class="btn-text-full js-cta-label">Get Early Access</span>
           <span class="btn-text-short">Get Access</span>
+        </a>
+        <a href="/#focus-mode" class="btn btn-primary btn-sm btn-try-knolect" aria-label="Try Knolect Focus Mode Preview">
+          <span>Try Knolect</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
         <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
           <svg class="icon-hamburger" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -72,13 +77,22 @@
       <li><a href="/#focus-mode" class="mobile-nav-link"><span>Focus Mode Simulator</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="/#features" class="mobile-nav-link"><span>Product Capabilities</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="/#how-it-works" class="mobile-nav-link"><span>How It Works</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
-      <li><a href="/about" class="mobile-nav-link"><span>About Knolect</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/about#team" class="mobile-nav-link"><span>Connect Team</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/about" class="mobile-nav-link" data-page="about.html"><span>About Knolect</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="/support" class="mobile-nav-link"><span>Help & Support</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/#problem" class="mobile-nav-link"><span>The Distraction Problem</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="/privacy" class="mobile-nav-link active"><span>Privacy Policy</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
     </ul>
     <div class="mobile-nav-drawer-footer">
-      <a href="/install" class="btn btn-primary mobile-nav-cta-btn js-install-cta">
-        <span>Get Early Access</span>
+      <a href="/#focus-mode" class="btn btn-primary mobile-nav-cta-btn">
+        <span>Try Knolect</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+      <a href="/install" class="btn btn-secondary mobile-nav-cta-btn js-install-cta">
+        <span class="js-cta-label">Get Early Access</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12"></line>
           <polyline points="12 5 19 12 12 19"></polyline>
@@ -216,10 +230,10 @@
         <div class="footer-col-nav">
           <div class="footer-col-header">Product</div>
           <div class="footer-col-links">
+            <a href="/#focus-mode">Focus Mode</a>
             <a href="/#features">Capabilities</a>
             <a href="/#how-it-works">How It Works</a>
             <a href="/install">Installation</a>
-            <a href="/#focus-mode">Focus Mode</a>
           </div>
         </div>
 
@@ -227,10 +241,9 @@
         <div class="footer-col-nav">
           <div class="footer-col-header">Resources</div>
           <div class="footer-col-links">
-            <a href="/about">About</a>
-            <a href="/support">Help Center</a>
+            <a href="/#problem">The Problem</a>
             <a href="/#faq">FAQ</a>
-            <a href="/privacy">Privacy</a>
+            <a href="/support">Help Center</a>
             <a href="/support#send-feedback">Feedback</a>
           </div>
         </div>
@@ -245,13 +258,13 @@
           </div>
         </div>
 
-        <!-- Col 4: Knolect -->
+        <!-- Col 4: Company -->
         <div class="footer-col-nav">
-          <div class="footer-col-header">Knolect</div>
+          <div class="footer-col-header">Company</div>
           <div class="footer-col-links">
-            <a href="/about">About</a>
-            <a href="/#problem">The Problem</a>
+            <a href="/about" data-page="about.html">About</a>
             <a href="/about#team">Team</a>
+            <a href="/about#careers">Careers</a>
             <a href="/privacy">Privacy Policy</a>
           </div>
         </div>

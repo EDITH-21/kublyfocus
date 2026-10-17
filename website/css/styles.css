@@ -311,6 +311,15 @@ p {
   letter-spacing: -0.01em;
 }
 
+.btn .btn-arrow {
+  display: inline-block;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
 .btn-primary {
   background-color: var(--color-emerald);
   color: var(--color-ivory);
@@ -393,18 +402,18 @@ p {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: rgba(242, 235, 221, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(16, 47, 39, 0.10);
+  background-color: rgba(242, 235, 221, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(16, 47, 39, 0.08);
   box-shadow: 0 1px 3px rgba(16, 47, 39, 0.02);
-  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
 .navbar.navbar-scrolled {
-  background-color: rgba(242, 235, 221, 0.98);
-  border-bottom-color: rgba(16, 47, 39, 0.14);
-  box-shadow: 0 4px 20px -2px rgba(16, 47, 39, 0.08);
+  background-color: rgba(242, 235, 221, 0.97);
+  border-bottom-color: rgba(16, 47, 39, 0.12);
+  box-shadow: 0 6px 24px -2px rgba(16, 47, 39, 0.07);
 }
 
 .nav-container {
@@ -425,40 +434,41 @@ p {
 .brand-logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
   font-family: var(--font-serif);
   font-weight: 600;
-  font-size: 1.32rem;
+  font-size: 1.46rem;
   color: var(--color-forest);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   flex-shrink: 0;
   user-select: none;
-  transition: opacity 180ms ease;
+  transition: opacity 180ms ease, transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .brand-logo:hover {
-  opacity: 0.92;
+  opacity: 0.94;
+  transform: translateY(-0.5px);
 }
 
 .brand-logo-img,
 .brand-logo img {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
   flex-shrink: 0;
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .brand-logo:hover .brand-logo-img,
 .brand-logo:hover img {
-  transform: scale(1.04);
+  transform: scale(1.05);
 }
 
 /* Desktop Navigation Links */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 1.4vw, 24px);
+  gap: clamp(14px, 1.5vw, 24px);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -466,13 +476,13 @@ p {
 
 .nav-link {
   color: var(--text-secondary);
-  font-size: 0.925rem;
+  font-size: 0.93rem;
   font-weight: 500;
   letter-spacing: -0.01em;
   transition: color 180ms ease;
   position: relative;
   white-space: nowrap;
-  padding: 6px 2px;
+  padding: 8px 3px;
 }
 
 .nav-link:hover,
@@ -484,14 +494,14 @@ p {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 3px;
+  right: 3px;
   height: 2px;
   background: var(--color-gold);
   border-radius: 2px;
   transform: scaleX(0);
   transform-origin: center;
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-link:hover::after,
@@ -504,6 +514,32 @@ p {
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+}
+
+.btn-try-knolect {
+  background-color: var(--color-emerald);
+  color: var(--color-ivory);
+  border: 1px solid var(--color-gold-border);
+  box-shadow: 0 2px 8px rgba(24, 88, 68, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  gap: 6px;
+  font-weight: 600;
+}
+
+.btn-try-knolect .btn-arrow {
+  display: inline-block;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-try-knolect:hover {
+  background-color: var(--color-emerald-hover);
+  border-color: var(--color-gold);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(24, 88, 68, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.btn-try-knolect:hover .btn-arrow {
+  transform: translateX(3px);
 }
 
 /* Mobile Menu Toggle Button */
@@ -2306,6 +2342,53 @@ button:disabled, .btn:disabled {
 }
 
 /* --------------------------------------------------------------------------
+   Careers Subsection in About Page Team Section
+   -------------------------------------------------------------------------- */
+.team-careers-banner {
+  margin-top: 48px;
+  padding: 38px 32px;
+  background: var(--color-ivory-card);
+  border: 1px solid rgba(176, 138, 79, 0.28);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 200ms ease,
+              box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.team-careers-banner:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-gold);
+  box-shadow: 0 12px 30px -4px rgba(16, 47, 39, 0.08);
+}
+
+.team-careers-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  font-weight: 600;
+  color: var(--color-forest);
+  margin: 14px auto 12px auto;
+  line-height: 1.3;
+}
+
+.team-careers-desc {
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 660px;
+  margin: 0 auto 22px auto;
+}
+
+.team-careers-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
    10. RESPONSIVE DESIGN & ADAPTIVE BREAKPOINTS
    -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
@@ -2508,6 +2591,9 @@ button:disabled, .btn:disabled {
   .nav-cta .btn {
     padding: 7px 12px;
     font-size: 0.8125rem;
+  }
+  .nav-cta .btn-secondary {
+    display: none;
   }
   .nav-cta .btn .btn-text-full {
     display: none;

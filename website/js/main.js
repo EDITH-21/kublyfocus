@@ -299,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
       '.feature-status-banner',
       '.team-grid',
       '.team-card',
+      '.team-careers-banner',
       '.install-header',
       '.browser-tabs',
       '.install-step-card',
