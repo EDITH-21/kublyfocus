@@ -85,17 +85,30 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = window.getInstallTarget(activeBrowserKey);
 
       if (target.isLive) {
-        installCtaBtn.href = target.url;
-        installCtaBtn.target = '_blank';
-        installCtaBtn.rel = 'noopener noreferrer';
+        installCtaBtn.removeAttribute('disabled');
+        installCtaBtn.removeAttribute('aria-disabled');
+        installCtaBtn.classList.remove('btn-coming-soon');
+        if (installCtaBtn.tagName.toLowerCase() === 'a') {
+          installCtaBtn.href = target.url;
+          installCtaBtn.target = '_blank';
+          installCtaBtn.rel = 'noopener noreferrer';
+        } else {
+          installCtaBtn.onclick = () => window.open(target.url, '_blank', 'noopener,noreferrer');
+        }
         if (installCtaLabel) installCtaLabel.textContent = `Add to ${config.shortName}`;
         if (prelaunchBox) prelaunchBox.style.display = 'none';
       } else {
-        // Pre-launch publication-ready state
-        installCtaBtn.href = '#prelaunch-notify-box';
-        installCtaBtn.removeAttribute('target');
-        installCtaBtn.removeAttribute('rel');
-        if (installCtaLabel) installCtaLabel.textContent = `Add to ${config.shortName} (Pre-launch)`;
+        // Pre-launch publication-ready state (disabled, honest status)
+        installCtaBtn.setAttribute('disabled', 'true');
+        installCtaBtn.setAttribute('aria-disabled', 'true');
+        installCtaBtn.classList.add('btn-coming-soon');
+        installCtaBtn.onclick = null;
+        if (installCtaBtn.tagName.toLowerCase() === 'a') {
+          installCtaBtn.href = '#install-prelaunch-box';
+          installCtaBtn.removeAttribute('target');
+          installCtaBtn.removeAttribute('rel');
+        }
+        if (installCtaLabel) installCtaLabel.textContent = 'Coming Soon on Chrome Web Store';
         if (prelaunchBox) prelaunchBox.style.display = 'flex';
       }
     }

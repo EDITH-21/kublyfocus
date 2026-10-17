@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Install Knolect — YouTube Focus Extension for Chrome &amp; Chromium</title>
-  <meta name="description" content="Add Knolect to Chrome, Edge, Brave, or Opera in seconds. Block YouTube distractions, shorts, feeds, and comments to study with calm intention.">
+  <title>Get Knolect — YouTube Focus Extension for Chrome &amp; Chromium</title>
+  <meta name="description" content="Add Knolect to Chrome, Edge, Brave, or Opera. Block YouTube distractions, shorts, feeds, and comments to study with calm intention.">
   <link rel="canonical" href="https://kublyfocus.vercel.app/install">
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kublyfocus.vercel.app/install">
-  <meta property="og:title" content="Install Knolect — Focused YouTube Learning Extension">
+  <meta property="og:title" content="Get Knolect — Focused YouTube Learning Extension">
   <meta property="og:description" content="Install Knolect for Chrome, Edge, Brave, and Opera. Turn YouTube into your quiet learning sanctuary.">
   <meta property="og:image" content="https://kublyfocus.vercel.app/assets/logo.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Install Knolect — Focused YouTube Learning Extension">
+  <meta name="twitter:title" content="Get Knolect — Focused YouTube Learning Extension">
   <meta name="twitter:description" content="Add Knolect to Chrome and Chromium browsers. Pure learning, zero algorithmic rabbit holes.">
   <meta name="twitter:image" content="https://kublyfocus.vercel.app/assets/logo.png">
 
@@ -52,7 +52,7 @@
           <span class="btn-text-full">← Overview</span>
           <span class="btn-text-short">← Home</span>
         </a>
-        <a href="/#focus-mode" class="btn btn-primary btn-sm btn-try-knolect" aria-label="Try Knolect Focus Mode Preview">
+        <a href="/install" class="btn btn-primary btn-sm btn-try-knolect" aria-label="Try Knolect - Install Extension">
           <span>Try Knolect</span>
           <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
@@ -86,7 +86,7 @@
       <li><a href="/privacy" class="mobile-nav-link"><span>Privacy Policy</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
     </ul>
     <div class="mobile-nav-drawer-footer">
-      <a href="/#focus-mode" class="btn btn-primary mobile-nav-cta-btn">
+      <a href="/install" class="btn btn-primary mobile-nav-cta-btn" aria-label="Try Knolect - Install Extension">
         <span>Try Knolect</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -108,10 +108,10 @@
       <div class="container install-container">
         
         <div class="install-header">
-          <span class="section-tag">Chrome Extension · Manifest V3</span>
-          <h1 class="install-title" id="install-heading">Install Knolect</h1>
+          <span class="section-tag">Official Chrome Extension</span>
+          <h1 class="install-title" id="install-heading">Get Knolect for Chrome</h1>
           <p class="install-subtitle">
-            Turn YouTube into an intentional, distraction-free study space. Add the extension to your desktop browser in seconds.
+            Turn YouTube into an intentional, distraction-free study space. One-click installation through the official Chrome Web Store.
           </p>
         </div>
 
@@ -174,18 +174,14 @@
               </div>
             </div>
 
-            <!-- Install CTA -->
+            <!-- Install CTA Button (Real Web Store link or Disabled Coming Soon) -->
             <div class="install-card-actions">
-              <a href="#prelaunch-notify-box" id="primary-install-cta" class="btn-add-to-chrome" aria-label="Add Knolect to Browser">
+              <button type="button" id="primary-install-cta" class="btn-add-to-chrome btn-coming-soon" disabled aria-disabled="true" aria-label="Add Knolect to Browser">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
-                <span id="install-cta-label">Add to Chrome</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </a>
+                <span id="install-cta-label">Coming Soon on Chrome Web Store</span>
+              </button>
             </div>
           </div>
 
@@ -194,10 +190,10 @@
             <div>
               <div class="prelaunch-status-pill">
                 <span class="pulse-dot" aria-hidden="true"></span>
-                <span>Chrome Web Store Submission Prepared</span>
+                <span>Chrome Web Store Listing Coming Soon</span>
               </div>
               <p class="prelaunch-desc" style="margin-top: 8px;">
-                The Knolect extension build is verified, packaged, and prepared for Chrome Developer Dashboard submission. Pre-register for release notification or test locally below.
+                The Knolect extension is currently being prepared for Chrome Web Store publication. One-click installation will be active right here once Google's review is finalized. Pre-register your email below to be notified on launch day.
               </p>
             </div>
 
@@ -241,28 +237,6 @@
           </div>
         </div>
 
-        <!-- Developer Mode / Contributor Unpacked Load (Cleanly framed for developers) -->
-        <details class="developer-testing-box">
-          <summary class="developer-testing-summary">
-            <span>⚙️ Developer Mode: Load Unpacked for Local Testing</span>
-            <span aria-hidden="true">▾</span>
-          </summary>
-          <div class="developer-testing-content">
-            <p>
-              If you are testing the source code directly or contributing to Knolect development, you can load the extension unpacked:
-            </p>
-            <ol class="developer-steps-list">
-              <li>In your browser, navigate to <code class="developer-code-snippet">chrome://extensions/</code> (or <code class="developer-code-snippet">edge://extensions/</code>).</li>
-              <li>Toggle <strong>Developer mode</strong> in the top-right corner to <strong>ON</strong>.</li>
-              <li>Click <strong>Load unpacked</strong> in the top-left toolbar.</li>
-              <li>Select the <code class="developer-code-snippet">extension</code> directory in this repository root.</li>
-            </ol>
-            <p style="margin-top: 10px; font-size: 0.84rem; opacity: 0.85;">
-              <em>Note for regular users: consumer installation will be completed in one click via the Chrome Web Store button above once Google's review is finalized.</em>
-            </p>
-          </div>
-        </details>
-
       </div>
     </section>
 
@@ -298,7 +272,7 @@
                 <circle cx="12" cy="12" r="10"></circle>
                 <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon>
               </svg>
-              <span>Video Walkthrough</span>
+              <span>Video Walkthrough (Demo)</span>
             </div>
 
             <!-- Prominent Center Play Button -->
@@ -310,12 +284,12 @@
 
             <!-- Bottom Right Tag -->
             <div class="video-badge-bottom-right">
-              <span>⏱ 3 MIN QUICKSTART</span>
+              <span>⏱ DEMO VIDEO · 0:10</span>
             </div>
           </div>
         </div>
 
-        <!-- Polished Video Placeholder Instruction Notice -->
+        <!-- Polished Video Callout Notice -->
         <div class="video-placeholder-notice" id="video-placeholder-notice">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <circle cx="12" cy="12" r="10"></circle>
@@ -323,7 +297,7 @@
             <line x1="12" y1="8" x2="12.01" y2="8"></line>
           </svg>
           <div class="video-placeholder-text">
-            <strong>Ready for Your Tutorial Video:</strong> To show a live YouTube tutorial or hosted MP4 video, simply set <code>youtubeVideoId</code> (e.g. your unlisted YouTube link ID) or <code>hostedVideoUrl</code> in <code>website/js/config.js</code>. The player uses privacy-conscious lazy loading with zero tracking requests until play is pressed.
+            <strong>Temporary Demo Video:</strong> A working sample video is currently connected to verify the player. To connect your final tutorial video, set <code>youtubeVideoId</code> (e.g. your unlisted YouTube link ID) or <code>hostedVideoUrl</code> in <code>website/js/config.js</code>. Changing this value instantly updates the player.
           </div>
         </div>
 
@@ -498,7 +472,7 @@
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-answer">
-              Click <strong>"Add to Chrome"</strong> at the top of this page to open the official Chrome Web Store listing, then click "Add to Chrome" and confirm the prompt. Chrome downloads and enables the extension automatically within seconds.
+              When Knolect is published on the Chrome Web Store, simply click <strong>"Add to Chrome"</strong> at the top of this page, then confirm the browser prompt. Chrome downloads and enables the extension automatically within seconds.
             </div>
           </div>
 

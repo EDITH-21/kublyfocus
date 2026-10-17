@@ -37,11 +37,14 @@ const BROWSER_STORE_URLS = {
  * clear developer instructions on how to connect the live asset.
  */
 const TUTORIAL_VIDEO = {
-  youtubeVideoId: "", // Add YouTube video ID here when ready
-  hostedVideoUrl: "", // Or relative/absolute URL to an MP4 video file
-  title: "See Knolect in Action — Turn YouTube into Your Focused Learning Space",
-  durationText: "3 min quickstart",
-  posterImage: "assets/tutorial-poster.svg"
+  // Temporary demo video asset (verified local MP4 file)
+  // To replace with your final YouTube video, paste the 11-char ID into youtubeVideoId:
+  hostedVideoUrl: "assets/videos/demo-tutorial.mp4",
+  youtubeVideoId: "",
+  title: "See Knolect in Action — Focused YouTube Learning Walkthrough",
+  durationText: "Demo Video · 0:10",
+  posterImage: "assets/tutorial-poster.svg",
+  isTemporaryDemo: true
 };
 
 // Product Metadata
