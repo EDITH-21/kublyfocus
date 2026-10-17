@@ -676,6 +676,16 @@ p {
   overflow: hidden;
 }
 
+/* Responsive Desktop Expansion for Hero Preview Container (92-94% usable width, 48-66px balanced outer margins) */
+@media (min-width: 1025px) {
+  .hero-section > .container {
+    max-width: min(calc(100% - clamp(96px, 6.6vw, 128px)), 1820px);
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .hero-glow {
   position: absolute;
   top: 0;
