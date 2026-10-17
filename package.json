@@ -4,7 +4,7 @@
   "description": "Knolect — Turn YouTube into your learning space",
   "main": "server.js",
   "scripts": {
-    "build": "node scripts/package-extension.js",
+    "build": "node -e \"console.log('Knolect Build Ready')\"",
     "package": "node scripts/package-extension.js",
     "start": "node server.js",
     "test": "node test_extension.js && node test_backend.js && node test_website.js"

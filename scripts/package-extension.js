@@ -130,9 +130,22 @@ itemsToInclude.forEach(item => {
 console.log('\n[INFO] Packaging clean release files into ZIP archive...');
 
 try {
-  // Use PowerShell Compress-Archive on Windows
-  const psCommand = `Compress-Archive -Path "${STAGING_DIR}/*" -DestinationPath "${zipPath}" -Force`;
-  execSync(`powershell -NoProfile -Command "${psCommand}"`, { stdio: 'inherit' });
+  if (process.platform === 'win32') {
+    // Use PowerShell Compress-Archive on Windows
+    const psCommand = `Compress-Archive -Path "${STAGING_DIR}/*" -DestinationPath "${zipPath}" -Force`;
+    execSync(`powershell -NoProfile -Command "${psCommand}"`, { stdio: 'inherit' });
+  } else {
+    // Cross-platform Unix / Linux / macOS (e.g. CI environments)
+    try {
+      execSync(`cd "${STAGING_DIR}" && zip -r -q "${zipPath}" .`, { stdio: 'inherit' });
+    } catch (e1) {
+      try {
+        execSync(`python3 -c "import shutil; shutil.make_archive('${zipPath.replace(/\\.zip$/, '')}', 'zip', '${STAGING_DIR}')"`, { stdio: 'inherit' });
+      } catch (e2) {
+        execSync(`cd "${STAGING_DIR}" && tar -a -cf "${zipPath}" *`, { stdio: 'inherit' });
+      }
+    }
+  }
 
   // Clean staging
   fs.rmSync(STAGING_DIR, { recursive: true, force: true });
