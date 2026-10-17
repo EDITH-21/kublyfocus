@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071510" />
+      <stop offset="50%" stop-color="#102F27" />
+      <stop offset="100%" stop-color="#0A1E18" />
+    </linearGradient>
+    <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(176, 138, 79, 0.22)" />
+      <stop offset="100%" stop-color="rgba(176, 138, 79, 0)" />
+    </radialGradient>
+    <radialGradient id="emeraldGlow" cx="20%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="rgba(21, 107, 79, 0.35)" />
+      <stop offset="100%" stop-color="rgba(21, 107, 79, 0)" />
+    </radialGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1280" height="720" fill="url(#bgGrad)" />
+  <rect width="1280" height="720" fill="url(#emeraldGlow)" />
+  <circle cx="640" cy="360" r="420" fill="url(#goldGlow)" />
+
+  <!-- Subtle Grid Overlay -->
+  <g stroke="rgba(242, 235, 221, 0.04)" stroke-width="1">
+    <line x1="0" y1="180" x2="1280" y2="180" />
+    <line x1="0" y1="360" x2="1280" y2="360" />
+    <line x1="0" y1="540" x2="1280" y2="540" />
+    <line x1="320" y1="0" x2="320" y2="720" />
+    <line x1="640" y1="0" x2="640" y2="720" />
+    <line x1="960" y1="0" x2="960" y2="720" />
+  </g>
+
+  <!-- Central Video Player Frame Mockup -->
+  <g transform="translate(180, 110)" filter="url(#shadow)">
+    <!-- Browser Window Container -->
+    <rect width="920" height="500" rx="16" fill="#0C241E" stroke="rgba(176, 138, 79, 0.35)" stroke-width="1.5" />
+    
+    <!-- Window Header -->
+    <rect width="920" height="42" rx="16" fill="#081814" />
+    <rect y="26" width="920" height="16" fill="#081814" />
+    <circle cx="28" cy="21" r="5" fill="#E26D5C" />
+    <circle cx="46" cy="21" r="5" fill="#E8B86D" />
+    <circle cx="64" cy="21" r="5" fill="#2ECC71" />
+    
+    <!-- Address Bar -->
+    <rect x="220" y="9" width="480" height="24" rx="12" fill="rgba(242, 235, 221, 0.06)" stroke="rgba(176, 138, 79, 0.2)" stroke-width="1" />
+    <text x="460" y="25" fill="#C4B69E" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" text-anchor="middle" font-weight="500">
+      🔒 youtube.com/watch?v=focused-lecture · Knolect Active
+    </text>
+
+    <!-- Knolect Focus Mode In-Page Bar (Top of player) -->
+    <rect x="24" y="60" width="872" height="40" rx="8" fill="rgba(16, 47, 39, 0.85)" stroke="rgba(176, 138, 79, 0.25)" stroke-width="1" />
+    <circle cx="48" cy="80" r="7" fill="#156B4F" />
+    <text x="64" y="84" fill="#F2EBDD" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">
+      FOCUS MODE ACTIVE
+    </text>
+    <rect x="210" y="68" width="130" height="24" rx="12" fill="rgba(176, 138, 79, 0.15)" stroke="rgba(176, 138, 79, 0.3)" />
+    <text x="275" y="84" fill="#D4AF37" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" text-anchor="middle" font-weight="600">
+      ⏱ 25:00 REMAINING
+    </text>
+    <rect x="740" y="68" width="140" height="24" rx="12" fill="#156B4F" />
+    <text x="810" y="84" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" text-anchor="middle" font-weight="600">
+      ✓ Distractions Muted
+    </text>
+
+    <!-- Video Stage -->
+    <rect x="24" y="112" width="580" height="364" rx="10" fill="#06120E" stroke="rgba(242, 235, 221, 0.08)" />
+    <!-- Clean Blackboard / Lecture Graphic inside player -->
+    <rect x="40" y="128" width="548" height="290" rx="6" fill="#091A14" />
+    <text x="314" y="240" fill="#E8B86D" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="22" text-anchor="middle" font-weight="600">
+      Intentional Study Space
+    </text>
+    <text x="314" y="272" fill="#C4B69E" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" text-anchor="middle">
+      No Algorithmic Feeds · No Shorts · Pure Learning
+    </text>
+
+    <!-- Side Panel (Showing Distractions Removed state) -->
+    <rect x="620" y="112" width="276" height="364" rx="10" fill="rgba(6, 18, 14, 0.65)" stroke="rgba(176, 138, 79, 0.2)" stroke-dasharray="4 4" />
+    <text x="758" y="260" fill="#C4B69E" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" text-anchor="middle" font-weight="600">
+      Recommended Videos
+    </text>
+    <text x="758" y="286" fill="#156B4F" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" text-anchor="middle" font-weight="700">
+      🛡️ Blocked by Knolect
+    </text>
+    <text x="758" y="312" fill="#8E9B95" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" text-anchor="middle">
+      Your sidebar remains calm
+    </text>
+  </g>
+
+  <!-- Big Central Floating Play Button Shield -->
+  <g transform="translate(640, 360)">
+    <!-- Outer Glow Ripple -->
+    <circle r="52" fill="rgba(176, 138, 79, 0.2)" stroke="rgba(176, 138, 79, 0.4)" stroke-width="2" />
+    <!-- Play Circle -->
+    <circle r="40" fill="#156B4F" stroke="#B08A4F" stroke-width="2.5" />
+    <!-- Play Triangle -->
+    <polygon points="-8,-16 18,0 -8,16" fill="#F2EBDD" />
+  </g>
+
+  <!-- Bottom Brand Title -->
+  <text x="640" y="660" fill="#F2EBDD" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="20" text-anchor="middle" font-weight="600" letter-spacing="1">
+    KNOLECT TUTORIAL &amp; WALKTHROUGH
+  </text>
+</svg>

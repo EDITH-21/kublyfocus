@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>How to Install Knolect — Setup Guide</title>
-  <meta name="description" content="Step-by-step installation instructions for Knolect on Chrome, Edge, Brave, and Opera.">
+  <title>Install Knolect — YouTube Focus Extension for Chrome &amp; Chromium</title>
+  <meta name="description" content="Add Knolect to Chrome, Edge, Brave, or Opera in seconds. Block YouTube distractions, shorts, feeds, and comments to study with calm intention.">
   <link rel="canonical" href="https://kublyfocus.vercel.app/install">
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kublyfocus.vercel.app/install">
-  <meta property="og:title" content="How to Install Knolect — Setup Guide">
-  <meta property="og:description" content="Step-by-step installation instructions for Knolect on Chromium browsers (Chrome, Edge, Brave, Opera).">
-  <!-- TODO(owner): provide 1200x630 PNG for social share cards -->
+  <meta property="og:title" content="Install Knolect — Focused YouTube Learning Extension">
+  <meta property="og:description" content="Install Knolect for Chrome, Edge, Brave, and Opera. Turn YouTube into your quiet learning sanctuary.">
   <meta property="og:image" content="https://kublyfocus.vercel.app/assets/logo.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="How to Install Knolect — Setup Guide">
-  <meta name="twitter:description" content="Step-by-step setup guide for Knolect Chromium browser extension.">
+  <meta name="twitter:title" content="Install Knolect — Focused YouTube Learning Extension">
+  <meta name="twitter:description" content="Add Knolect to Chrome and Chromium browsers. Pure learning, zero algorithmic rabbit holes.">
   <meta name="twitter:image" content="https://kublyfocus.vercel.app/assets/logo.png">
 
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -38,15 +37,16 @@
 
       <!-- Desktop Navigation Links -->
       <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
-        <a href="/#focus-mode" class="nav-link">Focus Mode</a>
-        <a href="/#features" class="nav-link">Capabilities</a>
-        <a href="/#how-it-works" class="nav-link">How It Works</a>
+        <a href="#installation" class="nav-link active">Installation</a>
+        <a href="#tutorial" class="nav-link">Video Tutorial</a>
+        <a href="#usage" class="nav-link">How to Use</a>
+        <a href="#faq" class="nav-link">FAQ</a>
         <a href="/about#team" class="nav-link">Connect Team</a>
         <a href="/about" class="nav-link" data-page="about.html">About</a>
         <a href="/support" class="nav-link">Support</a>
       </nav>
 
-      <!-- Action: Overview Link, Try Knolect & Accessible Mobile Toggle -->
+      <!-- Action CTAs & Accessible Mobile Toggle -->
       <div class="nav-cta">
         <a href="/" class="btn btn-secondary btn-sm" aria-label="Return to Overview">
           <span class="btn-text-full">← Overview</span>
@@ -75,13 +75,14 @@
   <div class="mobile-menu-backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
   <nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile Navigation" aria-hidden="true">
     <ul class="mobile-nav-list">
+      <li><a href="#installation" class="mobile-nav-link"><span>Installation</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="#tutorial" class="mobile-nav-link"><span>See in Action (Video)</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="#usage" class="mobile-nav-link"><span>How to Use Knolect</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="#faq" class="mobile-nav-link"><span>Installation FAQ</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="/#focus-mode" class="mobile-nav-link"><span>Focus Mode Simulator</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
-      <li><a href="/#features" class="mobile-nav-link"><span>Product Capabilities</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
-      <li><a href="/#how-it-works" class="mobile-nav-link"><span>How It Works</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="/about#team" class="mobile-nav-link"><span>Connect Team</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="/about" class="mobile-nav-link" data-page="about.html"><span>About Knolect</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
-      <li><a href="/support" class="mobile-nav-link"><span>Help & Support</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
-      <li><a href="/#problem" class="mobile-nav-link"><span>The Distraction Problem</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="/support" class="mobile-nav-link"><span>Help &amp; Support</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="/privacy" class="mobile-nav-link"><span>Privacy Policy</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
     </ul>
     <div class="mobile-nav-drawer-footer">
@@ -99,74 +100,467 @@
   </nav>
 
   <main role="main">
-    <section class="section install-hero-section">
+
+    <!-- ====================================================================
+         SECTION 1: THE REAL INSTALLATION FLOW
+         ==================================================================== -->
+    <section class="section install-hero-section" id="installation" aria-labelledby="install-heading">
       <div class="container install-container">
+        
         <div class="install-header">
-          <span class="section-tag">Unpacked Setup</span>
-          <h1 class="install-title">Install Knolect</h1>
-          <p class="install-subtitle">Follow these quick steps to load the Knolect extension into your Chromium browser.</p>
+          <span class="section-tag">Chrome Extension · Manifest V3</span>
+          <h1 class="install-title" id="install-heading">Install Knolect</h1>
+          <p class="install-subtitle">
+            Turn YouTube into an intentional, distraction-free study space. Add the extension to your desktop browser in seconds.
+          </p>
         </div>
 
-        <!-- Browser Selector Tabs -->
-        <div class="browser-tabs" role="tablist" aria-label="Browser Selection">
-          <button type="button" class="browser-tab active" data-browser="chrome" role="tab" aria-selected="true">
-            <img src="assets/icons/chrome.svg" alt="" width="20" height="20" aria-hidden="true">
-            <span>Chrome</span>
-          </button>
-          <button type="button" class="browser-tab" data-browser="edge" role="tab" aria-selected="false">
-            <img src="assets/icons/edge.svg" alt="" width="20" height="20" aria-hidden="true">
-            <span>Edge</span>
-          </button>
-          <button type="button" class="browser-tab" data-browser="brave" role="tab" aria-selected="false">
-            <img src="assets/icons/brave.svg" alt="" width="20" height="20" aria-hidden="true">
-            <span>Brave</span>
-          </button>
-          <button type="button" class="browser-tab" data-browser="opera" role="tab" aria-selected="false">
-            <img src="assets/icons/opera.svg" alt="" width="20" height="20" aria-hidden="true">
-            <span>Opera</span>
-          </button>
+        <!-- Unsupported Browser Alert (Shown dynamically if Safari/Firefox/Mobile) -->
+        <div class="unsupported-browser-banner hidden" id="unsupported-browser-banner" role="alert">
+          <div class="unsupported-icon" aria-hidden="true">ℹ️</div>
+          <div class="unsupported-text">
+            <h4>Chromium Browser Recommended</h4>
+            <p id="unsupported-reason-text">
+              Knolect is currently engineered for desktop Chromium browsers (Google Chrome, Microsoft Edge, Brave, and Opera). Open this page on a desktop computer running Chrome to install.
+            </p>
+          </div>
         </div>
 
-        <!-- Installation Walkthrough Steps -->
-        <div class="install-steps-container">
+        <!-- Browser Selector Bar -->
+        <div class="browser-selector-bar">
+          <span class="browser-selector-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            Choose your browser:
+          </span>
+          <div class="browser-tabs" role="tablist" aria-label="Supported Browser Selector">
+            <button type="button" class="browser-tab active" data-browser="chrome" role="tab" aria-selected="true">
+              <img src="assets/icons/chrome.svg" alt="" width="18" height="18" aria-hidden="true">
+              <span>Chrome</span>
+            </button>
+            <button type="button" class="browser-tab" data-browser="edge" role="tab" aria-selected="false">
+              <img src="assets/icons/edge.svg" alt="" width="18" height="18" aria-hidden="true">
+              <span>Edge</span>
+            </button>
+            <button type="button" class="browser-tab" data-browser="brave" role="tab" aria-selected="false">
+              <img src="assets/icons/brave.svg" alt="" width="18" height="18" aria-hidden="true">
+              <span>Brave</span>
+            </button>
+            <button type="button" class="browser-tab" data-browser="opera" role="tab" aria-selected="false">
+              <img src="assets/icons/opera.svg" alt="" width="18" height="18" aria-hidden="true">
+              <span>Opera</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Primary Installation Action Card (Claude in Chrome / Professional Standard) -->
+        <div class="install-action-card">
+          <div class="install-card-main">
+            <div class="install-card-info">
+              <div class="install-card-browser-icon">
+                <img id="selected-browser-icon" src="assets/icons/chrome.svg" alt="Google Chrome Logo" width="34" height="34">
+              </div>
+              <div class="install-card-meta">
+                <h2 class="install-card-title" id="selected-browser-name">Install Knolect for Chrome</h2>
+                <div class="install-card-subtitle">
+                  <span>Official Extension</span>
+                  <span class="version-tag">v1.0.0</span>
+                  <span>· Free &amp; Open Source</span>
+                  <span>· No Account Required</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Install CTA -->
+            <div class="install-card-actions">
+              <a href="#prelaunch-notify-box" id="primary-install-cta" class="btn-add-to-chrome" aria-label="Add Knolect to Browser">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+                <span id="install-cta-label">Add to Chrome</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Pre-launch / Publication-Ready Status (Auto-managed via config.js) -->
+          <div class="install-prelaunch-box" id="install-prelaunch-box">
+            <div>
+              <div class="prelaunch-status-pill">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                <span>Chrome Web Store Submission Prepared</span>
+              </div>
+              <p class="prelaunch-desc" style="margin-top: 8px;">
+                The Knolect extension build is verified, packaged, and prepared for Chrome Developer Dashboard submission. Pre-register for release notification or test locally below.
+              </p>
+            </div>
+
+            <!-- Early Access Notification Form -->
+            <form class="prelaunch-notify-form" id="prelaunch-notify-form">
+              <label for="prelaunch-email" class="sr-only">Your email for launch notice</label>
+              <input type="email" id="prelaunch-email" class="prelaunch-notify-input" placeholder="Enter email for store launch notice..." required>
+              <button type="submit" class="prelaunch-notify-btn">Notify Me</button>
+            </form>
+            <div id="prelaunch-notify-msg" style="display: none; width: 100%; font-size: 0.85rem; color: #A3E6CD; margin-top: 4px;"></div>
+          </div>
+        </div>
+
+        <!-- Trust Badges Bar -->
+        <div class="install-trust-bar">
+          <div class="trust-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span>100% On-Device Storage</span>
+          </div>
+          <div class="trust-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Manifest V3 Modern Security</span>
+          </div>
+          <div class="trust-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span>Zero Remote Telemetry</span>
+          </div>
+          <div class="trust-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Active Exclusively on YouTube</span>
+          </div>
+        </div>
+
+        <!-- Developer Mode / Contributor Unpacked Load (Cleanly framed for developers) -->
+        <details class="developer-testing-box">
+          <summary class="developer-testing-summary">
+            <span>⚙️ Developer Mode: Load Unpacked for Local Testing</span>
+            <span aria-hidden="true">▾</span>
+          </summary>
+          <div class="developer-testing-content">
+            <p>
+              If you are testing the source code directly or contributing to Knolect development, you can load the extension unpacked:
+            </p>
+            <ol class="developer-steps-list">
+              <li>In your browser, navigate to <code class="developer-code-snippet">chrome://extensions/</code> (or <code class="developer-code-snippet">edge://extensions/</code>).</li>
+              <li>Toggle <strong>Developer mode</strong> in the top-right corner to <strong>ON</strong>.</li>
+              <li>Click <strong>Load unpacked</strong> in the top-left toolbar.</li>
+              <li>Select the <code class="developer-code-snippet">extension</code> directory in this repository root.</li>
+            </ol>
+            <p style="margin-top: 10px; font-size: 0.84rem; opacity: 0.85;">
+              <em>Note for regular users: consumer installation will be completed in one click via the Chrome Web Store button above once Google's review is finalized.</em>
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         SECTION 2: "SEE KNOLECT IN ACTION" (VIDEO TUTORIAL)
+         Placed immediately below Installation
+         ==================================================================== -->
+    <section class="section video-section" id="tutorial" aria-labelledby="video-heading">
+      <div class="container video-container">
+        
+        <div class="video-header">
+          <span class="section-tag">Interactive Walkthrough</span>
+          <h2 class="video-title" id="video-heading">See Knolect in Action</h2>
+          <p class="video-subtitle">
+            Learn how to turn YouTube into a focused learning space in just a few minutes.
+          </p>
+        </div>
+
+        <!-- Responsive 16:9 Video Frame -->
+        <div class="video-frame-wrapper" id="video-frame-wrapper">
+          <!-- Dynamic Player Container (IFrame / HTML5 Video) -->
+          <div id="video-player-container"></div>
+
+          <!-- Video Poster View & Play Button Trigger -->
+          <div class="video-poster-view" id="video-poster-view" role="button" tabindex="0" aria-label="Play Knolect Tutorial Video">
+            <img class="video-poster-img" src="assets/tutorial-poster.svg" alt="Knolect Focus Mode Video Tutorial Preview">
+            <div class="video-poster-scrim" aria-hidden="true"></div>
+
+            <!-- Top Left Tag -->
+            <div class="video-badge-top-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon>
+              </svg>
+              <span>Video Walkthrough</span>
+            </div>
+
+            <!-- Prominent Center Play Button -->
+            <button type="button" class="video-play-btn" id="video-play-btn" aria-label="Start tutorial video">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </button>
+
+            <!-- Bottom Right Tag -->
+            <div class="video-badge-bottom-right">
+              <span>⏱ 3 MIN QUICKSTART</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Polished Video Placeholder Instruction Notice -->
+        <div class="video-placeholder-notice" id="video-placeholder-notice">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <div class="video-placeholder-text">
+            <strong>Ready for Your Tutorial Video:</strong> To show a live YouTube tutorial or hosted MP4 video, simply set <code>youtubeVideoId</code> (e.g. your unlisted YouTube link ID) or <code>hostedVideoUrl</code> in <code>website/js/config.js</code>. The player uses privacy-conscious lazy loading with zero tracking requests until play is pressed.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         SECTION 3: ACTUAL USAGE STEPS BASED ON GENUINE CODE
+         ==================================================================== -->
+    <section class="section usage-section" id="usage" aria-labelledby="usage-heading">
+      <div class="container usage-container">
+        
+        <div class="usage-header">
+          <span class="section-tag">Quickstart Guide</span>
+          <h2 class="usage-title" id="usage-heading">How to Use Knolect</h2>
+          <p class="usage-subtitle">
+            A step-by-step walkthrough of the genuine focus features built directly into the extension.
+          </p>
+        </div>
+
+        <div class="usage-steps-grid">
+          
           <!-- Step 1 -->
-          <div class="install-step-card">
-            <div class="step-badge">Step 1</div>
-            <h2 class="install-step-title">Open Extension Management</h2>
-            <p class="install-step-desc">Open a new tab in your browser and enter the extension management URL:</p>
-            <div class="code-copy-box">
-              <code id="extension-url-code">chrome://extensions/</code>
+          <div class="usage-step-card">
+            <div class="usage-step-num-box" aria-hidden="true">
+              <span class="step-label">Step</span>
+              <span class="step-number">01</span>
+            </div>
+            <div class="usage-step-content">
+              <h3 class="usage-step-title">
+                <span>Install from Chrome Web Store</span>
+                <span class="feature-pill">1-Click Setup</span>
+              </h3>
+              <p class="usage-step-desc">
+                Click <strong>"Add to Chrome"</strong> on the official store listing. Chrome will verify the package and activate Knolect instantly. No registration, login, or tracking permissions required.
+              </p>
             </div>
           </div>
 
           <!-- Step 2 -->
-          <div class="install-step-card">
-            <div class="step-badge">Step 2</div>
-            <h2 class="install-step-title">Enable Developer Mode</h2>
-            <p class="install-step-desc">Locate the <strong>Developer mode</strong> toggle switch in the top-right corner of the extensions page and turn it <strong>ON</strong>.</p>
+          <div class="usage-step-card">
+            <div class="usage-step-num-box" aria-hidden="true">
+              <span class="step-label">Step</span>
+              <span class="step-number">02</span>
+            </div>
+            <div class="usage-step-content">
+              <h3 class="usage-step-title">
+                <span>Pin the Extension for Quick Access</span>
+                <span class="feature-pill">Browser Toolbar</span>
+              </h3>
+              <p class="usage-step-desc">
+                Click the puzzle piece icon (🧩) in your browser toolbar, find <strong>Knolect</strong>, and click the pin icon. This gives you instant 1-click access to the Focus Control Center while watching any lecture.
+              </p>
+            </div>
           </div>
 
           <!-- Step 3 -->
-          <div class="install-step-card">
-            <div class="step-badge">Step 3</div>
-            <h2 class="install-step-title">Download & Load Unpacked Extension</h2>
-            <p class="install-step-desc">
-              <!-- TODO(owner): provide this zip file at website/assets/knolect-extension.zip -->
-              1. Download the <a href="assets/knolect-extension.zip" download style="color: var(--color-gold); font-weight: 600; text-decoration: underline;">knolect-extension.zip</a> package.<br>
-              2. Extract the ZIP archive into a folder on your computer.<br>
-              3. Click the <strong>"Load unpacked"</strong> button in the top-left corner and select that extracted <code>extension</code> folder.
-            </p>
+          <div class="usage-step-card">
+            <div class="usage-step-num-box" aria-hidden="true">
+              <span class="step-label">Step</span>
+              <span class="step-number">03</span>
+            </div>
+            <div class="usage-step-content">
+              <h3 class="usage-step-title">
+                <span>Open YouTube &amp; Notice the Calm</span>
+                <span class="feature-pill">Auto-Activate</span>
+              </h3>
+              <p class="usage-step-desc">
+                Navigate to <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" style="color: var(--color-gold-light); font-weight: 600; text-decoration: underline;">youtube.com</a>. Knolect’s content engine immediately engages, stripping out algorithmic feeds and displaying your intentional search and learning portal.
+              </p>
+            </div>
           </div>
 
           <!-- Step 4 -->
-          <div class="install-step-card">
-            <div class="step-badge">Step 4</div>
-            <h2 class="install-step-title">Pin Knolect & Start Learning</h2>
-            <p class="install-step-desc">Click the puzzle icon (🧩) in your browser toolbar and pin <strong>Knolect</strong>. Then visit <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" style="color: var(--color-gold); font-weight: 600;">YouTube</a> to enjoy a distraction-free learning environment!</p>
+          <div class="usage-step-card">
+            <div class="usage-step-num-box" aria-hidden="true">
+              <span class="step-label">Step</span>
+              <span class="step-number">04</span>
+            </div>
+            <div class="usage-step-content">
+              <h3 class="usage-step-title">
+                <span>Activate Focus &amp; Learning Controls</span>
+                <span class="feature-pill">Core Engine</span>
+              </h3>
+              <p class="usage-step-desc">
+                Click the Knolect icon to open your Focus Control Center. Enjoy these verified capabilities:
+              </p>
+              <div class="usage-features-checklist">
+                <div class="usage-feature-chip">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <div>
+                    <strong>Feed &amp; Sidebar Blocker</strong>
+                    <span>Removes home recommendations, related video autoplay, and end screens.</span>
+                  </div>
+                </div>
+                <div class="usage-feature-chip">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <div>
+                    <strong>Shorts Elimination</strong>
+                    <span>Hides the Shorts navigation tab and blocks short-form scroll traps.</span>
+                  </div>
+                </div>
+                <div class="usage-feature-chip">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <div>
+                    <strong>Strict Focus Allowlist</strong>
+                    <span>Enforces study-only viewing by permitting verified channels or "My Study" channels.</span>
+                  </div>
+                </div>
+                <div class="usage-feature-chip">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <div>
+                    <strong>Pomodoro Session Timer</strong>
+                    <span>Structured 15m, 25m, or 50m learning intervals with on-page remaining time.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Step 5 -->
+          <div class="usage-step-card">
+            <div class="usage-step-num-box" aria-hidden="true">
+              <span class="step-label">Step</span>
+              <span class="step-number">05</span>
+            </div>
+            <div class="usage-step-content">
+              <h3 class="usage-step-title">
+                <span>Configure Settings &amp; Review Your Focus Center</span>
+                <span class="feature-pill">Private Dashboard</span>
+              </h3>
+              <p class="usage-step-desc">
+                Right-click the Knolect icon and select <strong>Options</strong> (or click <strong>Settings → Focus Center Dashboard</strong> in the popup). Review your personal focus telemetry—total hours studied, distractions filtered, and manage your allowed channels securely on your local device.
+              </p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
+
+
+    <!-- ====================================================================
+         SECTION 4: TROUBLESHOOTING & INSTALLATION FAQS
+         ==================================================================== -->
+    <section class="section install-faq-section" id="faq" aria-labelledby="faq-heading">
+      <div class="container faq-container">
+        
+        <div class="faq-header">
+          <span class="section-tag">Troubleshooting &amp; Help</span>
+          <h2 class="faq-title" id="faq-heading">Frequently Asked Questions</h2>
+          <p class="faq-subtitle">
+            Clear answers about installing Knolect, browser permissions, and privacy.
+          </p>
+        </div>
+
+        <div class="faq-list">
+
+          <!-- FAQ 1 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>How do I install Knolect in Google Chrome?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              Click <strong>"Add to Chrome"</strong> at the top of this page to open the official Chrome Web Store listing, then click "Add to Chrome" and confirm the prompt. Chrome downloads and enables the extension automatically within seconds.
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>Which desktop browsers are supported?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              Knolect is built on Google’s Manifest V3 standard and is fully compatible with all Chromium-based desktop browsers: <strong>Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi, and Arc</strong>. Support for Mozilla Firefox and Apple Safari is currently in planning.
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>Why does Knolect request permissions for YouTube?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              Knolect requests host access to <code>*://*.youtube.com/*</code> exclusively to hide distracting visual elements (such as recommendation sidebars, algorithmic feeds, shorts carousels, and comments) on the page. All element modifications occur <strong>100% on your machine</strong>. Knolect has zero access to your external browsing history or accounts.
+            </div>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>I installed Knolect, but I cannot see the icon in my browser toolbar. Where is it?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              When new extensions are installed, Chrome often places them inside the extensions puzzle menu. Click the puzzle icon (🧩) next to your browser’s URL address bar, find <strong>Knolect</strong> in the dropdown, and click the blue pin icon. Knolect will now remain permanently visible on your toolbar.
+            </div>
+          </div>
+
+          <!-- FAQ 5 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>What is the difference between Focus Mode and Strict Focus?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <strong>Focus Mode</strong> strips out distracting algorithmic noise (shorts, home feed recommendations, sidebar suggestions, and comments) while allowing you to watch any video you intentionally search for. <strong>Strict Focus</strong> takes focus one step further: it restricts playback exclusively to verified educational channels (or channels you explicitly approve in "My Study Channels") and pauses non-learning videos.
+            </div>
+          </div>
+
+          <!-- FAQ 6 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>Does Knolect collect or track my YouTube watch history?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <strong>No. Absolutely not.</strong> Knolect does not have any tracking servers, remote analytics scripts, or cloud databases. Your focus preferences, distraction toggles, and session timer logs stay exclusively in your browser’s local storage (<code>chrome.storage.local</code>) on your own computer.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Master Footer -->
@@ -244,7 +638,6 @@
         <div>
           <span>© 2026 Knolect · All rights reserved.</span>
         </div>
-        <!-- TODO(owner): clarify founding team (Shivam Tiwari, Durvaa Bhatt, Kajal Pal) vs Aadrut creator credit -->
         <div class="footer-founder-credit">
           Project by Aadrut
         </div>

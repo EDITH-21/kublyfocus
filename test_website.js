@@ -79,6 +79,22 @@ assert(dashContent.includes('exclusively inside the Knolect Browser Extension'),
   assert(fs.existsSync(filePath), `Browser icon exists: assets/icons/${file}`);
 });
 
+// 5. Check Installation Journey, Video Tutorial & Usage Sections
+const installHtmlContent = fs.readFileSync(path.join(websiteDir, 'install.html'), 'utf8');
+assert(installHtmlContent.includes('id="installation"'), 'install.html contains #installation section');
+assert(installHtmlContent.includes('id="tutorial"'), 'install.html contains #tutorial section');
+assert(installHtmlContent.includes('See Knolect in Action'), 'install.html contains See Knolect in Action headline');
+assert(installHtmlContent.includes('Learn how to turn YouTube into a focused learning space in just a few minutes.'), 'install.html contains video tutorial subheading');
+assert(installHtmlContent.includes('id="usage"'), 'install.html contains #usage section');
+assert(installHtmlContent.includes('How to Use Knolect'), 'install.html contains How to Use Knolect headline');
+assert(installHtmlContent.includes('id="faq"'), 'install.html contains #faq section');
+assert(installHtmlContent.includes('assets/tutorial-poster.svg'), 'install.html loads tutorial-poster.svg');
+assert(fs.existsSync(path.join(websiteDir, 'assets', 'tutorial-poster.svg')), 'Brand asset exists: assets/tutorial-poster.svg');
+
+// 6. Check Chrome Web Store Preparation Assets & Scripts
+assert(fs.existsSync(path.join(__dirname, 'CHROMEWEBSTORE.md')), 'CHROMEWEBSTORE.md exists in project root');
+assert(fs.existsSync(path.join(__dirname, 'scripts', 'package-extension.js')), 'scripts/package-extension.js packaging tool exists');
+
 console.log(`\n=== Website Verification Complete: ${passed} passed, ${failed} failed ===`);
 if (failed > 0) {
   process.exit(1);
