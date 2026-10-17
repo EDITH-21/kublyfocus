@@ -87,7 +87,19 @@
   --shadow-lg: 0 16px 36px rgba(16, 47, 39, 0.14);
   --shadow-dark: 0 16px 40px rgba(10, 31, 26, 0.45);
 
-  --container-max: 1200px;
+  --container-max: 1380px;
+}
+
+@media (min-width: 1680px) {
+  :root {
+    --container-max: 1440px;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --container-max: 1520px;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -761,7 +773,6 @@ p {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1080px;
   margin: 0 auto;
 }
 
@@ -2302,6 +2313,7 @@ button:disabled, .btn:disabled {
     max-width: calc(50% - 10px);
     width: 100%;
     margin: 0 auto;
+  }
   .container,
   .nav-container {
     padding-left: 24px;
