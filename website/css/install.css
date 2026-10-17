@@ -180,3 +180,34 @@
   background: var(--color-emerald-hover);
   border-color: var(--color-gold);
 }
+
+@media (max-width: 480px) {
+  .install-hero-section {
+    padding: 60px 0 40px;
+  }
+  .install-step-card {
+    padding: 20px 16px;
+  }
+  .code-copy-box, .code-box {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    word-break: break-all;
+  }
+  .browser-tab, .browser-tab-btn {
+    padding: 8px 14px;
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .install-step-card {
+    padding: 16px 12px;
+  }
+  .browser-tab, .browser-tab-btn {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+  }
+}
+

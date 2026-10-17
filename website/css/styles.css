@@ -103,6 +103,7 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   color-scheme: light;
+  overflow-x: hidden;
 }
 
 body {
@@ -425,6 +426,7 @@ p {
 .brand-logo img {
   width: 32px;
   height: 32px;
+  object-fit: contain;
   flex-shrink: 0;
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -657,6 +659,7 @@ p {
   padding: 80px 0 60px 0;
   position: relative;
   background-color: var(--color-ivory);
+  overflow: hidden;
 }
 
 .hero-glow {
@@ -1115,7 +1118,8 @@ p {
 /* --------------------------------------------------------------------------
    5. FEATURES SECTION (Continuous Warm Ivory Canvas)
    -------------------------------------------------------------------------- */
-.lead-feature-banner {
+.lead-feature-banner,
+.lead-feature-editorial {
   background: var(--color-ivory-card);
   border: 1px solid var(--color-gold-border);
   border-radius: var(--radius-lg);
@@ -1125,6 +1129,36 @@ p {
   grid-template-columns: 1.2fr 1fr;
   gap: 32px;
   align-items: center;
+}
+
+.lead-feature-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+  background: rgba(176, 138, 79, 0.12);
+  border: 1px solid var(--color-gold-border);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 12px;
+}
+
+.lead-feature-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+  font-weight: 600;
+  color: var(--color-forest);
+  margin-bottom: 12px;
+}
+
+.lead-feature-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
 }
 
 .eval-order-card {
@@ -1870,9 +1904,10 @@ button:disabled, .btn:disabled {
     display: inline-flex !important;
   }
   .hero-title {
-    font-size: 3rem;
+    font-size: clamp(2.35rem, 4.6vw, 3rem);
   }
-  .lead-feature-banner {
+  .lead-feature-banner,
+  .lead-feature-editorial {
     grid-template-columns: 1fr;
   }
   .features-grid {
@@ -1914,22 +1949,24 @@ button:disabled, .btn:disabled {
 
 @media (max-width: 768px) {
   .section {
-    padding: 60px 0;
+    padding: 56px 0;
   }
   .hero-section {
-    padding: 60px 0 40px 0;
+    padding: 56px 0 36px 0;
+    overflow: hidden;
   }
   .section-title {
-    font-size: 2rem;
+    font-size: clamp(1.75rem, 4.2vw, 2.15rem);
   }
   .hero-title {
-    font-size: 2.35rem;
+    font-size: clamp(1.85rem, 5.6vw, 2.35rem);
   }
   .hero-subtitle {
-    font-size: 1.05rem;
+    font-size: clamp(0.98rem, 2.2vw, 1.08rem);
   }
   .hero-split-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
   .problem-editorial-grid {
     grid-template-columns: 1fr;
@@ -1938,9 +1975,11 @@ button:disabled, .btn:disabled {
   .knolect-focus-showcase {
     grid-template-columns: 1fr;
   }
-  .lead-feature-banner {
+  .lead-feature-banner,
+  .lead-feature-editorial {
     grid-template-columns: 1fr;
-    padding: 24px;
+    padding: 24px 20px;
+    gap: 24px;
   }
   .features-grid {
     grid-template-columns: 1fr;
@@ -1961,6 +2000,7 @@ button:disabled, .btn:disabled {
   }
   .privacy-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   .browser-cards-grid {
     grid-template-columns: 1fr 1fr;
@@ -2022,6 +2062,7 @@ button:disabled, .btn:disabled {
   .brand-logo img {
     width: 28px;
     height: 28px;
+    object-fit: contain;
   }
   .nav-cta .btn {
     padding: 7px 12px;
@@ -2036,15 +2077,82 @@ button:disabled, .btn:disabled {
   .hero-actions {
     flex-direction: column;
     width: 100%;
+    gap: 12px;
   }
   .hero-actions .btn {
     width: 100%;
+    justify-content: center;
+  }
+  .demo-controls-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 }
 
 @media (min-width: 641px) {
   .nav-cta .btn .btn-text-short {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .hero-visual-card {
+    padding: 16px 14px;
+  }
+  .split-side {
+    padding: 18px 14px;
+  }
+  .browser-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .problem-card {
+    padding: 24px 18px;
+  }
+  .lead-feature-banner,
+  .lead-feature-editorial {
+    padding: 20px 14px;
+  }
+  .feature-card {
+    padding: 24px 18px;
+  }
+  .step-card {
+    padding: 24px 18px;
+  }
+  .privacy-card {
+    padding: 24px 18px;
+  }
+  .faq-question {
+    padding: 16px 18px;
+    font-size: 1.05rem;
+  }
+  .faq-answer {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .footer {
+    padding: 48px 0 28px;
+  }
+  .footer-focus-divider {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    gap: 10px;
+    text-align: center;
+  }
+  .about-mission-card {
+    padding: 24px 18px;
+  }
+  .about-visual-panel {
+    padding: 24px 18px;
+  }
+  #fb-submit-btn,
+  #bug-submit-btn {
+    width: 100%;
+    align-self: stretch !important;
   }
 }
 
@@ -2062,6 +2170,7 @@ button:disabled, .btn:disabled {
   .brand-logo img {
     width: 26px;
     height: 26px;
+    object-fit: contain;
   }
   .nav-cta {
     gap: 8px;
@@ -2082,22 +2191,62 @@ button:disabled, .btn:disabled {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 360px) {
   .container {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
-  .hero-visual-card {
-    padding: 14px;
+  .hero-title {
+    font-size: clamp(1.55rem, 6.8vw, 1.85rem);
+  }
+  .hero-subtitle {
+    font-size: 0.92rem;
+  }
+  .hero-pill {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    max-width: 100%;
+  }
+  .nav-container {
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 6px;
+  }
+  .brand-logo {
+    font-size: 1.05rem;
+    gap: 5px;
+  }
+  .brand-logo-img,
+  .brand-logo img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  .nav-cta .btn {
+    padding: 5px 8px;
+    font-size: 0.72rem;
+  }
+  .mobile-menu-toggle {
+    width: 36px;
+    height: 36px;
+  }
+  .hero-meta {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
   }
   .split-side {
-    padding: 20px 14px;
+    padding: 14px 10px;
   }
-  .browser-cards-grid {
-    grid-template-columns: 1fr;
+  .split-side-title {
+    font-size: 1.15rem;
   }
   .problem-card {
-    padding: 24px 18px;
+    padding: 18px 12px;
+  }
+  .lead-feature-banner,
+  .lead-feature-editorial {
+    padding: 16px 10px;
   }
 }
 

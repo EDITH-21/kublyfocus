@@ -1,28 +1,79 @@
-/* Knolect Extension Dashboard - Focus OS Design System */
+/* ==========================================================================
+   KNOLECT EXTENSION DASHBOARD — FOCUS OS DESIGN SYSTEM
+   Modern, Distraction-Free Developer-Grade Productivity Interface
+   ========================================================================== */
+
 :root {
-  --bg-primary: #0A1F1A;
-  --bg-secondary: #102F27;
-  --bg-card: rgba(20, 56, 47, 0.85);
-  --bg-card-hover: rgba(27, 69, 58, 0.9);
-  --border-subtle: rgba(176, 138, 79, 0.2);
-  --border-active: rgba(176, 138, 79, 0.5);
-  --text-main: #F2EBDD;
-  --text-muted: #C8D6CC;
-  --text-sub: #78947F;
-  --accent-gold: #B08A4F;
-  --accent-gold-glow: rgba(176, 138, 79, 0.25);
-  --accent-emerald: #185844;
-  --accent-emerald-glow: rgba(24, 88, 68, 0.25);
-  --accent-rose: #D96B6B;
+  /* ------------------------------------------------------------------------
+     1. Primary Backgrounds (Midnight Navy System)
+     ------------------------------------------------------------------------ */
+  --bg-primary: #0B1220;           /* Midnight navy (main body / backdrop) */
+  --bg-sidebar: #101A2B;           /* Deep blue-black (sidebar & top header) */
+  --bg-header: #101A2B;            /* Deep blue-black */
+  --bg-secondary: #101A2B;
+  --bg-panel: #111C2E;             /* Slate navy (main cards & panels) */
+  --bg-card: #172438;              /* Elevated slate (metric & child cards) */
+  --bg-card-elevated: #172438;
+  --bg-hover: #1C2A40;             /* Subtle hover surface */
+  --bg-card-hover: #1C2A40;
+
+  /* ------------------------------------------------------------------------
+     2. Knollect Brand Colors (Subtle Brand References)
+     ------------------------------------------------------------------------ */
+  --brand-forest: #0D3026;         /* Original deep forest green */
+  --brand-evergreen: #185A46;      /* Original evergreen */
+  --brand-cream: #F3EBDD;          /* Warm cream */
+  --brand-gold: #B48B48;           /* Champagne gold */
+  --accent-emerald: #185A46;
+  --accent-gold: #D9A65A;          /* Muted gold accent */
+
+  /* ------------------------------------------------------------------------
+     3. Interactive Accents (Sophisticated Lavender & Muted Gold)
+     ------------------------------------------------------------------------ */
+  --accent-primary: #8B7CFF;       /* Primary accent: sophisticated lavender */
+  --accent-hover: #A99EFF;         /* Hover accent */
+  --accent-gold-muted: #D9A65A;    /* Muted gold accent */
+  --accent-lavender: #8B7CFF;
+  --accent-lavender-tint: rgba(139, 124, 255, 0.12);
+  --accent-lavender-border: rgba(139, 124, 255, 0.35);
+  --accent-rose: #F87171;
+  --accent-rose-bg: rgba(248, 113, 113, 0.12);
+  --accent-rose-border: rgba(248, 113, 113, 0.28);
+
+  /* ------------------------------------------------------------------------
+     4. Text and Borders
+     ------------------------------------------------------------------------ */
+  --text-main: #E6EAF2;            /* Primary text */
+  --text-secondary: #A0AEC0;       /* Secondary text */
+  --text-muted: #8190A5;          /* Muted text */
+  --text-sub: #8190A5;            /* Muted text alias */
+  --border-subtle: #263449;        /* Structural borders */
+  --border-active: #8B7CFF;
+  --border-focus: #8B7CFF;
+
+  /* ------------------------------------------------------------------------
+     5. Geometry & Typography
+     ------------------------------------------------------------------------ */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --font-mono: 'JetBrains Mono', monospace;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ------------------------------------------------------------------------
+     6. Motion & Transitions (160–260 ms, cubic-bezier(0.2, 0.7, 0.3, 1))
+     ------------------------------------------------------------------------ */
+  --ease-spring: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --transition-nav: 200ms var(--ease-spring);
+  --transition-btn: 180ms var(--ease-spring);
+  --transition-card: 220ms var(--ease-spring);
+  --transition: all 0.2s var(--ease-spring);
 }
 
-* {
+/* --------------------------------------------------------------------------
+   Global Reset & Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -35,19 +86,51 @@ body {
   min-height: 100vh;
   display: flex;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* App Shell */
+/* Subtle Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
+}
+
+/* Keyboard Accessibility Focus Indicators */
+:focus-visible {
+  outline: 2px solid var(--accent-primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* --------------------------------------------------------------------------
+   App Shell Layout
+   -------------------------------------------------------------------------- */
 .app-container {
   display: flex;
   width: 100vw;
   min-height: 100vh;
+  background-color: var(--bg-primary);
 }
 
-/* Sidebar */
+/* --------------------------------------------------------------------------
+   Sidebar (Deep Blue-Black Surface with Lavender Active State)
+   -------------------------------------------------------------------------- */
 .sidebar {
   width: 260px;
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-sidebar);
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
@@ -56,6 +139,7 @@ body {
   position: sticky;
   top: 0;
   height: 100vh;
+  z-index: 20;
 }
 
 .brand-section {
@@ -71,6 +155,7 @@ body {
   width: 36px;
   height: 36px;
   object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
 .brand-text {
@@ -89,8 +174,9 @@ body {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--accent-gold);
+  color: var(--accent-gold-muted);
   font-family: var(--font-mono);
+  font-weight: 600;
 }
 
 .nav-menu {
@@ -105,31 +191,49 @@ body {
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
   border-radius: var(--radius-sm);
-  transition: var(--transition);
+  transition: color var(--transition-nav),
+              background-color var(--transition-nav),
+              border-color var(--transition-nav),
+              transform var(--transition-nav);
   border: 1px solid transparent;
   cursor: pointer;
+  user-select: none;
 }
 
 .nav-item:hover {
   color: var(--text-main);
-  background: rgba(255, 255, 255, 0.05);
+  background-color: var(--bg-hover);
+  border-color: rgba(38, 52, 73, 0.7);
+  transform: translateX(2px);
 }
 
 .nav-item.active {
-  color: var(--accent-gold);
-  background: rgba(176, 138, 79, 0.12);
-  border-color: rgba(176, 138, 79, 0.3);
+  color: var(--accent-primary);
+  background: var(--accent-lavender-tint);
+  border-color: var(--accent-lavender-border);
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(139, 124, 255, 0.08);
 }
 
 .nav-item svg {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  stroke: var(--text-muted);
+  transition: stroke var(--transition-nav);
+}
+
+.nav-item:hover svg {
+  stroke: var(--text-main);
+}
+
+.nav-item.active svg {
+  stroke: var(--accent-primary);
 }
 
 .sidebar-footer {
@@ -144,23 +248,32 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 12px;
+  background: var(--bg-card);
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
+  transition: border-color var(--transition-nav),
+              background-color var(--transition-nav);
+}
+
+.user-profile-badge:hover {
+  background: var(--bg-hover);
+  border-color: rgba(139, 124, 255, 0.25);
 }
 
 .user-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--accent-gold);
-  color: #102F27;
+  background: var(--brand-evergreen);
+  color: var(--brand-cream);
+  border: 1px solid rgba(180, 139, 72, 0.4);
   font-weight: 700;
   font-size: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-mono);
 }
 
 .user-info {
@@ -176,10 +289,12 @@ body {
 
 .user-role {
   font-size: 0.7rem;
-  color: var(--text-sub);
+  color: var(--text-muted);
 }
 
-/* Main Content Area */
+/* --------------------------------------------------------------------------
+   Main Content Area & Top Header
+   -------------------------------------------------------------------------- */
 .main-content {
   flex: 1;
   display: flex;
@@ -193,17 +308,18 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 32px;
+  padding: 18px 32px;
   border-bottom: 1px solid var(--border-subtle);
-  background: rgba(10, 31, 26, 0.85);
-  backdrop-filter: blur(12px);
+  background: rgba(16, 26, 43, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
 .page-title-group h1 {
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-main);
@@ -211,7 +327,7 @@ body {
 
 .page-title-group p {
   font-size: 0.82rem;
-  color: var(--text-sub);
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -227,28 +343,43 @@ body {
   gap: 8px;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: #78947F;
-  background: rgba(24, 88, 68, 0.25);
-  padding: 6px 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  padding: 6px 14px;
   border-radius: 20px;
-  border: 1px solid rgba(176, 138, 79, 0.3);
+  border: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-nav),
+              border-color var(--transition-nav),
+              color var(--transition-nav),
+              box-shadow var(--transition-nav);
 }
 
 .focus-status-indicator.active {
-  color: #F2EBDD;
-  background: rgba(24, 88, 68, 0.45);
-  border-color: var(--accent-gold);
+  color: var(--text-main);
+  background: var(--accent-lavender-tint);
+  border-color: var(--accent-lavender-border);
+  box-shadow: 0 0 14px rgba(139, 124, 255, 0.12);
 }
 
 .focus-pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent-gold);
-  box-shadow: 0 0 8px var(--accent-gold);
+  background: var(--text-muted);
+  transition: background-color var(--transition-nav),
+              box-shadow var(--transition-nav);
 }
 
-/* Buttons */
+.focus-status-indicator.active .focus-pulse-dot {
+  background: var(--accent-primary);
+  box-shadow: 0 0 8px rgba(139, 124, 255, 0.75);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons (Subtle Lift, Restrained Radii, Clear States)
+   -------------------------------------------------------------------------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -259,41 +390,65 @@ body {
   font-weight: 600;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: var(--transition);
+  transition: transform var(--transition-btn),
+              background-color var(--transition-btn),
+              border-color var(--transition-btn),
+              box-shadow var(--transition-btn),
+              color var(--transition-btn);
   text-decoration: none;
-  border: none;
+  border: 1px solid transparent;
+  line-height: 1.4;
+  user-select: none;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 .btn-primary {
-  background: var(--accent-emerald);
-  color: #F2EBDD;
-  border: 1px solid var(--accent-gold);
+  background: var(--accent-primary);
+  color: #0B1220;
+  border-color: var(--accent-hover);
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(139, 124, 255, 0.2);
 }
 
 .btn-primary:hover {
-  background: #1e6d54;
-  box-shadow: 0 0 16px var(--accent-emerald-glow);
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #0B1220;
+  box-shadow: 0 4px 16px rgba(139, 124, 255, 0.35);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-card);
   color: var(--text-main);
   border: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--accent-gold);
+  background: var(--bg-hover);
+  border-color: rgba(139, 124, 255, 0.35);
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 .btn-danger {
-  background: rgba(217, 107, 107, 0.15);
+  background: var(--accent-rose-bg);
   color: var(--accent-rose);
-  border: 1px solid rgba(217, 107, 107, 0.3);
+  border: 1px solid var(--accent-rose-border);
 }
 
 .btn-danger:hover {
-  background: rgba(217, 107, 107, 0.25);
+  background: rgba(248, 113, 113, 0.2);
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #FCA5A5;
+  box-shadow: 0 2px 10px rgba(248, 113, 113, 0.15);
 }
 
 .btn-sm {
@@ -301,7 +456,9 @@ body {
   font-size: 0.78rem;
 }
 
-/* Content Body & Tabs */
+/* --------------------------------------------------------------------------
+   Content Body & Tabs Layout
+   -------------------------------------------------------------------------- */
 .content-body {
   padding: 32px;
   display: flex;
@@ -317,14 +474,100 @@ body {
 
 .tab-panel.active {
   display: flex;
+  animation: dashboardEntrance 260ms var(--ease-spring) forwards;
 }
 
-/* Dashboard Cards */
+@keyframes dashboardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Focus Session Panel (Focal Hero Card Overriding Inline Styles)
+   -------------------------------------------------------------------------- */
+#tab-overview > .dashboard-card:first-child {
+  background: linear-gradient(145deg, #111C2E 0%, #152238 100%) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.32);
+  position: relative;
+  overflow: hidden;
+}
+
+#tab-overview > .dashboard-card:first-child::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 124, 255, 0.4), transparent);
+  pointer-events: none;
+}
+
+#tab-overview > .dashboard-card:first-child h2 {
+  color: var(--text-main) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+}
+
+#tab-overview > .dashboard-card:first-child p {
+  color: var(--text-secondary) !important;
+}
+
+/* Circular Timer Component */
+#tab-overview > .dashboard-card:first-child div[style*="border-radius: 50%"] {
+  border-color: #263449 !important;
+  border-top-color: var(--accent-primary) !important;
+  border-right-color: var(--accent-gold-muted) !important;
+  background: radial-gradient(circle, rgba(23, 36, 56, 0.85) 0%, rgba(17, 28, 46, 0.98) 100%) !important;
+  box-shadow: 0 0 24px rgba(139, 124, 255, 0.15), inset 0 0 16px rgba(139, 124, 255, 0.05) !important;
+  transition: transform var(--transition-card), box-shadow var(--transition-card);
+}
+
+#tab-overview > .dashboard-card:first-child div[style*="border-radius: 50%"]:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(139, 124, 255, 0.22), inset 0 0 20px rgba(139, 124, 255, 0.08) !important;
+}
+
+#circularTimerDisplay {
+  color: var(--text-main) !important;
+  font-size: 1.85rem !important;
+  font-weight: 700 !important;
+  font-family: var(--font-mono) !important;
+  letter-spacing: -0.02em;
+}
+
+#circularTimerDisplay + span {
+  color: var(--accent-gold-muted) !important;
+  letter-spacing: 0.12em !important;
+}
+
+#heroBadge {
+  background: var(--accent-lavender-tint) !important;
+  border-color: var(--accent-lavender-border) !important;
+  color: var(--text-main) !important;
+}
+
+#heroTimerSub {
+  color: var(--text-muted) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Dashboard Cards (Slate Navy Panels)
+   -------------------------------------------------------------------------- */
 .dashboard-card {
-  background: var(--bg-card);
+  background: var(--bg-panel);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .card-header {
@@ -338,15 +581,24 @@ body {
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--text-main);
+  letter-spacing: -0.01em;
 }
 
 .card-subtitle {
   font-size: 0.78rem;
-  color: var(--text-sub);
-  margin-top: 2px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.4;
 }
 
-/* Metrics Grid */
+/* --------------------------------------------------------------------------
+   Statistics Metrics Grid & Cards (Elevated Slate Surface)
+   -------------------------------------------------------------------------- */
+.content-body > div > div[style*="text-transform: uppercase"] {
+  color: var(--text-muted) !important;
+  letter-spacing: 0.08em;
+}
+
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -357,41 +609,74 @@ body {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 20px;
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform var(--transition-card),
+              border-color var(--transition-card),
+              box-shadow var(--transition-card);
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(139, 124, 255, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
 }
 
 .metric-header {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-family: var(--font-mono);
-  color: var(--text-sub);
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .metric-value {
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 1.85rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 4px;
   font-family: var(--font-mono);
+  color: var(--text-main);
+}
+
+/* Distinct meaningful accents on metric values */
+#metricFocusTime {
+  color: var(--accent-gold-muted) !important;
+}
+
+#metricSessionsCompleted {
+  color: var(--accent-primary) !important;
+}
+
+#metricBlockedDistractions {
+  color: #38A169 !important;
+}
+
+#metricAllowedChannels {
+  color: var(--text-main) !important;
 }
 
 .metric-sub {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
+  line-height: 1.4;
 }
 
-/* Data Tables */
+/* --------------------------------------------------------------------------
+   Data Tables (Recent Study Sessions & Full Log)
+   -------------------------------------------------------------------------- */
 .data-table-wrap {
   overflow-x: auto;
 }
 
 .data-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.85rem;
   text-align: left;
 }
@@ -399,24 +684,35 @@ body {
 .data-table th {
   padding: 12px 16px;
   border-bottom: 1px solid var(--border-subtle);
-  color: var(--text-sub);
+  background: rgba(23, 36, 56, 0.6);
+  color: var(--text-muted);
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
 }
 
 .data-table td {
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(176, 138, 79, 0.1);
-  color: var(--text-muted);
+  border-bottom: 1px solid rgba(38, 52, 73, 0.6);
+  color: var(--text-secondary);
+  transition: background-color var(--transition-nav),
+              color var(--transition-nav);
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
 }
 
 .data-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-hover);
+  color: var(--text-main);
 }
 
-/* Badges */
+/* --------------------------------------------------------------------------
+   Badges (Status & Tags)
+   -------------------------------------------------------------------------- */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -426,21 +722,43 @@ body {
   font-weight: 600;
   font-family: var(--font-mono);
   letter-spacing: 0.04em;
+  background: rgba(38, 52, 73, 0.5);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
 }
 
 .badge-strict {
-  background: rgba(24, 88, 68, 0.35);
-  color: #F2EBDD;
-  border: 1px solid rgba(176, 138, 79, 0.3);
+  background: var(--accent-lavender-tint);
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-lavender-border);
 }
 
 .badge-verified {
-  background: rgba(176, 138, 79, 0.15);
-  color: var(--accent-gold);
-  border: 1px solid rgba(176, 138, 79, 0.3);
+  background: rgba(24, 90, 70, 0.3) !important;
+  color: #48BB78 !important;
+  border: 1px solid rgba(72, 187, 120, 0.35) !important;
 }
 
-/* Learning Channels Grid */
+/* --------------------------------------------------------------------------
+   Learning Channels Tab
+   -------------------------------------------------------------------------- */
+#newChannelInput {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-main) !important;
+  padding: 10px 14px !important;
+  border-radius: var(--radius-sm) !important;
+  font-size: 0.85rem !important;
+  transition: border-color var(--transition-nav),
+              box-shadow var(--transition-nav);
+}
+
+#newChannelInput:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 2px rgba(139, 124, 255, 0.2) !important;
+  outline: none !important;
+}
+
 .channels-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -448,20 +766,33 @@ body {
 }
 
 .channel-card {
-  background: rgba(20, 56, 47, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 14px 16px;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 14px 16px !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  transition: var(--transition);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: transform var(--transition-card),
+              border-color var(--transition-card),
+              background-color var(--transition-card),
+              box-shadow var(--transition-card);
 }
 
 .channel-card:hover {
-  border-color: var(--accent-gold);
-  background: rgba(27, 69, 58, 0.8);
+  transform: translateY(-2px);
+  background: var(--bg-hover) !important;
+  border-color: rgba(139, 124, 255, 0.35) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+}
+
+.channel-card div[style*="border-radius: 50%"] {
+  background: var(--brand-evergreen) !important;
+  color: var(--brand-cream) !important;
+  border: 1px solid rgba(180, 139, 72, 0.35);
+  font-family: var(--font-mono);
 }
 
 .channel-info {
@@ -481,11 +812,24 @@ body {
 
 .channel-handle {
   font-size: 0.75rem;
-  color: var(--text-sub);
+  color: var(--text-muted);
   font-family: var(--font-mono);
 }
 
-/* Analytics Chart Bars */
+[data-remove-id] {
+  color: var(--accent-rose) !important;
+  background: var(--accent-rose-bg) !important;
+  border: 1px solid var(--accent-rose-border) !important;
+}
+
+[data-remove-id]:hover {
+  background: rgba(248, 113, 113, 0.2) !important;
+  border-color: rgba(248, 113, 113, 0.45) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Focus Analytics Tab (Cognitive Preservation Chart & Interceptions)
+   -------------------------------------------------------------------------- */
 .chart-container {
   display: flex;
   align-items: flex-end;
@@ -512,26 +856,49 @@ body {
 
 .chart-bar {
   width: 28px;
-  background: linear-gradient(180deg, var(--accent-gold), var(--accent-emerald));
+  background: linear-gradient(180deg, var(--accent-primary) 0%, var(--brand-evergreen) 100%) !important;
   border-radius: 4px 4px 0 0;
-  transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: height 0.5s var(--ease-spring), filter var(--transition-nav);
   min-height: 4px;
+  box-shadow: 0 -2px 8px rgba(139, 124, 255, 0.2);
+}
+
+.chart-column:hover .chart-bar {
+  filter: brightness(1.2);
 }
 
 .chart-label {
   margin-top: 8px;
   font-size: 0.72rem;
-  color: var(--text-sub);
+  color: var(--text-muted);
   font-family: var(--font-mono);
 }
 
-/* Settings Form Controls */
+#analyticShorts {
+  color: var(--accent-gold-muted) !important;
+}
+
+#analyticFeeds {
+  color: var(--accent-primary) !important;
+}
+
+#analyticComments {
+  color: var(--text-main) !important;
+}
+
+#analyticSearch {
+  color: #38A169 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Settings Tab (Form Controls, Switches, Selects)
+   -------------------------------------------------------------------------- */
 .setting-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(176, 138, 79, 0.1);
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(38, 52, 73, 0.6);
 }
 
 .setting-row:last-child {
@@ -542,6 +909,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding-right: 20px;
 }
 
 .setting-title {
@@ -552,10 +920,11 @@ body {
 
 .setting-desc {
   font-size: 0.8rem;
-  color: var(--text-sub);
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
-/* Form Switch */
+/* Switches */
 .switch {
   position: relative;
   display: inline-block;
@@ -577,9 +946,10 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  transition: 0.3s;
+  transition: background-color 0.24s var(--ease-spring),
+              border-color 0.24s var(--ease-spring);
   border-radius: 24px;
 }
 
@@ -590,27 +960,119 @@ body {
   width: 16px;
   left: 3px;
   bottom: 3px;
-  background-color: #F2EBDD;
-  transition: 0.3s;
+  background-color: var(--text-muted);
+  transition: transform 0.24s var(--ease-spring),
+              background-color 0.24s var(--ease-spring),
+              box-shadow 0.24s var(--ease-spring);
   border-radius: 50%;
 }
 
+.switch:hover .slider {
+  border-color: rgba(139, 124, 255, 0.4);
+}
+
 input:checked + .slider {
-  background-color: var(--accent-emerald);
-  border-color: var(--accent-gold);
+  background-color: var(--accent-lavender-tint);
+  border-color: var(--accent-primary);
 }
 
 input:checked + .slider:before {
   transform: translateX(20px);
-  background-color: var(--accent-gold);
+  background-color: var(--accent-primary);
+  box-shadow: 0 0 8px rgba(139, 124, 255, 0.7);
 }
 
+#settingDefaultTimer {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-main) !important;
+  padding: 8px 14px !important;
+  border-radius: var(--radius-sm) !important;
+  font-size: 0.85rem !important;
+  transition: border-color var(--transition-nav),
+              box-shadow var(--transition-nav);
+}
+
+#settingDefaultTimer:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 2px rgba(139, 124, 255, 0.2) !important;
+  outline: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Media Queries
+   -------------------------------------------------------------------------- */
 @media (max-width: 900px) {
   .sidebar {
-    width: 200px;
-    padding: 16px 12px;
+    width: 220px;
+    padding: 20px 12px;
+  }
+  .top-bar {
+    padding: 16px 20px;
   }
   .content-body {
     padding: 20px;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    padding: 16px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .nav-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .sidebar-footer {
+    display: none;
+  }
+  .main-content {
+    height: auto;
+    overflow-y: visible;
+  }
+  .top-bar {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .top-bar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .content-body {
+    padding: 16px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion Accessibility (Respects prefers-reduced-motion)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .tab-panel.active {
+    animation: none !important;
+  }
+  .btn:hover,
+  .metric-card:hover,
+  .channel-card:hover,
+  .nav-item:hover,
+  #tab-overview > .dashboard-card:first-child div[style*="border-radius: 50%"]:hover {
+    transform: none !important;
   }
 }

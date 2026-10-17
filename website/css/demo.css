@@ -357,6 +357,7 @@
   .sim-search-bar {
     padding: 5px 10px;
     font-size: 0.75rem;
+    min-width: 0;
   }
   .sim-logo {
     font-size: 0.85rem;
@@ -376,6 +377,38 @@
   .sim-knolect-quote {
     padding: 10px 14px;
     font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .sim-topbar {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .sim-search-bar {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    min-width: 0;
+  }
+  .sim-logo {
+    font-size: 0.78rem;
+    gap: 4px;
+  }
+  .sim-main {
+    padding: 16px 12px;
+  }
+  .sim-knolect-card {
+    padding: 18px 12px;
+  }
+  .sim-knolect-title {
+    font-size: 1.15rem;
+  }
+  .sim-knolect-desc {
+    font-size: 0.82rem;
+  }
+  .sim-wl-chip {
+    font-size: 0.72rem;
+    padding: 4px 8px;
   }
 }
 
