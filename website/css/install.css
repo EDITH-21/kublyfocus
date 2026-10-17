@@ -8,7 +8,8 @@
 }
 
 .install-container {
-  max-width: 860px;
+  width: 100%;
+  max-width: 960px;
 }
 
 .install-header {
