@@ -1816,7 +1816,7 @@ button:disabled, .btn:disabled {
 
 .footer-master-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr minmax(180px, 1fr) 1fr;
   gap: 40px;
   margin-bottom: 56px;
   align-items: start;
@@ -1883,6 +1883,7 @@ button:disabled, .btn:disabled {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  min-width: 0;
 }
 
 .footer-col-header {
@@ -1918,26 +1919,57 @@ button:disabled, .btn:disabled {
   border-radius: var(--radius-sm);
 }
 
-.footer-contact-link {
+/* Horizontal social icon buttons placed directly below "Get Early Access →" */
+.footer-brand-socials {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  word-break: break-all;
+  gap: 12px;
+  margin-top: 8px;
 }
 
-.footer-contact-link svg {
-  flex-shrink: 0;
-  color: var(--color-gold-light);
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.footer-contact-link:hover svg {
+.footer-social-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   color: var(--color-gold);
-  transform: scale(1.1);
+  background: rgba(176, 138, 79, 0.12);
+  border: 1px solid rgba(176, 138, 79, 0.28);
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
 }
 
-.footer-social-wrap {
-  margin-top: 14px;
+.footer-social-icon-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.footer-social-icon-btn:hover {
+  color: var(--color-gold-light);
+  background: rgba(176, 138, 79, 0.24);
+  border-color: rgba(176, 138, 79, 0.6);
+  transform: translateY(-2px) scale(1.08);
+}
+
+.footer-social-icon-btn:hover svg {
+  transform: scale(1.08);
+}
+
+.footer-social-icon-btn:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+
+.footer-social-placeholder {
+  opacity: 0.92;
+}
+
+/* Connect Section with email under small uppercase CONNECT */
+.footer-connect-wrap {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1950,15 +1982,15 @@ button:disabled, .btn:disabled {
   letter-spacing: 0.12em;
   color: var(--color-gold-light);
   font-family: var(--font-mono);
+  margin-bottom: 2px;
 }
 
-.footer-social-links {
+.footer-contact-row {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
 }
 
-.footer-social-link {
+.footer-contact-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1966,32 +1998,30 @@ button:disabled, .btn:disabled {
   font-size: 0.88rem;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.footer-social-link:hover {
+.footer-contact-link:hover {
   color: var(--color-ivory);
   transform: translateX(2px);
 }
 
-.footer-social-link:focus-visible {
+.footer-contact-link:focus-visible {
   outline: 2px solid var(--color-gold);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
 
-.footer-social-link svg {
+.footer-contact-link svg {
   flex-shrink: 0;
   color: var(--color-gold-light);
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.footer-social-link:hover svg {
+.footer-contact-link:hover svg {
   color: var(--color-gold);
-  transform: scale(1.1);
-}
-
-.footer-social-placeholder {
-  opacity: 0.88;
+  transform: scale(1.12);
 }
 
 .footer-focus-divider {
