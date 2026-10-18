@@ -95,6 +95,14 @@ assert(fs.existsSync(path.join(websiteDir, 'assets', 'tutorial-poster.svg')), 'B
 assert(fs.existsSync(path.join(__dirname, 'CHROMEWEBSTORE.md')), 'CHROMEWEBSTORE.md exists in project root');
 assert(fs.existsSync(path.join(__dirname, 'scripts', 'package-extension.js')), 'scripts/package-extension.js packaging tool exists');
 
+// 7. Check Footer Social Media & Contact Email Links
+['index.html', 'about.html', 'install.html', 'support.html', 'privacy.html'].forEach(file => {
+  const content = fs.readFileSync(path.join(websiteDir, file), 'utf8');
+  assert(content.includes('https://www.instagram.com/asteya.tech/?hl=en'), `${file} contains verified Instagram profile`);
+  assert(content.includes('https://www.linkedin.com/company/asteya-tech'), `${file} contains configurable LinkedIn profile placeholder`);
+  assert(content.includes('mailto:asteyatech2@gmail.com'), `${file} contains verified mailto link`);
+});
+
 console.log(`\n=== Website Verification Complete: ${passed} passed, ${failed} failed ===`);
 if (failed > 0) {
   process.exit(1);

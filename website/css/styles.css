@@ -1912,6 +1912,88 @@ button:disabled, .btn:disabled {
   transform: translateX(2px);
 }
 
+.footer-col-links a:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.footer-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  word-break: break-all;
+}
+
+.footer-contact-link svg {
+  flex-shrink: 0;
+  color: var(--color-gold-light);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-contact-link:hover svg {
+  color: var(--color-gold);
+  transform: scale(1.1);
+}
+
+.footer-social-wrap {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-col-subheader {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-gold-light);
+  font-family: var(--font-mono);
+}
+
+.footer-social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #C8D6CC;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-social-link:hover {
+  color: var(--color-ivory);
+  transform: translateX(2px);
+}
+
+.footer-social-link:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.footer-social-link svg {
+  flex-shrink: 0;
+  color: var(--color-gold-light);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-social-link:hover svg {
+  color: var(--color-gold);
+  transform: scale(1.1);
+}
+
+.footer-social-placeholder {
+  opacity: 0.88;
+}
+
 .footer-focus-divider {
   display: flex;
   align-items: center;

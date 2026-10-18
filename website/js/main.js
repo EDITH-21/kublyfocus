@@ -46,6 +46,26 @@ document.addEventListener('DOMContentLoaded', () => {
   bindInstallCTAs();
 
   /* ==========================================================================
+     Centralized Brand Social & Contact Link Binding
+     ========================================================================== */
+  function bindBrandContact() {
+    if (!window.BRAND_CONTACT) return;
+    document.querySelectorAll('[data-social="instagram"]').forEach(el => {
+      if (window.BRAND_CONTACT.instagram) el.href = window.BRAND_CONTACT.instagram;
+    });
+    document.querySelectorAll('[data-social="linkedin"]').forEach(el => {
+      if (window.BRAND_CONTACT.linkedin) el.href = window.BRAND_CONTACT.linkedin;
+    });
+    document.querySelectorAll('[data-contact="email"]').forEach(el => {
+      if (window.BRAND_CONTACT.email) {
+        el.href = `mailto:${window.BRAND_CONTACT.email}`;
+      }
+    });
+  }
+
+  bindBrandContact();
+
+  /* ==========================================================================
      2. Accessible Mobile Navigation Drawer
      ========================================================================== */
   function initMobileNavigation() {

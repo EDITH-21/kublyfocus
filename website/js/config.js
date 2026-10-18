@@ -57,6 +57,24 @@ const PRODUCT_INFO = {
 };
 
 /**
+ * =========================================================================
+ * 3. BRAND SOCIAL MEDIA & CONTACT CONFIGURATION
+ * =========================================================================
+ * Centralized single source of truth for social media profiles and contact email.
+ * 
+ * - instagram: Active brand profile (https://www.instagram.com/asteya.tech/?hl=en)
+ * - linkedin: PLACEHOLDER URL — Replace with your official company LinkedIn profile when ready.
+ *             (Current: unverified placeholder profile)
+ * - email: Primary contact and support email (mailto:asteyatech2@gmail.com)
+ */
+const BRAND_CONTACT = {
+  instagram: "https://www.instagram.com/asteya.tech/?hl=en",
+  // Replace this placeholder with your official company LinkedIn profile URL:
+  linkedin: "https://www.linkedin.com/company/asteya-tech", // Configurable placeholder (unverified company profile)
+  email: "asteyatech2@gmail.com"
+};
+
+/**
  * Detect the user's browser and environment
  * @returns {{ name: string, isChromium: boolean, isSupported: boolean, isMobile: boolean, label: string, reason?: string }}
  */
@@ -149,6 +167,7 @@ if (typeof window !== 'undefined') {
   window.CHROME_STORE_URL = CHROME_STORE_URL;
   window.BROWSER_STORE_URLS = BROWSER_STORE_URLS;
   window.TUTORIAL_VIDEO = TUTORIAL_VIDEO;
+  window.BRAND_CONTACT = BRAND_CONTACT;
   window.PRODUCT_INFO = PRODUCT_INFO;
   window.detectBrowser = detectBrowser;
   window.getInstallTarget = getInstallTarget;
